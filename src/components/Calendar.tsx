@@ -1,4 +1,8 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+import { useState } from "react";
+import nepaliDayOfWeek from "../utility/nepaliDayOfWeek";
+import nepaliMonth from "../utility/nepaliMonth";
+import nepaliNumber from "../utility/nepaliNumber";
 
 // dummy data
 const days = [
@@ -46,32 +50,15 @@ const days = [
   { date: "2022-02-06" },
 ];
 
-function classNames(...classes: Array<string|undefined|boolean>) {
+function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
 }
 
-const nepaliNumber = (str:string) => {
-  //@ts-expect-error String may be undefined
-  const filtered = str.split("-").pop().replace(/^0/, "")
-  const nepaliNumbers = {
-    "0": "०",
-    "1": "१",
-    '2': "२",
-    "3": "३",
-    "4": "४",
-    "5": "५",
-    "6": "६",
-    "7": "७",
-    "8": "८",
-    "9": "९",
-  };
-  //@ts-expect-error String may be undefined
-  return filtered.replace(/\d/g, (match) => nepaliNumbers?.[match]);
-}
-
-
-
 export default function Calendar() {
+  const [activeDate, setActiveDate] = useState<string>("2022-1-1");
+  const [dayOfWeek, setDayOfWeek] = useState(1); //
+  console.log(activeDate.split("-"));
+  console.log(nepaliNumber(activeDate.split("-")[0]));
   return (
     <div>
       <div className="mt-10 mx-2 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9">
@@ -104,6 +91,10 @@ export default function Calendar() {
         <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200 font-sans">
           {days.map((day, dayIdx) => (
             <button
+              onClick={() => {
+                setActiveDate(day.date);
+                setDayOfWeek(dayIdx % 7);
+              }}
               key={day.date}
               type="button"
               className={classNames(
@@ -129,12 +120,14 @@ export default function Calendar() {
             >
               {/* <span className="sr-only sm:not-sr-only">on</span> */}
               <span className="mx-auto mt-auto flex flex-wrap justify-center text-center">
-                {Array.from(Array(Math.floor(dayIdx%4)).keys()).map((event) => (
-                  <span
-                    key={event}
-                    className="mt-1 mx-0.5 mb-0 h-1 w-1 rounded-full bg-gray-400"
-                  />
-                ))}
+                {Array.from(Array(Math.floor(dayIdx % 4)).keys()).map(
+                  (event) => (
+                    <span
+                      key={event}
+                      className="mt-1 mx-0.5 mb-0 h-1 w-1 rounded-full bg-gray-400"
+                    />
+                  )
+                )}
               </span>
               <time
                 dateTime={day.date}
@@ -161,11 +154,20 @@ export default function Calendar() {
 
         <div className="flex items-start rounded-xl bg-white p-4 mt-1 shadow-lg">
           <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
-            <h1 className="font-semibold">१२</h1>
+            <h1 className="font-semibold">
+              {nepaliNumber(activeDate.split("-")[2])}
+            </h1>
           </div>
 
           <div className="ml-4 text-left">
-            <h2 className="font-semibold">१२ वैशाख २०८०, मंगलवार</h2>
+            <h2 className="font-semibold">
+              {/* dynamically displays active date value*/}
+              {`${nepaliNumber(activeDate.split("-")[2])}  
+                ${nepaliMonth(activeDate.split("-")[1])} 
+                ${nepaliNumber(activeDate.split("-")[0])}
+                ${nepaliDayOfWeek(dayOfWeek)}
+                `}
+            </h2>
             <p className="mt-2 text-sm text-gray-500">April 25, 2023</p>
             {/* <p className="mt-2 text-sm text-gray-500">April 25, 2023</p> */}
           </div>
