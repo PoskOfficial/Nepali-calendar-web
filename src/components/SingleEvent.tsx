@@ -33,7 +33,7 @@ function SingleEvent({
           </div>
           <div className=" pl-3 events">
             <h3 className="text-sm">
-              {englishMonth(englishDate.split("-")[1]) +
+              {englishMonth(Number(englishDate.split("-")[1])) +
                 " " +
                 englishDate.split("-")[2] +
                 " " +
