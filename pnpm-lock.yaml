@@ -11,6 +11,9 @@ dependencies:
   '@heroicons/react':
     specifier: ^2.0.18
     version: 2.0.18(react@18.2.0)
+  nepali-date-converter:
+    specifier: ^3.3.1
+    version: 3.3.1
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -1412,6 +1415,11 @@ packages:
   /natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
+
+  /nepali-date-converter@3.3.1:
+    resolution: {integrity: sha512-oiYJ+uWJGmdSEdJ+IEIZ4z1/vh5oTIgsEbzyoTR4tRn3vwJXtmuXOxiFzfWDUObbjPC68GoKotrm0rbD7Br8og==}
+    engines: {node: '>=6.0.0'}
+    dev: false
 
   /node-releases@2.0.12:
     resolution: {integrity: sha512-QzsYKWhXTWx8h1kIvqfnC++o0pEmpRQA/aenALsL2F4pqNVr7YzcdMlDij5WBnwftRbJCNJL/O7zdKaxKPHqgQ==}
