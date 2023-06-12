@@ -1,6 +1,6 @@
-const englishMonth = (ind) => {
+const englishMonth = (ind: number) => {
   if (ind < 1 || ind > 12) return;
-  let months = [
+  const months = [
     "Jan",
     "Feb",
     "Mar",
