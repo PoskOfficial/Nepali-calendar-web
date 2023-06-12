@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { getToday, getCurrentMonth } from "../helper/dates";
 import nepaliNumber from "../helper/nepaliNumber";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import mahina from "../constants/mahina";
 import { Day } from "../types";
 
@@ -18,12 +18,9 @@ interface Calender {
 
 export default function Calendar({ yearData, setCurrentYear }: Calender) {
   const [currentMonth, setCurrentMonth] = useState(() => getCurrentMonth());
-  const [selectedDay, setSelectedDay] = useState<Day | null>(null);
 
   const days: Day[] = yearData[
-    currentMonth + 1 < 10
-      ? "0" + (currentMonth + 1).toString()
-      : (currentMonth + 1).toString()
+    currentMonth + 1 < 10 ? "0" + (currentMonth + 1).toString() : (currentMonth + 1).toString()
   ]?.map((item: Day) => {
     const today = getToday();
     const isToday = item.ad === today;
@@ -33,8 +30,15 @@ export default function Calendar({ yearData, setCurrentYear }: Calender) {
     };
   });
 
+  const [selectedDay, setSelectedDay] = useState<Day>();
+
+  useEffect(() => {
+    const today = days?.filter((day) => day.is_today)[0];
+    setSelectedDay(today);
+  }, []);
+
+  console.log(selectedDay);
   const handelNextMonth = () => {
-    console.log("current month : " + currentMonth);
     if (currentMonth == 11) {
       setCurrentYear((prev: number) => prev + 1);
       setCurrentMonth((prev: number) => prev % 11);
@@ -50,29 +54,25 @@ export default function Calendar({ yearData, setCurrentYear }: Calender) {
 
   return (
     <div>
-      <div className="mt-10 mx-2 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9">
+      <div className="mx-2 mt-10 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9">
         <div className="flex items-center text-gray-900">
           <button
             type="button"
             className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
-            onClick={handelPrevMonth}
-          >
+            onClick={handelPrevMonth}>
             <span className="sr-only">Previous month</span>
             <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
           </button>
-          <div className="flex-auto font-semibold font-mukta">
-            {mahina(currentMonth)}
-          </div>
+          <div className="flex-auto font-mukta font-semibold">{mahina(currentMonth)}</div>
           <button
             type="button"
             className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
-            onClick={handelNextMonth}
-          >
+            onClick={handelNextMonth}>
             <span className="sr-only">Next month</span>
             <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
           </button>
         </div>
-        <div className="mt-6 grid grid-cols-7 text-xs text-gray-500 leading-10">
+        <div className="mt-6 grid grid-cols-7 text-xs leading-10 text-gray-500">
           <div>S</div>
           <div>M</div>
           <div>T</div>
@@ -81,41 +81,34 @@ export default function Calendar({ yearData, setCurrentYear }: Calender) {
           <div>F</div>
           <div>S</div>
         </div>
-        <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200 font-sans">
+        <div className="isolate mt-2 grid grid-cols-7 gap-px overflow-hidden rounded-lg bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200">
           {days?.map((day: Day, dayIdx: number) => (
             <button
               key={day.day}
               type="button"
               onClick={() => setSelectedDay(day)}
               className={classNames(
-                "p-1 hover:bg-gray-100 focus:z-10 leading-3 font-mukta",
-                (selectedDay?.day == day.day || day.is_today) &&
-                  "font-semibold",
+                "p-1 font-mukta leading-3 hover:bg-gray-100 focus:z-10",
+                (selectedDay?.day == day.day || day.is_today) && "font-semibold",
+                dayIdx === 0 && ` col-start-${day.week_day}`,
                 day.is_today && "font-semibold text-indigo-600",
                 !(selectedDay?.day === day.day) && "bg-white",
-                selectedDay?.day === day.day &&
-                  dayIdx === 0 &&
-                  `col-start-${day.week_day}`,
-                selectedDay?.day === day.day &&
-                  " text-white  hover:bg-indigo-700 bg-indigo-600",
+                selectedDay?.day === day.day && dayIdx === 0 && `col-start-${day.week_day}`,
+                selectedDay?.day === day.day && " bg-indigo-600  text-white hover:bg-indigo-700",
                 selectedDay?.day === day.day && "bg-indigo-600"
-              )}
-            >
+              )}>
               {/* <span className="sr-only sm:not-sr-only">on</span> */}
-              <span className="text-bold text-xs  h-6 w-6 rounded-full">
-                {day["events"].length > 1
-                  ? `+${day["events"].length}`
-                  : `${day["events"].length}`}
+              <span className="text-bold h-6  w-6 rounded-full text-xs">
+                {day["events"].length > 1 ? `+${day["events"].length}` : `${day["events"].length}`}
               </span>
               <time
                 dateTime={day.AD_date.bs}
                 className={classNames(
-                  "mx-auto flex  items-center justify-center rounded-full text-xl mt-0 pt-0"
-                )}
-              >
+                  "mx-auto mt-0  flex items-center justify-center rounded-full pt-0 text-xl"
+                )}>
                 {nepaliNumber(day.day)}
               </time>
-              <span className="mx-auto mt-0 my-0 py-0 font-extralight text-[9px]">
+              <span className="mx-auto my-0 mt-0 py-0 text-[9px] font-extralight">
                 {day.ad.split("-").pop()}
               </span>
             </button>
@@ -123,13 +116,12 @@ export default function Calendar({ yearData, setCurrentYear }: Calender) {
         </div>
         <button
           type="button"
-          className="mt-8 w-full rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        >
+          className="mt-8 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
           Add event
         </button>
-        <div className="flex items-start rounded-xl bg-white p-4 mt-1 shadow-lg">
+        <div className="mt-1 flex items-start rounded-xl bg-white p-4 shadow-lg">
           <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
-            <h1 className="font-semibold">१२</h1>
+            <h1 className="font-semibold">{selectedDay && nepaliNumber(selectedDay?.day)}</h1>
           </div>
 
           <div className="ml-4 text-left">

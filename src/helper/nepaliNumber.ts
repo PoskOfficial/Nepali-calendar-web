@@ -1,6 +1,6 @@
 const nepaliNumber = (str: string) => {
   //@ts-expect-error String may be undefined
-  const filtered = str.split(".").pop().replace(/^0/, "");
+  const filtered = str.split("-").pop().replace(/^0/, "");
   const nepaliNumbers = {
     "0": "०",
     "1": "१",

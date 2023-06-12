@@ -10,10 +10,8 @@ function App() {
   const [currentYear, setCurrentYear] = useState<number>(() =>
     getCurrentYear()
   );
-  console.log(currentYear);
   async function fetchCalendarData() {
     const data = await fetchYearlyData(currentYear.toString());
-    // console.log(data);
     setYearData(data);
   }
 
