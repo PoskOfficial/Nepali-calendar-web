@@ -86,7 +86,7 @@ export default function Calendar({ yearData, setCurrentYear }: Calender) {
               className={classNames(
                 "p-1 font-mukta leading-3 hover:bg-gray-100 focus:z-10",
                 (selectedDay?.day == day.day || day.is_today) && "font-semibold",
-                dayIdx === 0 && `col-start-${day.week_day}`,
+                dayIdx === 0 && ` col-start-${day.week_day+1}`,
                 day.is_today && "font-semibold text-indigo-600",
                 !(selectedDay?.day === day.day) && "bg-white",
                 selectedDay?.day === day.day && " bg-indigo-600  text-white hover:bg-indigo-700",
