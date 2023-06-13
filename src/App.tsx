@@ -7,9 +7,7 @@ import { Day } from "./types";
 
 function App() {
   const [yearData, setYearData] = useState<{ [key: string]: Day[] } | {}>({});
-  const [currentYear, setCurrentYear] = useState<number>(() =>
-    getCurrentYear()
-  );
+  const [currentYear, setCurrentYear] = useState<number>(getCurrentYear());
   async function fetchCalendarData() {
     const data = await fetchYearlyData(currentYear.toString());
     setYearData(data);

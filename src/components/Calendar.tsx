@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { getToday, getCurrentMonth } from "../helper/dates";
 import nepaliNumber from "../helper/nepaliNumber";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import mahina from "../constants/mahina";
 import { Day } from "../types";
 
@@ -17,35 +17,31 @@ interface Calender {
 }
 
 export default function Calendar({ yearData, setCurrentYear }: Calender) {
-  const [currentMonth, setCurrentMonth] = useState(() => getCurrentMonth());
+  const [currentMonth, setCurrentMonth] = useState(getCurrentMonth());
 
-  const days: Day[] = yearData[
-    currentMonth + 1 < 10 ? "0" + (currentMonth + 1).toString() : (currentMonth + 1).toString()
-  ]?.map((item: Day) => {
-    const today = getToday();
-    const isToday = item.ad === today;
-    return {
-      ...item,
-      is_today: isToday,
-    };
-  });
+  const days: Day[] = useMemo(() => {
+    return yearData[currentMonth + 1 < 10 ? "0" + (currentMonth + 1) : currentMonth + 1]?.map((item: Day) => {
+      const today = getToday();
+      const isToday = item.ad === today;
+      return {
+        ...item,
 
-  const [selectedDay, setSelectedDay] = useState<Day>();
+        is_today: isToday,
+      };
+    });
+  }, [yearData, currentMonth]);
 
-  useEffect(() => {
-    const today = days?.filter((day) => day.is_today)[0];
-    setSelectedDay(today);
-  }, []);
+  const [selectedDay, setSelectedDay] = useState<Day>(days?.filter((day) => day.is_today)[0]);
 
   console.log(selectedDay);
-  const handelNextMonth = () => {
+  const handleNextMonth = () => {
     if (currentMonth == 11) {
       setCurrentYear((prev: number) => prev + 1);
       setCurrentMonth((prev: number) => prev % 11);
     } else setCurrentMonth((prev) => prev + 1);
   };
 
-  const handelPrevMonth = () => {
+  const handlePrevMonth = () => {
     if (currentMonth == 0) {
       setCurrentYear((prev: number) => prev - 1);
       setCurrentMonth(11);
@@ -59,7 +55,7 @@ export default function Calendar({ yearData, setCurrentYear }: Calender) {
           <button
             type="button"
             className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
-            onClick={handelPrevMonth}>
+            onClick={handlePrevMonth}>
             <span className="sr-only">Previous month</span>
             <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
           </button>
@@ -67,7 +63,7 @@ export default function Calendar({ yearData, setCurrentYear }: Calender) {
           <button
             type="button"
             className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
-            onClick={handelNextMonth}>
+            onClick={handleNextMonth}>
             <span className="sr-only">Next month</span>
             <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
           </button>
@@ -90,12 +86,12 @@ export default function Calendar({ yearData, setCurrentYear }: Calender) {
               className={classNames(
                 "p-1 font-mukta leading-3 hover:bg-gray-100 focus:z-10",
                 (selectedDay?.day == day.day || day.is_today) && "font-semibold",
-                dayIdx === 0 && ` col-start-${day.week_day}`,
+                dayIdx === 0 && `col-start-${day.week_day}`,
                 day.is_today && "font-semibold text-indigo-600",
                 !(selectedDay?.day === day.day) && "bg-white",
-                selectedDay?.day === day.day && dayIdx === 0 && `col-start-${day.week_day}`,
                 selectedDay?.day === day.day && " bg-indigo-600  text-white hover:bg-indigo-700",
-                selectedDay?.day === day.day && "bg-indigo-600"
+                selectedDay?.day === day.day && "bg-indigo-600",
+                (day.events.find((event) => event.jds?.gh == "1") || day.week_day == 6) && "text-rose-600"
               )}>
               {/* <span className="sr-only sm:not-sr-only">on</span> */}
               <span className="text-bold h-6  w-6 rounded-full text-xs">
