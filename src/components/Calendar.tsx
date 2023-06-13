@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
-import { getToday, getCurrentMonth } from "../helper/dates";
+import { getToday, getCurrentMonth, getCurrentYear } from "../helper/dates";
 import nepaliNumber from "../helper/nepaliNumber";
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import mahina from "../constants/mahina";
 import { Day } from "../types";
 
@@ -9,44 +9,49 @@ function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
 }
 
+interface YearData {
+  [key: string]: Day[];
+}
 interface Calender {
-  yearData: {
-    [key: string]: Day[];
-  };
+  yearData: YearData | null;
   setCurrentYear: Dispatch<SetStateAction<number>>;
+}
+
+const getMonthData = (yearData: YearData, currentMonth: number): Day[] => {
+  if (!yearData) return [];
+  const today = getToday().date;
+  const monthData = yearData[currentMonth + 1 < 10 ? "0" + (currentMonth + 1) : currentMonth + 1];
+  if (currentMonth === getToday().month) { monthData[today - 1].is_today = true; }
+  console.log(monthData);
+  return monthData;
 }
 
 export default function Calendar({ yearData, setCurrentYear }: Calender) {
   const [currentMonth, setCurrentMonth] = useState(getCurrentMonth());
+  const [selectedDay, setSelectedDay] = useState<string>(getCurrentMonth() === currentMonth ? getToday().dateStr : '01');
 
-  const days: Day[] = useMemo(() => {
-    return yearData[currentMonth + 1 < 10 ? "0" + (currentMonth + 1) : currentMonth + 1]?.map((item: Day) => {
-      const today = getToday();
-      const isToday = item.ad === today;
-      return {
-        ...item,
-
-        is_today: isToday,
-      };
-    });
-  }, [yearData, currentMonth]);
-
-  const [selectedDay, setSelectedDay] = useState<Day>(days?.filter((day) => day.is_today)[0]);
-
-  console.log(selectedDay);
   const handleNextMonth = () => {
     if (currentMonth == 11) {
+      setSelectedDay(getCurrentMonth() === 0 ? getToday().dateStr : '01');
       setCurrentYear((prev: number) => prev + 1);
       setCurrentMonth((prev: number) => prev % 11);
-    } else setCurrentMonth((prev) => prev + 1);
+    } else {
+      setSelectedDay(getCurrentMonth() === currentMonth + 1 ? getToday().dateStr : '01');
+      setCurrentMonth((prev) => prev + 1)
+    }
   };
 
   const handlePrevMonth = () => {
     if (currentMonth == 0) {
+      setSelectedDay(getCurrentMonth() === 11 ? getToday().dateStr : '01');
       setCurrentYear((prev: number) => prev - 1);
       setCurrentMonth(11);
-    } else setCurrentMonth((prev) => prev - 1);
+    } else {
+      setSelectedDay(getCurrentMonth() === currentMonth - 1 ? getToday().dateStr : '01');
+      setCurrentMonth((prev) => prev - 1)
+    }
   };
+  if (!yearData) return <div>Loading...</div>
 
   return (
     <div>
@@ -78,20 +83,20 @@ export default function Calendar({ yearData, setCurrentYear }: Calender) {
           <div>S</div>
         </div>
         <div className="isolate mt-2 grid grid-cols-7 gap-px overflow-hidden rounded-lg bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200">
-          {days?.map((day: Day, dayIdx: number) => (
+          {getMonthData(yearData, currentMonth)?.map((day: Day, dayIdx: number) => (
             <button
               key={day.day}
               type="button"
-              onClick={() => setSelectedDay(day)}
+              onClick={() => setSelectedDay(day.day)}
+              style={dayIdx === 0 ? { gridColumnStart: day.week_day + 1, } : {}}
               className={classNames(
                 "p-1 font-mukta leading-3 hover:bg-gray-100 focus:z-10",
-                (selectedDay?.day == day.day || day.is_today) && "font-semibold",
-                dayIdx === 0 && ` col-start-${day.week_day+1}`,
+                (selectedDay == day.day || day.is_today) && "font-semibold",
                 day.is_today && "font-semibold text-indigo-600",
-                !(selectedDay?.day === day.day) && "bg-white",
-                selectedDay?.day === day.day && " bg-indigo-600  text-white hover:bg-indigo-700",
-                selectedDay?.day === day.day && "bg-indigo-600",
-                (day.events.find((event) => event.jds?.gh == "1") || day.week_day == 6) && "text-rose-600"
+                !(selectedDay === day.day) && "bg-white",
+                selectedDay === day.day && " bg-indigo-600  text-white hover:bg-indigo-700",
+                selectedDay === day.day && "bg-indigo-600",
+                (day.events.find((event) => event.jds?.gh == "1") || day.week_day === 6) && "text-rose-600"
               )}>
               {/* <span className="sr-only sm:not-sr-only">on</span> */}
               <span className="text-bold h-6  w-6 rounded-full text-xs">
@@ -117,12 +122,12 @@ export default function Calendar({ yearData, setCurrentYear }: Calender) {
         </button>
         <div className="mt-1 flex items-start rounded-xl bg-white p-4 shadow-lg">
           <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
-            <h1 className="font-semibold">{selectedDay && nepaliNumber(selectedDay?.day)}</h1>
+            <h1 className="font-semibold">{selectedDay && nepaliNumber(selectedDay)}</h1>
           </div>
 
           <div className="ml-4 text-left">
-            <h2 className="font-semibold">१२ वैशाख २०८०, मंगलवार</h2>
-            <p className="mt-2 text-sm text-gray-500">April 25, 2023</p>
+            <h2 className="font-semibold">{getMonthData(yearData,currentMonth)[parseInt(selectedDay)-1]?.events[0]?.ad}</h2>
+            <p className="mt-2 text-sm text-gray-500">{getMonthData(yearData,currentMonth)[parseInt(selectedDay)-1]?.events[0]?.jds?.ne}</p>
             {/* <p className="mt-2 text-sm text-gray-500">April 25, 2023</p> */}
           </div>
         </div>

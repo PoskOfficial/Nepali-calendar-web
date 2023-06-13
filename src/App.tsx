@@ -6,15 +6,15 @@ import { getCurrentYear } from "./helper/dates";
 import { Day } from "./types";
 
 function App() {
-  const [yearData, setYearData] = useState<{ [key: string]: Day[] } | {}>({});
+  const [yearData, setYearData] = useState<{ [key: string]: Day[] } | null>(null);
   const [currentYear, setCurrentYear] = useState<number>(getCurrentYear());
-  async function fetchCalendarData() {
+  async function fetchCalendarData(currentYear: number) {
     const data = await fetchYearlyData(currentYear.toString());
     setYearData(data);
   }
 
   useEffect(() => {
-    fetchCalendarData();
+    fetchCalendarData(currentYear);
   }, [currentYear]);
 
   return (
