@@ -105,14 +105,16 @@ export default function Calendar({ yearData, setCurrentYear }: Calender) {
               {/* <span className="sr-only sm:not-sr-only">on</span> */}
               <span className="text-bold h-6  w-6 ">
                 {day["events"].length > 4
-                  ? Array(4).map((_, idx) => (
-                      <span
-                        key={idx}
-                        className={classNames(
-                          "mx-[1px] inline-block h-1 w-1 rounded-full ",
-                          selectedDay === day.day && "bg-white"
-                        )}></span>
-                    ))
+                  ? Array(4)
+                      .fill("")
+                      .map((_, idx) => (
+                        <span
+                          key={idx}
+                          className={classNames(
+                            "mx-[1px] inline-block h-1 w-1 rounded-full bg-slate-600",
+                            selectedDay === day.day && "!bg-white"
+                          )}></span>
+                      ))
                   : day["events"].map((_, idx) => (
                       <span
                         key={idx}
