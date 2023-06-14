@@ -6,6 +6,7 @@ import { nepaliMonths } from "../constants/mahina";
 import availableYears from "../constants/availableYears";
 import { Day } from "../types";
 import DropDown from "./DropDown";
+import RemindersPopupModal from "./ReminderPoput";
 
 function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
@@ -35,6 +36,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
   const [selectedDay, setSelectedDay] = useState<string>(
     getCurrentMonth() === currentMonth ? getToday().dateStr : "01"
   );
+  console.log(currentMonth, ",", selectedDay);
 
   const handleNextMonth = () => {
     if (currentMonth == 11) {
