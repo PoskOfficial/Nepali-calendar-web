@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import "./App.css";
 import Calendar from "./components/Calendar";
 import { fetchYearlyData } from "./helper/api";
 import { getCurrentYear } from "./helper/dates";
 import { Day } from "./types";
 
-function App() {
+function Home() {
   const [yearData, setYearData] = useState<{ [key: string]: Day[] } | null>(null);
   const [currentYear, setCurrentYear] = useState<number>(getCurrentYear());
   async function fetchCalendarData(currentYear: number) {
@@ -24,4 +23,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;

@@ -94,3 +94,6 @@ export interface Day {
   };
   events: Event[];
 }
+export interface YearData {
+  [key: string]: Day[];
+}

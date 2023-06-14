@@ -1,10 +1,10 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
-import { getToday, getCurrentMonth, getTithi } from "../helper/dates";
+import { getToday, getCurrentMonth, getTithi, getChandrama, getWeekDayNepali } from "../helper/dates";
 import nepaliNumber from "../helper/nepaliNumber";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { nepaliMonths } from "../constants/mahina";
 import availableYears from "../constants/availableYears";
-import { Day } from "../types";
+import { Day, YearData } from "../types";
 import DropDown from "./DropDown";
 import RemindersPopupModal from "./ReminderPoput";
 
@@ -12,16 +12,13 @@ function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
 }
 
-interface YearData {
-  [key: string]: Day[];
-}
 interface Calender {
   yearData: YearData | null;
   setCurrentYear: Dispatch<SetStateAction<number>>;
   currentYear: number;
 }
 
-const getMonthData = (yearData: YearData, currentMonth: number): Day[] => {
+const getMonthData = (yearData: YearData | null, currentMonth: number): Day[] => {
   if (!yearData) return [];
   const today = getToday().date;
   const monthData = yearData[currentMonth + 1 < 10 ? "0" + (currentMonth + 1) : currentMonth + 1];
@@ -59,6 +56,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
       setCurrentMonth((prev) => prev - 1);
     }
   };
+  const monthData = useMemo(() => getMonthData(yearData, currentMonth), [yearData, currentMonth]);
   if (!yearData) return <div>Loading...</div>;
 
   return (
@@ -116,7 +114,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
                 (day.events.find((event) => event.jds?.gh == "1") || day.week_day === 6) && "text-rose-600"
               )}>
               {/* <span className="sr-only sm:not-sr-only">on</span> */}
-              <span className="text-bold h-6  w-6 ">
+              {/* <span className="text-bold h-6  w-6 ">
                 {day["events"].length > 4
                   ? Array(4)
                       .fill("")
@@ -136,7 +134,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
                           selectedDay === day.day && "!bg-white"
                         )}></span>
                     ))}
-              </span>
+              </span> */}
               <time
                 dateTime={day.AD_date.bs}
                 className={classNames(
@@ -150,24 +148,32 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
             </button>
           ))}
         </div>
-        <button
+        <a
           type="button"
+          href="/upcoming"
           className="mt-8 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-          Add event
-        </button>
+          View all event
+        </a>
         <div className="mt-1 flex items-start rounded-xl bg-white p-4 shadow-lg">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
-            <h1 className="font-semibold">{selectedDay && nepaliNumber(selectedDay)}</h1>
+          <div className="flex-col">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50 font-semibold">
+              <h1>{selectedDay && nepaliNumber(selectedDay)}</h1>
+            </div>
+            <p className="mt-2 text-sm text-gray-500">
+              {getWeekDayNepali(monthData[parseInt(selectedDay) - 1]?.week_day)}
+            </p>
           </div>
 
           <div className="ml-4 text-left">
             <h2 className="font-semibold">
-              {getMonthData(yearData, currentMonth)[parseInt(selectedDay) - 1]?.events[0]?.ad}
+              {new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric" }).format(
+                new Date(monthData[parseInt(selectedDay) - 1]?.events[0]?.ad)
+              )}
             </h2>
             <p className="mt-2 text-sm text-gray-500">
-              {getMonthData(yearData, currentMonth)[parseInt(selectedDay) - 1]?.events[0]?.jds?.ne
-                ? getMonthData(yearData, currentMonth)[parseInt(selectedDay) - 1]?.events[0]?.jds?.ne
-                : getTithi(getMonthData(yearData, currentMonth)[parseInt(selectedDay) - 1]?.AD_date?.tithi)}
+              {`${getTithi(monthData[parseInt(selectedDay) - 1]?.AD_date?.tithi)},
+              ${getChandrama(monthData[parseInt(selectedDay) - 1]?.AD_date?.chandrama)} •
+              ${monthData[parseInt(selectedDay) - 1]?.events.map((event) => event?.jds?.ne).join(" | ")}`}
             </p>
             {/* <p className="mt-2 text-sm text-gray-500">April 25, 2023</p> */}
           </div>
