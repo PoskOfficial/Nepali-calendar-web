@@ -1,85 +1,94 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
-import { useState } from "react";
-import nepaliDayOfWeek from "../utility/nepaliDayOfWeek";
-import nepaliMonth from "../utility/nepaliMonth";
-import nepaliNumber from "../utility/nepaliNumber";
-
-// dummy data
-const days = [
-  { date: "2021-12-27" },
-  { date: "2021-12-28" },
-  { date: "2021-12-29" },
-  { date: "2021-12-30" },
-  { date: "2021-12-31" },
-  { date: "2022-01-01", isCurrentMonth: true },
-  { date: "2022-01-02", isCurrentMonth: true },
-  { date: "2022-01-03", isCurrentMonth: true },
-  { date: "2022-01-04", isCurrentMonth: true },
-  { date: "2022-01-05", isCurrentMonth: true },
-  { date: "2022-01-06", isCurrentMonth: true },
-  { date: "2022-01-07", isCurrentMonth: true },
-  { date: "2022-01-08", isCurrentMonth: true },
-  { date: "2022-01-09", isCurrentMonth: true },
-  { date: "2022-01-10", isCurrentMonth: true },
-  { date: "2022-01-11", isCurrentMonth: true },
-  { date: "2022-01-12", isCurrentMonth: true, isToday: true },
-  { date: "2022-01-13", isCurrentMonth: true },
-  { date: "2022-01-14", isCurrentMonth: true },
-  { date: "2022-01-15", isCurrentMonth: true },
-  { date: "2022-01-16", isCurrentMonth: true },
-  { date: "2022-01-17", isCurrentMonth: true },
-  { date: "2022-01-18", isCurrentMonth: true },
-  { date: "2022-01-19", isCurrentMonth: true },
-  { date: "2022-01-20", isCurrentMonth: true },
-  { date: "2022-01-21", isCurrentMonth: true },
-  { date: "2022-01-22", isCurrentMonth: true, isSelected: true },
-  { date: "2022-01-23", isCurrentMonth: true },
-  { date: "2022-01-24", isCurrentMonth: true },
-  { date: "2022-01-25", isCurrentMonth: true },
-  { date: "2022-01-26", isCurrentMonth: true },
-  { date: "2022-01-27", isCurrentMonth: true },
-  { date: "2022-01-28", isCurrentMonth: true },
-  { date: "2022-01-29", isCurrentMonth: true },
-  { date: "2022-01-30", isCurrentMonth: true },
-  { date: "2022-01-31", isCurrentMonth: true },
-  { date: "2022-02-01" },
-  { date: "2022-02-02" },
-  { date: "2022-02-03" },
-  { date: "2022-02-04" },
-  { date: "2022-02-05" },
-  { date: "2022-02-06" },
-];
+import { getToday, getCurrentMonth, getTithi } from "../helper/dates";
+import nepaliNumber from "../helper/nepaliNumber";
+import { Dispatch, SetStateAction, useState } from "react";
+import { nepaliMonths } from "../constants/mahina";
+import availableYears from "../constants/availableYears";
+import { Day } from "../types";
+import DropDown from "./DropDown";
 
 function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Calendar() {
-  const [activeDate, setActiveDate] = useState<string>("2022-1-1");
-  const [dayOfWeek, setDayOfWeek] = useState(1); //
-  console.log(activeDate.split("-"));
-  console.log(nepaliNumber(activeDate.split("-")[0]));
+interface YearData {
+  [key: string]: Day[];
+}
+interface Calender {
+  yearData: YearData | null;
+  setCurrentYear: Dispatch<SetStateAction<number>>;
+  currentYear: number;
+}
+
+const getMonthData = (yearData: YearData, currentMonth: number): Day[] => {
+  if (!yearData) return [];
+  const today = getToday().date;
+  const monthData = yearData[currentMonth + 1 < 10 ? "0" + (currentMonth + 1) : currentMonth + 1];
+  if (currentMonth === getToday().month) {
+    monthData[today - 1].is_today = true;
+  }
+  return monthData;
+};
+
+export default function Calendar({ yearData, setCurrentYear, currentYear }: Calender) {
+  const [currentMonth, setCurrentMonth] = useState(getCurrentMonth());
+  const [selectedDay, setSelectedDay] = useState<string>(
+    getCurrentMonth() === currentMonth ? getToday().dateStr : "01"
+  );
+
+  const handleNextMonth = () => {
+    if (currentMonth == 11) {
+      setSelectedDay(getCurrentMonth() === 0 ? getToday().dateStr : "01");
+      setCurrentYear((prev: number) => prev + 1);
+      setCurrentMonth((prev: number) => prev % 11);
+    } else {
+      setSelectedDay(getCurrentMonth() === currentMonth + 1 ? getToday().dateStr : "01");
+      setCurrentMonth((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevMonth = () => {
+    if (currentMonth == 0) {
+      setSelectedDay(getCurrentMonth() === 11 ? getToday().dateStr : "01");
+      setCurrentYear((prev: number) => prev - 1);
+      setCurrentMonth(11);
+    } else {
+      setSelectedDay(getCurrentMonth() === currentMonth - 1 ? getToday().dateStr : "01");
+      setCurrentMonth((prev) => prev - 1);
+    }
+  };
+  if (!yearData) return <div>Loading...</div>;
+
   return (
     <div>
-      <div className="mt-10 mx-2 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9">
+      <div className="mx-2 mt-10 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9">
         <div className="flex items-center text-gray-900">
           <button
             type="button"
-            className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
-          >
+            disabled={currentMonth === 0 && currentYear === availableYears[0]}
+            className={classNames(
+              " flex flex-none items-center justify-center rounded-lg  bg-indigo-600 p-1.5 text-white hover:bg-indigo-700  disabled:cursor-not-allowed disabled:bg-blue-600 disabled:text-white disabled:opacity-20 disabled:hover:cursor-not-allowed disabled:hover:bg-blue-600 disabled:hover:text-white"
+            )}
+            onClick={handlePrevMonth}>
             <span className="sr-only">Previous month</span>
             <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
           </button>
-          <div className="flex-auto font-semibold font-mukta">बैशाख</div>
+          <div className="flex w-96 flex-auto items-center justify-center gap-4 font-mukta font-semibold">
+            <DropDown selected={currentYear} setSelected={setCurrentYear} items={availableYears} isValue />
+            <DropDown selected={currentMonth} setSelected={setCurrentMonth} items={nepaliMonths} />
+          </div>
           <button
             type="button"
-            className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
-          >
+            disabled={currentMonth === 11 && currentYear === availableYears[availableYears.length - 1]}
+            className={classNames(
+              " flex flex-none items-center justify-center rounded-lg  bg-indigo-600 p-1.5 text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-blue-600 disabled:text-white disabled:opacity-20 disabled:hover:cursor-not-allowed disabled:hover:bg-blue-600 "
+            )}
+            onClick={handleNextMonth}>
             <span className="sr-only">Next month</span>
             <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
           </button>
         </div>
-        <div className="mt-6 grid grid-cols-7 text-xs text-gray-500 leading-10">
+        <div className="mt-6 grid grid-cols-7 text-xs leading-10 text-gray-500">
           <div>S</div>
           <div>M</div>
           <div>T</div>
@@ -88,87 +97,76 @@ export default function Calendar() {
           <div>F</div>
           <div>S</div>
         </div>
-        <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200 font-sans">
-          {days.map((day, dayIdx) => (
+        <div className="isolate mt-2 grid grid-cols-7 gap-px overflow-hidden rounded-lg bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200">
+          {getMonthData(yearData, currentMonth)?.map((day: Day, dayIdx: number) => (
             <button
-              onClick={() => {
-                setActiveDate(day.date);
-                setDayOfWeek(dayIdx % 7);
-              }}
-              key={day.date}
+              key={day.day}
               type="button"
+              onClick={() => setSelectedDay(day.day)}
+              style={dayIdx === 0 ? { gridColumnStart: day.week_day + 1 } : {}}
               className={classNames(
-                "p-1 hover:bg-gray-100 focus:z-10 leading-3 font-mukta",
-                day.isCurrentMonth ? "bg-white" : "bg-gray-50",
-                (day.isSelected || day.isToday) && "font-semibold",
-                //   day.isSelected && 'text-white',
-
-                !day.isSelected &&
-                  day.isCurrentMonth &&
-                  !day.isToday &&
-                  "text-gray-900",
-                !day.isSelected &&
-                  !day.isCurrentMonth &&
-                  !day.isToday &&
-                  "text-gray-400",
-                day.isToday && !day.isSelected && "text-indigo-600",
-                dayIdx === 0 && "rounded-tl-lg",
-                dayIdx === 6 && "rounded-tr-lg",
-                dayIdx === days.length - 7 && "rounded-bl-lg",
-                dayIdx === days.length - 1 && "rounded-br-lg"
-              )}
-            >
+                "p-1 font-mukta leading-3 hover:bg-gray-100 focus:z-10",
+                (selectedDay == day.day || day.is_today) && "font-semibold",
+                day.is_today && "font-semibold text-indigo-600",
+                !(selectedDay === day.day) && "bg-white",
+                selectedDay === day.day && " bg-indigo-600  text-white hover:bg-indigo-700",
+                selectedDay === day.day && "bg-indigo-600",
+                (day.events.find((event) => event.jds?.gh == "1") || day.week_day === 6) && "text-rose-600"
+              )}>
               {/* <span className="sr-only sm:not-sr-only">on</span> */}
-              <span className="mx-auto mt-auto flex flex-wrap justify-center text-center">
-                {Array.from(Array(Math.floor(dayIdx % 4)).keys()).map(
-                  (event) => (
-                    <span
-                      key={event}
-                      className="mt-1 mx-0.5 mb-0 h-1 w-1 rounded-full bg-gray-400"
-                    />
-                  )
-                )}
+              <span className="text-bold h-6  w-6 ">
+                {day["events"].length > 4
+                  ? Array(4)
+                      .fill("")
+                      .map((_, idx) => (
+                        <span
+                          key={idx}
+                          className={classNames(
+                            "mx-[1px] inline-block h-1 w-1 rounded-full bg-slate-600",
+                            selectedDay === day.day && "!bg-white"
+                          )}></span>
+                      ))
+                  : day["events"].map((_, idx) => (
+                      <span
+                        key={idx}
+                        className={classNames(
+                          "mx-[1px] inline-block h-1 w-1 rounded-full bg-slate-600 ",
+                          selectedDay === day.day && "!bg-white"
+                        )}></span>
+                    ))}
               </span>
               <time
-                dateTime={day.date}
+                dateTime={day.AD_date.bs}
                 className={classNames(
-                  "mx-auto flex  items-center justify-center rounded-full text-xl mt-0 pt-0",
-                  day.isSelected && day.isToday && "bg-indigo-600"
-                  // day.isSelected && !day.isToday && 'bg-gray-900'
-                )}
-              >
-                {nepaliNumber(day.date)}
+                  "mx-auto mt-0 flex items-center justify-center rounded-full pt-0 text-xl"
+                )}>
+                {nepaliNumber(day.day)}
               </time>
-              <span className="mx-auto mt-0 my-0 py-0 font-extralight text-[9px]">
-                {dayIdx}
+              <span className="mx-auto my-0 mt-0 py-0 text-[9px] font-extralight">
+                {day.ad.split("-").pop()}
               </span>
             </button>
           ))}
         </div>
         <button
           type="button"
-          className="mt-8 w-full rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        >
+          className="mt-8 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
           Add event
         </button>
-
-        <div className="flex items-start rounded-xl bg-white p-4 mt-1 shadow-lg">
+        <div className="mt-1 flex items-start rounded-xl bg-white p-4 shadow-lg">
           <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50">
-            <h1 className="font-semibold">
-              {nepaliNumber(activeDate.split("-")[2])}
-            </h1>
+            <h1 className="font-semibold">{selectedDay && nepaliNumber(selectedDay)}</h1>
           </div>
 
           <div className="ml-4 text-left">
             <h2 className="font-semibold">
-              {/* dynamically displays active date value*/}
-              {`${nepaliNumber(activeDate.split("-")[2])}  
-                ${nepaliMonth(activeDate.split("-")[1])} 
-                ${nepaliNumber(activeDate.split("-")[0])}
-                ${nepaliDayOfWeek(dayOfWeek)}
-                `}
+              {getMonthData(yearData, currentMonth)[parseInt(selectedDay) - 1]?.events[0]?.ad}
             </h2>
-            <p className="mt-2 text-sm text-gray-500">April 25, 2023</p>
+            <p className="mt-2 text-sm text-gray-500">
+              {getMonthData(yearData, currentMonth)[parseInt(selectedDay) - 1]?.events[0]?.jds?.ne
+                ? getMonthData(yearData, currentMonth)[parseInt(selectedDay) - 1]?.events[0]?.jds?.ne
+                : getTithi(getMonthData(yearData, currentMonth)[parseInt(selectedDay) - 1]?.AD_date?.tithi)}
+            </p>
             {/* <p className="mt-2 text-sm text-gray-500">April 25, 2023</p> */}
           </div>
         </div>

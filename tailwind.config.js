@@ -2,11 +2,7 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {
-      colors: {
-        bordersubtle: "#e5e7eb",
-      },
-    },
+    extend: {},
     fontFamily: {
       sans: ["Inter", "sans-serif"],
       mukta: ["Mukta", "sans-serif"],

@@ -21836,7 +21836,7 @@
 			"month": "02",
 			"week": 23,
 			"week_day": 2,
-			"is_today": true,
+			"is_today": false,
 			"day": "23",
 			"ad": "2023-06-06",
 			"AD_date": {
