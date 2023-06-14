@@ -3,18 +3,19 @@ import { Listbox, Transition } from "@headlessui/react";
 import { ChevronUpDownIcon, CheckIcon } from "@heroicons/react/20/solid";
 
 interface DropDownProps {
-  selected: string | number;
-  setSelected: Dispatch<React.SetStateAction<string | number>>; 
-  items: string[];
+  selected: number;
+  setSelected: Dispatch<React.SetStateAction<number>>;
+  items: string[] | number[];
+  isValue?: boolean;
 }
 
-const DropDown = ({ selected, setSelected, items }: DropDownProps) => {
+const DropDown = ({ selected, setSelected, items, isValue }: DropDownProps) => {
   return (
-    <div className="w-24">
+    <div className="w-32">
       <Listbox value={selected} onChange={(value) => setSelected(value)}>
         <div className="relative mt-1">
-          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-            <span className="block truncate">{selected}</span>
+          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+            <span className="block truncate">{isValue ? selected : items[selected]}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
             </span>
@@ -29,11 +30,11 @@ const DropDown = ({ selected, setSelected, items }: DropDownProps) => {
                 <Listbox.Option
                   key={idx}
                   className={({ active }) =>
-                    `relative cursor-default select-none py-2 pl-4 pr-4 ${
+                    `relative cursor-default select-none py-2 pl-8 pr-4 ${
                       active ? "bg-amber-100 text-amber-900" : "text-gray-900"
                     }`
                   }
-                  value={item}>
+                  value={isValue ? item : idx}>
                   {({ selected }) => (
                     <>
                       <span className={`block truncate ${selected ? "font-medium" : "font-normal"}`}>

@@ -2,7 +2,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { getToday, getCurrentMonth, getTithi } from "../helper/dates";
 import nepaliNumber from "../helper/nepaliNumber";
 import { Dispatch, SetStateAction, useState } from "react";
-import mahina, { nepaliMonths } from "../constants/mahina";
+import { nepaliMonths } from "../constants/mahina";
 import availableYears from "../constants/availableYears";
 import { Day } from "../types";
 import DropDown from "./DropDown";
@@ -35,8 +35,6 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
   const [selectedDay, setSelectedDay] = useState<string>(
     getCurrentMonth() === currentMonth ? getToday().dateStr : "01"
   );
-  const [selectedMonth] = useState<string>(nepaliMonths[getCurrentMonth()]);
-  const [selectedYear, setSelectedYear] = useState<string>(currentYear.toString());
 
   const handleNextMonth = () => {
     if (currentMonth == 11) {
@@ -67,7 +65,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
         <div className="flex items-center text-gray-900">
           <button
             type="button"
-            disabled={currentMonth === 0 && currentYear === parseInt(availableYears[0])}
+            disabled={currentMonth === 0 && currentYear === availableYears[0]}
             className={classNames(
               " flex flex-none items-center justify-center rounded-lg  bg-indigo-600 p-1.5 text-white hover:bg-indigo-700  disabled:cursor-not-allowed disabled:bg-blue-600 disabled:text-white disabled:opacity-20 disabled:hover:cursor-not-allowed disabled:hover:bg-blue-600 disabled:hover:text-white"
             )}
@@ -76,14 +74,12 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
             <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
           </button>
           <div className="flex w-96 flex-auto items-center justify-center gap-4 font-mukta font-semibold">
-            <DropDown selected={selectedYear} setSelected={setSelectedYear} items={availableYears} />
-            <DropDown selected={selectedMonth} setSelected={setCurrentMonth} items={nepaliMonths} />
+            <DropDown selected={currentYear} setSelected={setCurrentYear} items={availableYears} isValue />
+            <DropDown selected={currentMonth} setSelected={setCurrentMonth} items={nepaliMonths} />
           </div>
           <button
             type="button"
-            disabled={
-              currentMonth === 11 && currentYear === parseInt(availableYears[availableYears.length - 1])
-            }
+            disabled={currentMonth === 11 && currentYear === availableYears[availableYears.length - 1]}
             className={classNames(
               " flex flex-none items-center justify-center rounded-lg  bg-indigo-600 p-1.5 text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-blue-600 disabled:text-white disabled:opacity-20 disabled:hover:cursor-not-allowed disabled:hover:bg-blue-600 "
             )}
