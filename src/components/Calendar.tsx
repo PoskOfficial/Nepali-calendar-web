@@ -4,16 +4,13 @@ import nepaliNumber from "../helper/nepaliNumber";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { nepaliMonths } from "../constants/mahina";
 import availableYears from "../constants/availableYears";
-import { Day } from "../types";
+import { Day, YearData } from "../types";
 import DropDown from "./DropDown";
 
 function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
 }
 
-interface YearData {
-  [key: string]: Day[];
-}
 interface Calender {
   yearData: YearData | null;
   setCurrentYear: Dispatch<SetStateAction<number>>;
@@ -149,11 +146,12 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
             </button>
           ))}
         </div>
-        <button
+        <a
           type="button"
+          href="/upcoming"
           className="mt-8 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-          Add event
-        </button>
+          View all event
+        </a>
         <div className="mt-1 flex items-start rounded-xl bg-white p-4 shadow-lg">
           <div className="flex-col">
             <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50 font-semibold">

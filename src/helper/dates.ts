@@ -93,3 +93,21 @@ export function getWeekDayNepali(index: number): string {
   ];
   return weekDayNepali[index];
 }
+
+export function getNepaliMonth(index: number): string {
+  const nepaliMonth = [
+    "बैशाख",
+    "जेठ",
+    "असार",
+    "साउन",
+    "भदौ",
+    "असोज",
+    "कार्तिक",
+    "मंसिर",
+    "पुष",
+    "माघ",
+    "फाल्गुन",
+    "चैत",
+  ];
+  return nepaliMonth[index];
+}
