@@ -4,8 +4,6 @@ import nepaliNumber from "../helper/nepaliNumber";
 import { Dispatch, SetStateAction, useState } from "react";
 import mahina from "../constants/mahina";
 import { Day } from "../types";
-import nepaliDayOfWeek from "../utility/nepaliDayOfWeek";
-import nepaliMonth from "../utility/nepaliMonth";
 
 function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
@@ -104,7 +102,7 @@ export default function Calendar({ yearData, setCurrentYear }: Calender) {
                 selectedDay === day.day && "bg-indigo-600",
                 (day.events.find((event) => event.jds?.gh == "1") || day.week_day === 6) && "text-rose-600"
               )}>
-
+              {/* <span className="sr-only sm:not-sr-only">on</span> */}
               <span className="text-bold h-6  w-6 ">
                 {day["events"].length > 4
                   ? Array(4)
@@ -125,7 +123,6 @@ export default function Calendar({ yearData, setCurrentYear }: Calender) {
                           selectedDay === day.day && "!bg-white"
                         )}></span>
                     ))}
-
               </span>
               <time
                 dateTime={day.AD_date.bs}
@@ -159,6 +156,7 @@ export default function Calendar({ yearData, setCurrentYear }: Calender) {
                 ? getMonthData(yearData, currentMonth)[parseInt(selectedDay) - 1]?.events[0]?.jds?.ne
                 : getTithi(getMonthData(yearData, currentMonth)[parseInt(selectedDay) - 1]?.AD_date?.tithi)}
             </p>
+            {/* <p className="mt-2 text-sm text-gray-500">April 25, 2023</p> */}
           </div>
         </div>
       </div>
