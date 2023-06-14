@@ -43,7 +43,7 @@ function UpcomintEvents() {
           <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
         </button>
         <div className="flex-auto font-mukta font-semibold">
-          {`${getNepaliMonth(nepaliMonthNumber)} ${nepaliNumber(activeYear.toString())}`}
+          {`${getNepaliMonth(nepaliMonthNumber - 1)} ${nepaliNumber(activeYear.toString())}`}
         </div>
         <button
           onClick={() => {
