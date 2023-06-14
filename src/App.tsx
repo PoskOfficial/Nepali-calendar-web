@@ -19,7 +19,7 @@ function App() {
 
   return (
     <>
-      <Calendar yearData={yearData} setCurrentYear={setCurrentYear} />
+      <Calendar yearData={yearData} setCurrentYear={setCurrentYear} currentYear={currentYear} />
     </>
   );
 }

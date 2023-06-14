@@ -2,8 +2,10 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { getToday, getCurrentMonth, getTithi } from "../helper/dates";
 import nepaliNumber from "../helper/nepaliNumber";
 import { Dispatch, SetStateAction, useState } from "react";
-import mahina from "../constants/mahina";
+import mahina, { nepaliMonths } from "../constants/mahina";
+import availableYears from "../constants/availableYears";
 import { Day } from "../types";
+import DropDown from "./DropDown";
 
 function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
@@ -15,6 +17,7 @@ interface YearData {
 interface Calender {
   yearData: YearData | null;
   setCurrentYear: Dispatch<SetStateAction<number>>;
+  currentYear: number;
 }
 
 const getMonthData = (yearData: YearData, currentMonth: number): Day[] => {
@@ -24,15 +27,16 @@ const getMonthData = (yearData: YearData, currentMonth: number): Day[] => {
   if (currentMonth === getToday().month) {
     monthData[today - 1].is_today = true;
   }
-  console.log(monthData);
   return monthData;
 };
 
-export default function Calendar({ yearData, setCurrentYear }: Calender) {
+export default function Calendar({ yearData, setCurrentYear, currentYear }: Calender) {
   const [currentMonth, setCurrentMonth] = useState(getCurrentMonth());
   const [selectedDay, setSelectedDay] = useState<string>(
     getCurrentMonth() === currentMonth ? getToday().dateStr : "01"
   );
+  const [selectedMonth] = useState<string>(nepaliMonths[getCurrentMonth()]);
+  const [selectedYear, setSelectedYear] = useState<string>(currentYear.toString());
 
   const handleNextMonth = () => {
     if (currentMonth == 11) {
@@ -63,15 +67,26 @@ export default function Calendar({ yearData, setCurrentYear }: Calender) {
         <div className="flex items-center text-gray-900">
           <button
             type="button"
-            className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+            disabled={currentMonth === 0 && currentYear === parseInt(availableYears[0])}
+            className={classNames(
+              " flex flex-none items-center justify-center rounded-lg  bg-indigo-600 p-1.5 text-white hover:bg-indigo-700  disabled:cursor-not-allowed disabled:bg-blue-600 disabled:text-white disabled:opacity-20 disabled:hover:cursor-not-allowed disabled:hover:bg-blue-600 disabled:hover:text-white"
+            )}
             onClick={handlePrevMonth}>
             <span className="sr-only">Previous month</span>
             <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
           </button>
-          <div className="flex-auto font-mukta font-semibold">{mahina(currentMonth)}</div>
+          <div className="flex w-96 flex-auto items-center justify-center gap-4 font-mukta font-semibold">
+            <DropDown selected={selectedYear} setSelected={setSelectedYear} items={availableYears} />
+            <DropDown selected={selectedMonth} setSelected={setCurrentMonth} items={nepaliMonths} />
+          </div>
           <button
             type="button"
-            className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+            disabled={
+              currentMonth === 11 && currentYear === parseInt(availableYears[availableYears.length - 1])
+            }
+            className={classNames(
+              " flex flex-none items-center justify-center rounded-lg  bg-indigo-600 p-1.5 text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-blue-600 disabled:text-white disabled:opacity-20 disabled:hover:cursor-not-allowed disabled:hover:bg-blue-600 "
+            )}
             onClick={handleNextMonth}>
             <span className="sr-only">Next month</span>
             <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
