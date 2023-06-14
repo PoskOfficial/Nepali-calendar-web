@@ -8,9 +8,12 @@ import { fetchYearlyData } from "./helper/api";
 import { getNepaliMonth } from "./helper/dates";
 import nepaliNumber from "./helper/nepaliNumber";
 function UpcomintEvents() {
+  function classNames(...classes: Array<string | undefined | boolean>) {
+    return classes.filter(Boolean).join(" ");
+  }
   const today = new NepaliDate(); //gets today's nepali date
   const [activeYear, setActiveYear] = useState(today.getYear());
-  const [nepaliMonthNumber, setNepaliMonthNumber] = useState(today.getMonth() + 1); //to match 1 based  indexing added 1
+  const [nepaliMonthNumber, setNepaliMonthNumber] = useState(today.getMonth() + 1);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({} as YearData);
   useEffect(() => {
@@ -28,7 +31,7 @@ function UpcomintEvents() {
   }
   return (
     <div className="lg:1/2 mx-auto   md:w-2/3">
-      <div className="flex max-w-[600px] items-center text-center  text-gray-900">
+      <div className="flex max-w-[600px] items-center py-4 text-center  text-gray-900">
         <button
           onClick={() => {
             if (nepaliMonthNumber > 1) setNepaliMonthNumber(nepaliMonthNumber - 1);
@@ -38,7 +41,9 @@ function UpcomintEvents() {
             }
           }}
           type="button"
-          className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500">
+          className={classNames(
+            " flex flex-none items-center justify-center rounded-lg  bg-indigo-600 p-1.5 text-white hover:bg-indigo-700  "
+          )}>
           <span className="sr-only">Previous month</span>
           <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
         </button>
@@ -53,8 +58,10 @@ function UpcomintEvents() {
               setActiveYear(activeYear + 1);
             }
           }}
-          type="button"
-          className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500">
+          className={classNames(
+            " flex flex-none items-center justify-center rounded-lg  bg-indigo-600 p-1.5 text-white hover:bg-indigo-700  "
+          )}
+          type="button">
           <span className="sr-only">Next month</span>
           <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
         </button>
