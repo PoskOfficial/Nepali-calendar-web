@@ -6,6 +6,7 @@ import { nepaliMonths } from "../constants/mahina";
 import availableYears from "../constants/availableYears";
 import { Day, YearData } from "../types";
 import DropDown from "./DropDown";
+import ReminderPopupModal from "./ReminderPopupModal";
 
 function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
@@ -176,6 +177,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
             {/* <p className="mt-2 text-sm text-gray-500">April 25, 2023</p> */}
           </div>
         </div>
+        <ReminderPopupModal date={`${selectedDay}-${currentMonth}-${currentYear}`} />
       </div>
     </div>
   );
