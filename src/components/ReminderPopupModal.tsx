@@ -1,5 +1,4 @@
 import { useState } from "react";
-import plusicon from "../assets/icons8-plus-50.png";
 import { db } from "../config/db";
 
 function RemindersPopupModal({ date }: { date: string }) {
@@ -10,17 +9,17 @@ function RemindersPopupModal({ date }: { date: string }) {
   console.log(remindercolor);
   if (!openModel)
     return (
-      <img
-        className="fixed  bottom-0 right-1 md:bottom-5 "
-        onClick={() => setOpenModel(true)}
-        src={plusicon}
-      />
+      <p
+        className="shadowfocus:outline-none  fixed bottom-0 right-1 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-indigo-600 text-3xl text-white md:bottom-5"
+        onClick={() => setOpenModel(true)}>
+        +
+      </p>
     );
   return (
     <div className="modal">
       <div
         onClick={() => setOpenModel(false)}
-        className="overlay bg-modalbg fixed bottom-0 left-0 right-0 top-0 z-30 h-full  w-full opacity-60"></div>
+        className="overlay fixed bottom-0 left-0 right-0 top-0 z-30 h-full w-full  bg-modalbg opacity-60"></div>
       <div className=" modal_content absolute bottom-0 z-40 w-full rounded-t-lg border bg-white px-5 pb-8  text-gray-900 md:left-1/2  md:right-1/2   md:flex md:w-1/2 md:flex-col">
         <div className="modal-title border-bordersubtle  border-b py-6 text-center font-bold text-gray-900">
           Create a Reminder
