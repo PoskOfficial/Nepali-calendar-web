@@ -3,23 +3,17 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import Home from "./Home.tsx";
 import UpcomintEvents from "./UpcomingEvents.tsx";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Navbar from "./components/Navbar.tsx";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/upcoming",
-    element: <UpcomintEvents />,
-  },
-]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <Navbar />
-    <RouterProvider router={router} />
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/upcoming" element={<UpcomintEvents />} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );

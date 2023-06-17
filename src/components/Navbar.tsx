@@ -2,12 +2,13 @@ import { Fragment, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { checkIfUserIsLoggedInOrOffline } from "../helper/api";
+import { Link, useLocation } from "react-router-dom";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
   { name: "Upcoming Events", href: "/upcoming", current: false },
-  { name: "Date Converter", href: "#", current: false },
-  { name: "About", href: "#", current: false },
+  { name: "Date Converter", href: "/test", current: false },
+  { name: "About", href: "/about", current: false },
 ];
 
 function classNames(...classes: string[]): string {
@@ -16,7 +17,8 @@ function classNames(...classes: string[]): string {
 
 export default function Navbar() {
   const [status, setStatus] = useState<"OFFLINE" | "NOT_LOGGED_IN" | "LOGGED_IN">("OFFLINE");
-
+  // find current route
+  const location = useLocation();
   const [photoUrl, setPhotoUrl] = useState(null);
 
   const checkStatus = async () => {
@@ -55,16 +57,16 @@ export default function Navbar() {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
-                        href={item.href}
+                        to={item.href}
                         className={classNames(
-                          item.current ? "bg-gray-200" : "text-gray-900",
+                          item.href === location.pathname ? "bg-gray-200" : "text-gray-900",
                           "rounded-md px-3 py-2 text-sm font-medium"
                         )}
-                        aria-current={item.current ? "page" : undefined}>
+                        aria-current={item.href === location.pathname ? "page" : undefined}>
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -98,7 +100,8 @@ export default function Navbar() {
                         <Menu.Item>
                           {({ active }) => (
                             <a
-                              href="#"
+                              onClick={() => fetch("/api/auth/logout")}
+                              target="_self"
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
@@ -113,6 +116,7 @@ export default function Navbar() {
                 ) : status === "NOT_LOGGED_IN" ? (
                   <a
                     href="/api/auth/google"
+                    target="_self"
                     className="rounded-md px-3 py-2 text-sm font-medium text-gray-900">
                     Login
                   </a>
@@ -131,10 +135,10 @@ export default function Navbar() {
                   as="a"
                   href={item.href}
                   className={classNames(
-                    item.current ? "bg-gray-300" : "text-gray-900",
+                    item.href === location.pathname ? "bg-gray-300" : "text-gray-900",
                     "block rounded-md px-3 py-2 text-base font-medium"
                   )}
-                  aria-current={item.current ? "page" : undefined}>
+                  aria-current={item.href === location.pathname ? "page" : undefined}>
                   {item.name}
                 </Disclosure.Button>
               ))}
