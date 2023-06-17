@@ -1,12 +1,15 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { getToday, getCurrentMonth, getTithi, getChandrama, getWeekDayNepali } from "../helper/dates";
 import nepaliNumber from "../helper/nepaliNumber";
-import { Dispatch, SetStateAction, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
+import { Reminder } from "../config/db";
 import { nepaliMonths } from "../constants/mahina";
 import availableYears from "../constants/availableYears";
 import { Day, YearData } from "../types";
 import DropDown from "./DropDown";
 import ReminderPopupModal from "./ReminderPopupModal";
+import { db } from "../config/db";
+import colors from "../constants/colors";
 
 function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
@@ -34,6 +37,8 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
     getCurrentMonth() === currentMonth ? getToday().dateStr : "01"
   );
 
+  const [remainders, setRemainders] = useState<Reminder[] | null>(null);
+
   const handleNextMonth = () => {
     if (currentMonth == 11) {
       setSelectedDay(getCurrentMonth() === 0 ? getToday().dateStr : "01");
@@ -56,8 +61,19 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
     }
   };
   const monthData = useMemo(() => getMonthData(yearData, currentMonth), [yearData, currentMonth]);
-  if (!yearData) return <div>Loading...</div>;
 
+  useEffect(() => {
+    const fetchRemainders = async () => {
+      const data = await db.reminders
+        .where("date")
+        .equals(`${selectedDay}-${currentMonth}-${currentYear}`)
+        .toArray();
+      setRemainders(data);
+    };
+    fetchRemainders();
+  }, [selectedDay]);
+
+  if (!yearData) return <div>Loading...</div>;
   return (
     <div>
       <div className="mx-2 mt-10 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9">
@@ -112,28 +128,6 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
                 selectedDay === day.day && "bg-indigo-600",
                 (day.events.find((event) => event.jds?.gh == "1") || day.week_day === 6) && "text-rose-600"
               )}>
-              {/* <span className="sr-only sm:not-sr-only">on</span> */}
-              {/* <span className="text-bold h-6  w-6 ">
-                {day["events"].length > 4
-                  ? Array(4)
-                      .fill("")
-                      .map((_, idx) => (
-                        <span
-                          key={idx}
-                          className={classNames(
-                            "mx-[1px] inline-block h-1 w-1 rounded-full bg-slate-600",
-                            selectedDay === day.day && "!bg-white"
-                          )}></span>
-                      ))
-                  : day["events"].map((_, idx) => (
-                      <span
-                        key={idx}
-                        className={classNames(
-                          "mx-[1px] inline-block h-1 w-1 rounded-full bg-slate-600 ",
-                          selectedDay === day.day && "!bg-white"
-                        )}></span>
-                    ))}
-              </span> */}
               <time
                 dateTime={day.AD_date.bs}
                 className={classNames(
@@ -151,7 +145,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
           type="button"
           href="/upcoming"
           className="mt-8 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-          View all event
+          View all events
         </a>
         <div className="mt-1 flex items-start rounded-xl bg-white p-4 shadow-lg">
           <div className="flex-col">
@@ -174,10 +168,33 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
               ${getChandrama(monthData[parseInt(selectedDay) - 1]?.AD_date?.chandrama)} •
               ${monthData[parseInt(selectedDay) - 1]?.events.map((event) => event?.jds?.ne).join(" | ")}`}
             </p>
-            {/* <p className="mt-2 text-sm text-gray-500">April 25, 2023</p> */}
           </div>
         </div>
         <ReminderPopupModal date={`${selectedDay}-${currentMonth}-${currentYear}`} />
+      </div>
+      <div className="m-2 rounded-lg bg-white px-4 py-2 shadow-lg">
+        <h1 className="font-semibold">Your Events</h1>
+        <hr className="my-2" />
+        {remainders ? (
+          remainders.length > 0 ? (
+            remainders?.map((remainder) => {
+              return (
+                <div className="flex items-center gap-2 p-2" key={remainder.id}>
+                  <span
+                    className="h-5 w-5 rounded-full border-2"
+                    style={{
+                      backgroundColor: colors[remainder.colorId],
+                    }}></span>
+                  <h1>{remainder.summary}</h1>
+                </div>
+              );
+            })
+          ) : (
+            <p className="text-gray-500">No events</p>
+          )
+        ) : (
+          <p className="text-gray-500">Loading...</p>
+        )}
       </div>
     </div>
   );
