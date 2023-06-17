@@ -98,7 +98,8 @@ export default function Navbar() {
                         <Menu.Item>
                           {({ active }) => (
                             <a
-                              href="#"
+                              href="/api/auth/logout"
+                              target="_blank"
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
@@ -113,6 +114,7 @@ export default function Navbar() {
                 ) : status === "NOT_LOGGED_IN" ? (
                   <a
                     href="/api/auth/google"
+                    target="_blank"
                     className="rounded-md px-3 py-2 text-sm font-medium text-gray-900">
                     Login
                   </a>
