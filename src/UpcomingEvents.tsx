@@ -23,7 +23,6 @@ function UpcomingEvents() {
       const dta = await fetchYearlyData(`${activeYear}`);
       setData(dta);
       setLoading(false);
-      console.log(dta);
     };
     getFile();
   }, [activeYear]);
@@ -47,15 +46,14 @@ function UpcomingEvents() {
   };
 
   const monthData = useMemo(() => {
-    return data[currentMonth > 9 ? (currentMonth + 1).toString() : `0${currentMonth + 1}`];
+    return data[currentMonth >= 9 ? (currentMonth + 1).toString() : `0${currentMonth + 1}`];
   }, [data, currentMonth]);
-  console.log(currentMonth > 9 ? currentMonth.toString() : `0${currentMonth}`);
 
   if (loading || !data) {
-    return <></>;
+    return <>loading...</>;
   }
   return (
-    <div className="lg:1/2 mx-auto max-w-lg px-4 md:w-2/3">
+    <div className="lg:1/2 mx-auto mb-4 max-w-lg px-4 md:w-2/3">
       <div className="flex items-center text-gray-900">
         <button
           type="button"
@@ -75,7 +73,7 @@ function UpcomingEvents() {
           type="button"
           disabled={currentMonth === 11 && activeYear === availableYears[availableYears.length - 1]}
           className={classNames(
-            "mx-3 flex flex-none items-center justify-center rounded-lg  bg-indigo-600 p-1.5 text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-blue-600 disabled:text-white disabled:opacity-20 disabled:hover:cursor-not-allowed disabled:hover:bg-blue-600 "
+            "flex flex-none items-center justify-center rounded-lg  bg-indigo-600 p-1.5 text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-blue-600 disabled:text-white disabled:opacity-20 disabled:hover:cursor-not-allowed disabled:hover:bg-blue-600 "
           )}
           onClick={handleNextMonth}>
           <span className="sr-only">Next month</span>

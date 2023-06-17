@@ -113,7 +113,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
           <div>F</div>
           <div>S</div>
         </div>
-        <div className="isolate mt-2 grid grid-cols-7 gap-px overflow-hidden rounded-lg bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200">
+        <div className="isolate mx-1 mt-2 grid grid-cols-7 gap-px overflow-hidden rounded-lg bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200">
           {getMonthData(yearData, currentMonth)?.map((day: Day, dayIdx: number) => (
             <button
               key={day.day}
