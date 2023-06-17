@@ -4,7 +4,6 @@ import { PlusIcon } from "@heroicons/react/20/solid";
 import {
   PencilSquareIcon,
   MapPinIcon,
-  CalendarDaysIcon,
   Bars3BottomLeftIcon,
   SwatchIcon,
 } from "@heroicons/react/24/outline";
