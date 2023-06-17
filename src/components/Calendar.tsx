@@ -10,6 +10,7 @@ import DropDown from "./DropDown";
 import ReminderPopupModal from "./ReminderPopupModal";
 import { db } from "../config/db";
 import colors from "../constants/colors";
+import { Link } from "react-router-dom";
 
 function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
@@ -141,12 +142,12 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
             </button>
           ))}
         </div>
-        <a
+        <Link
           type="button"
-          href="/upcoming"
+          to="/upcoming"
           className="mt-8 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
           View all events
-        </a>
+        </Link>
         <div className="mt-1 flex items-start rounded-xl bg-white p-4 shadow-lg">
           <div className="flex-col">
             <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50 font-semibold">
