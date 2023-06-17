@@ -112,7 +112,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
           <div>F</div>
           <div>S</div>
         </div>
-        <div className="isolate mt-2 grid grid-cols-7 gap-px overflow-hidden rounded-lg bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200">
+        <div className="isolate mx-1 mt-2 grid grid-cols-7 gap-px overflow-hidden rounded-lg bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200">
           {getMonthData(yearData, currentMonth)?.map((day: Day, dayIdx: number) => (
             <button
               key={day.day}
@@ -141,12 +141,14 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
             </button>
           ))}
         </div>
-        <a
-          type="button"
-          href="/upcoming"
-          className="mt-8 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-          View all events
-        </a>
+        <div className="px-2">
+          <a
+            type="button"
+            href="/upcoming"
+            className=" mt-8 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            View all events
+          </a>
+        </div>
         <div className="mt-1 flex items-start rounded-xl bg-white p-4 shadow-lg">
           <div className="flex-col">
             <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50 font-semibold">

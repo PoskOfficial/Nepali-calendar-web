@@ -1,12 +1,7 @@
 import { useState } from "react";
 import { db } from "../config/db";
 import { PlusIcon } from "@heroicons/react/20/solid";
-import {
-  PencilSquareIcon,
-  MapPinIcon,
-  Bars3BottomLeftIcon,
-  SwatchIcon,
-} from "@heroicons/react/24/outline";
+import { PencilSquareIcon, MapPinIcon, Bars3BottomLeftIcon, SwatchIcon } from "@heroicons/react/24/outline";
 import colors from "../constants/colors";
 
 function RemindersPopupModal({ date }: { date: string }) {
