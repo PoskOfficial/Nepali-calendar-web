@@ -55,7 +55,7 @@ function UpcomingEvents() {
     return <></>;
   }
   return (
-    <div className="lg:1/2 mx-auto px-4 md:w-2/3">
+    <div className="lg:1/2 mx-auto max-w-lg px-4 md:w-2/3">
       <div className="flex items-center text-gray-900">
         <button
           type="button"

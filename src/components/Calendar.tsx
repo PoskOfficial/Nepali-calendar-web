@@ -76,7 +76,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
   if (!yearData) return <div>Loading...</div>;
   return (
     <div>
-      <div className="mx-2 mt-10 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9">
+      <div className="mx-auto mt-1 max-w-lg text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9">
         <div className="flex items-center text-gray-900">
           <button
             type="button"
@@ -171,30 +171,30 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
           </div>
         </div>
         <ReminderPopupModal date={`${selectedDay}-${currentMonth}-${currentYear}`} />
-      </div>
-      <div className="m-2 rounded-lg bg-white px-4 py-2 shadow-lg">
-        <h1 className="font-semibold">Your Events</h1>
-        <hr className="my-2" />
-        {remainders ? (
-          remainders.length > 0 ? (
-            remainders?.map((remainder) => {
-              return (
-                <div className="flex items-center gap-2 p-2" key={remainder.id}>
-                  <span
-                    className="h-5 w-5 rounded-full border-2"
-                    style={{
-                      backgroundColor: colors[remainder.colorId],
-                    }}></span>
-                  <h1>{remainder.summary}</h1>
-                </div>
-              );
-            })
+        <div className="m-2 rounded-lg bg-white px-4 py-2 shadow-lg">
+          <h1 className="font-semibold">Your Events</h1>
+          <hr className="my-2" />
+          {remainders ? (
+            remainders.length > 0 ? (
+              remainders?.map((remainder) => {
+                return (
+                  <div className="flex items-center gap-2 p-2" key={remainder.id}>
+                    <span
+                      className="h-5 w-5 rounded-full border-2"
+                      style={{
+                        backgroundColor: colors[remainder.colorId],
+                      }}></span>
+                    <h1>{remainder.summary}</h1>
+                  </div>
+                );
+              })
+            ) : (
+              <p className="text-gray-500">No events</p>
+            )
           ) : (
-            <p className="text-gray-500">No events</p>
-          )
-        ) : (
-          <p className="text-gray-500">Loading...</p>
-        )}
+            <p className="text-gray-500">Loading...</p>
+          )}
+        </div>
       </div>
     </div>
   );
