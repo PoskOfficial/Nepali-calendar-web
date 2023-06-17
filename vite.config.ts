@@ -45,6 +45,7 @@ export default defineConfig({
         enabled: true,
       },
       workbox: {
+        navigateFallbackDenylist: [/^\/api/],
         globPatterns: ["**/*.{js,css,html,ico,png,svg,json}"],
         runtimeCaching: [
           {
@@ -84,6 +85,21 @@ export default defineConfig({
               expiration: {
                 maxEntries: 10,
                 maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+          {
+            // cache api call /events for 10 days with newtwork first strategy, use relative path
+            urlPattern: /^\/events/i,
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "events-cache",
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 10, // <== 10 days
               },
               cacheableResponse: {
                 statuses: [0, 200],
