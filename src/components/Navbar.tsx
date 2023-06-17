@@ -4,7 +4,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
-  { name: "Upcoming Events", href: "#", current: false },
+  { name: "Upcoming Events", href: "/upcoming", current: false },
   { name: "Date Converter", href: "#", current: false },
   { name: "About", href: "#", current: false },
 ];
@@ -15,7 +15,7 @@ function classNames(...classes: string[]): string {
 
 export default function Navbar() {
   return (
-    <Disclosure as="nav" className="bg-white">
+    <Disclosure as="nav" className="border-b bg-white">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">

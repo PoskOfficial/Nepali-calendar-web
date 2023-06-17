@@ -61,7 +61,7 @@ function UpcomingEvents() {
           type="button"
           disabled={currentMonth === 0 && activeYear === availableYears[0]}
           className={classNames(
-            " flex flex-none items-center justify-center rounded-lg  bg-indigo-600 p-1.5 text-white hover:bg-indigo-700  disabled:cursor-not-allowed disabled:bg-blue-600 disabled:text-white disabled:opacity-20 disabled:hover:cursor-not-allowed disabled:hover:bg-blue-600 disabled:hover:text-white"
+            "mx - 3 flex flex-none items-center justify-center rounded-lg  bg-indigo-600 p-1.5 text-white hover:bg-indigo-700  disabled:cursor-not-allowed disabled:bg-blue-600 disabled:text-white disabled:opacity-20 disabled:hover:cursor-not-allowed disabled:hover:bg-blue-600 disabled:hover:text-white"
           )}
           onClick={handlePrevMonth}>
           <span className="sr-only">Previous month</span>
@@ -75,7 +75,7 @@ function UpcomingEvents() {
           type="button"
           disabled={currentMonth === 11 && activeYear === availableYears[availableYears.length - 1]}
           className={classNames(
-            " flex flex-none items-center justify-center rounded-lg  bg-indigo-600 p-1.5 text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-blue-600 disabled:text-white disabled:opacity-20 disabled:hover:cursor-not-allowed disabled:hover:bg-blue-600 "
+            "mx-3 flex flex-none items-center justify-center rounded-lg  bg-indigo-600 p-1.5 text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-blue-600 disabled:text-white disabled:opacity-20 disabled:hover:cursor-not-allowed disabled:hover:bg-blue-600 "
           )}
           onClick={handleNextMonth}>
           <span className="sr-only">Next month</span>
