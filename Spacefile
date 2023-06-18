@@ -1,0 +1,36 @@
+# Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
+v: 0
+micros:
+  - name: backend
+    src: backend
+    path: api
+    engine: nodejs16
+    presets:
+      # api_keys: true
+      env:
+        - name: GOOGLE_CLIENT_ID
+          description: Google client id
+          default: "Your Google client id"
+        - name: GOOGLE_CLIENT_SECRET
+          description: Google client secreta
+          default: "Your Google client secret"
+        - name: CUSTOM_DOMAIN
+          description: Your Custom domain, used for redirecting to frontend"
+    primary: false
+    run: "pwd && ls && node index.js"
+    dev: "nodemon --watch src --exec 'ts-node src/index.ts'"
+    public: true
+
+  - name: frontend
+    src: frontend
+    engine: static
+    primary: true
+    commands:
+      - npm run build
+    serve: dist/
+    public: true
+    dev: npm run dev -- --port $PORT
+    
+
+  
+  
