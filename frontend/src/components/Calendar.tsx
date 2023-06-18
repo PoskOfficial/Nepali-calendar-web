@@ -18,6 +18,7 @@ import DropDown from "./DropDown";
 import ReminderPopupModal from "./ReminderPopupModal";
 import colors from "../constants/colors";
 import { Link } from "react-router-dom";
+import { isSameDay } from "date-fns";
 
 function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
@@ -25,20 +26,23 @@ function classNames(...classes: Array<string | undefined | boolean>) {
 
 const getEventsOfSelectedDay = (events: Event[], day: Date) => {
   return events.filter((event) => {
+    if (event.start.date && event.end.date) {
+      return isSameDay(new Date(event.start.date), day);
+    }
     const hasStartDate = event.start.date || event.start.dateTime;
     if (!hasStartDate) {
       return false;
     }
     // console.log({ date: new Date(hasStartDate) });
     const eventStartDate = new Date(hasStartDate);
-    const hasEndDate = event.end.date || event.end.dateTime;
+    const hasEndDate = event.end.dateTime;
     if (!hasEndDate) {
       return true;
     }
     const eventEndDate = new Date(hasEndDate);
     const selectedDate = day;
     // check if same day or in between
-    return sameOrAfter(eventStartDate, selectedDate) && sameOrBefore(eventEndDate, selectedDate);
+    return sameOrAfter(selectedDate, eventStartDate) && sameOrBefore(selectedDate, eventEndDate);
   });
 };
 interface Calender {
@@ -158,10 +162,10 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
               )}>
               {Array.from(
                 new Set(getEventsOfSelectedDay(events, new Date(day?.ad)).map((event) => event.colorId))
-              ).map((color) => (
+              ).map((color, i) => (
                 <span
-                  key={dayIdx}
-                  style={{ backgroundColor: color ? colors[color] : "transparent" }}
+                  key={i}
+                  style={{ backgroundColor: color ? colors[color] : "#475569" }}
                   className={classNames(`mx-[1px] inline-block h-1 w-1 rounded-full`)}></span>
               ))}
               <time
