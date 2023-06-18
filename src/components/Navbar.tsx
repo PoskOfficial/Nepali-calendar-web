@@ -5,10 +5,11 @@ import { checkIfUserIsLoggedInOrOffline } from "../helper/api";
 import { Link, useLocation } from "react-router-dom";
 
 const navigation = [
-  { name: "Home", href: "/", current: true },
-  { name: "Upcoming Events", href: "/upcoming", current: false },
-  { name: "Date Converter", href: "/test", current: false },
-  { name: "About", href: "/about", current: false },
+  { name: "Home", href: "/" },
+  { name: "Upcoming Events", href: "/upcoming" },
+  { name: "Date Converter", href: "/test" },
+  { name: "About", href: "/about" },
+  { name: "Privacy Policy", href: "/privacy" },
 ];
 
 function classNames(...classes: string[]): string {
