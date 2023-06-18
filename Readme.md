@@ -70,6 +70,8 @@ Additionally to test if it works on prod, you can run the following command
 space push
 ```
 
+Note: Dude to current limitation of Deta Space, you need to run `cd backend && pnpm build` to compile typescript before running `space push` command.
+
 ```bash
 space open
 ```
