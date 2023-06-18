@@ -9,6 +9,7 @@ import {
   getAccessToken,
   getCalendarEvents,
 } from "./lib/google";
+import "dotenv/config";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -52,7 +53,7 @@ app.get(
   `/auth/google/callback`,
   passport.authenticate("google", { failureRedirect: "/auth/google" }),
   (req: Request, res: Response) => {
-    res.json({ user: req.user });
+    res.redirect("/");
   }
 );
 // logout route
@@ -66,7 +67,7 @@ app.get("/auth/logout", (req: Request, res: Response) => {
 });
 
 // a test route to check if user is logged in
-app.get("/test", isAuthenticated, async (req: Request, res: Response) => {
+app.get("/events", isAuthenticated, async (req: Request, res: Response) => {
   const user = req.user as any;
   const refreshToken = user.refreshToken;
   try {
@@ -96,6 +97,11 @@ app.post("/create", isAuthenticated, async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error", error });
   }
+});
+
+// endpoint to get user profile, return unauthorized if not logged in
+app.get("/profile", isAuthenticated, (req: Request, res: Response) => {
+  res.json({ user: req.user });
 });
 
 app.listen(port, () => {

@@ -6,8 +6,7 @@ const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
     return next();
   }
 
-  // User is not authenticated, redirect to login page
-  res.redirect("/api/auth/google");
+  res.status(401).json({ message: "Unauthenticated" });
 };
 
 export default isAuthenticated;
