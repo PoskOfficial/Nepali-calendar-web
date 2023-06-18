@@ -96,6 +96,15 @@ export default defineConfig({
             urlPattern: /^\/events/i,
             handler: "NetworkFirst",
             options: {
+              backgroundSync: {
+                name: "events-queue",
+                options: {
+                  maxRetentionTime: 60 * 60 * 24 * 10, // <== 10 days
+                },
+              },
+              fetchOptions: {
+                credentials: "include",
+              },
               cacheName: "events-cache",
               expiration: {
                 maxEntries: 10,
