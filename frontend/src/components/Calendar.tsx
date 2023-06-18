@@ -23,6 +23,24 @@ function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
 }
 
+const getEventsOfSelectedDay = (events: Event[], day: Date) => {
+  return events.filter((event) => {
+    const hasStartDate = event.start.date || event.start.dateTime;
+    if (!hasStartDate) {
+      return false;
+    }
+    // console.log({ date: new Date(hasStartDate) });
+    const eventStartDate = new Date(hasStartDate);
+    const hasEndDate = event.end.date || event.end.dateTime;
+    if (!hasEndDate) {
+      return true;
+    }
+    const eventEndDate = new Date(hasEndDate);
+    const selectedDate = day;
+    // check if same day or in between
+    return sameOrAfter(eventStartDate, selectedDate) && sameOrBefore(eventEndDate, selectedDate);
+  });
+};
 interface Calender {
   yearData: YearData | null;
   setCurrentYear: Dispatch<SetStateAction<number>>;
@@ -70,6 +88,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
   };
   const monthData = useMemo(() => getMonthData(yearData, currentMonth), [yearData, currentMonth]);
   const selectedDayData = useMemo(() => monthData[parseInt(selectedDay) - 1], [monthData, selectedDay]);
+
   useEffect(() => {
     const fetchRemainders = async () => {
       if (!monthData.length) return;
@@ -137,6 +156,14 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
                 selectedDay === day.day && "bg-indigo-600",
                 (day.events.find((event) => event.jds?.gh == "1") || day.week_day === 6) && "text-rose-600"
               )}>
+              {Array.from(
+                new Set(getEventsOfSelectedDay(events, new Date(day?.ad)).map((event) => event.colorId))
+              ).map((color) => (
+                <span
+                  key={dayIdx}
+                  style={{ backgroundColor: color ? colors[color] : "transparent" }}
+                  className={classNames(`mx-[1px] inline-block h-1 w-1 rounded-full`)}></span>
+              ))}
               <time
                 dateTime={day.AD_date.bs}
                 className={classNames(
@@ -181,38 +208,21 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
         <div className="m-2 rounded-lg bg-white px-4 py-2 shadow-lg">
           <h1 className="font-semibold">Your Events</h1>
           <hr className="my-2" />
-          {events
-            .filter((event) => {
-              const hasStartDate = event.start.date || event.start.dateTime;
-              if (!hasStartDate) {
-                return false;
-              }
-              // console.log({ date: new Date(hasStartDate) });
-              const eventStartDate = new Date(hasStartDate);
-              const hasEndDate = event.end.date || event.end.dateTime;
-              if (!hasEndDate) {
-                return true;
-              }
-              const eventEndDate = new Date(hasEndDate);
-              const selectedDate = new Date(selectedDayData?.ad);
-              // check if same day or in between
-              return sameOrAfter(eventStartDate, selectedDate) && sameOrBefore(eventEndDate, selectedDate);
-            })
-            .map((event) => {
-              return (
-                <div key={event.id} className="items-center border-b py-2 text-start">
-                  <h1 className="font-bold">{event.summary}</h1>
-                  <div className="flex items-center gap-2">
-                    <span
-                      className=" h-2 w-2 rounded-full"
-                      style={{
-                        backgroundColor: event.colorId ? colors[event.colorId] : "transparent",
-                      }}></span>
-                    <p>{event.start.date || event.start.dateTime}</p>
-                  </div>
+          {getEventsOfSelectedDay(events, new Date(selectedDayData?.ad)).map((event) => {
+            return (
+              <div key={event.id} className="items-center border-b py-2 text-start">
+                <h1 className="font-bold">{event.summary}</h1>
+                <div className="flex items-center gap-2">
+                  <span
+                    className=" h-2 w-2 rounded-full"
+                    style={{
+                      backgroundColor: event.colorId ? colors[event.colorId] : "transparent",
+                    }}></span>
+                  <p>{event.start.date || event.start.dateTime}</p>
                 </div>
-              );
-            })}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
