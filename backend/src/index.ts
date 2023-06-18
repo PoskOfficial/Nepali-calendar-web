@@ -76,7 +76,11 @@ app.get("/events", isAuthenticated, async (req: Request, res: Response) => {
     if (!accessToken) {
       throw new Error("Access token not found");
     }
-    const events = await getCalendarEvents(accessToken);
+    const { timeMin, timeMax } = req.query as {
+      timeMin: string;
+      timeMax: string;
+    };
+    const events = await getCalendarEvents(accessToken, timeMin, timeMax);
     res.json({ events });
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error", error });

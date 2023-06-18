@@ -2,13 +2,12 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { getToday, getCurrentMonth, getTithi, getChandrama, getWeekDayNepali } from "../helper/dates";
 import nepaliNumber from "../helper/nepaliNumber";
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
-import { Reminder } from "../config/db";
+import { Event } from "../config/db";
 import { nepaliMonths } from "../constants/mahina";
 import availableYears from "../constants/availableYears";
 import { Day, YearData } from "../types";
 import DropDown from "./DropDown";
 import ReminderPopupModal from "./ReminderPopupModal";
-import { db } from "../config/db";
 import colors from "../constants/colors";
 import { Link } from "react-router-dom";
 
@@ -38,7 +37,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
     getCurrentMonth() === currentMonth ? getToday().dateStr : "01"
   );
 
-  const [remainders, setRemainders] = useState<Reminder[] | null>(null);
+  const [events, setEvents] = useState<Event[]>([]);
 
   const handleNextMonth = () => {
     if (currentMonth == 11) {
@@ -65,14 +64,14 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
 
   useEffect(() => {
     const fetchRemainders = async () => {
-      const data = await db.reminders
-        .where("date")
-        .equals(`${selectedDay}-${currentMonth}-${currentYear}`)
-        .toArray();
-      setRemainders(data);
+      const data = await fetch(
+        `/api/events?timeMin=${monthData[0].ad}&timeMax=${monthData[monthData.length - 1].ad}`
+      ).then((res) => res.json());
+      console.log({ data });
+      setEvents(data.events);
     };
     fetchRemainders();
-  }, [selectedDay, currentMonth, currentYear]);
+  }, [selectedDay, currentMonth, currentYear, monthData]);
 
   if (!yearData) return <div>Loading...</div>;
   return (
@@ -175,26 +174,21 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
         <div className="m-2 rounded-lg bg-white px-4 py-2 shadow-lg">
           <h1 className="font-semibold">Your Events</h1>
           <hr className="my-2" />
-          {remainders ? (
-            remainders.length > 0 ? (
-              remainders?.map((remainder) => {
-                return (
-                  <div className="flex items-center gap-2 p-2" key={remainder.id}>
-                    <span
-                      className="h-5 w-5 rounded-full border-2"
-                      style={{
-                        backgroundColor: colors[remainder.colorId],
-                      }}></span>
-                    <h1>{remainder.summary}</h1>
-                  </div>
-                );
-              })
-            ) : (
-              <p className="text-gray-500">No events</p>
-            )
-          ) : (
-            <p className="text-gray-500">Loading...</p>
-          )}
+          {events.map((event) => {
+            return (
+              <div key={event.id} className="items-center border-b py-2 text-start">
+                <h1 className="font-bold">{event.summary}</h1>
+                <div className="flex items-center gap-2">
+                  <span
+                    className=" h-2 w-2 rounded-full"
+                    style={{
+                      backgroundColor: event.colorId ? colors[event.colorId] : "transparent",
+                    }}></span>
+                  <p>{event.start.date || event.start.dateTime}</p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

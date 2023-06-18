@@ -23,7 +23,11 @@ export const getAccessToken = async (refreshToken: string) => {
   }
 };
 
-export const getCalendarEvents = async (accessToken: string) => {
+export const getCalendarEvents = async (
+  accessToken: string,
+  timeMin: string,
+  timeMax: string
+) => {
   const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
 
   try {
@@ -31,7 +35,8 @@ export const getCalendarEvents = async (accessToken: string) => {
       auth: oAuth2Client,
       oauth_token: accessToken,
       calendarId: "primary", // Use "primary" for the user's primary calendar
-      timeMin: new Date().toISOString(), // Use the current date as the minimum time
+      timeMin: new Date(timeMin).toISOString(), // Use the current date as the minimum time
+      timeMax: new Date(timeMax).toISOString(), // Use the current date as the maximum time
       maxResults: 10, // Set the maximum number of events to retrieve
       singleEvents: true,
       orderBy: "startTime",
