@@ -1,5 +1,13 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
-import { getToday, getCurrentMonth, getTithi, getChandrama, getWeekDayNepali } from "../helper/dates";
+import {
+  getToday,
+  getCurrentMonth,
+  getTithi,
+  getChandrama,
+  getWeekDayNepali,
+  sameOrAfter,
+  sameOrBefore,
+} from "../helper/dates";
 import nepaliNumber from "../helper/nepaliNumber";
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { Event } from "../config/db";
@@ -61,17 +69,18 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
     }
   };
   const monthData = useMemo(() => getMonthData(yearData, currentMonth), [yearData, currentMonth]);
-
+  const selectedDayData = useMemo(() => monthData[parseInt(selectedDay) - 1], [monthData, selectedDay]);
   useEffect(() => {
     const fetchRemainders = async () => {
+      if (!monthData.length) return;
       const data = await fetch(
         `/api/events?timeMin=${monthData[0].ad}&timeMax=${monthData[monthData.length - 1].ad}`
       ).then((res) => res.json());
-      console.log({ data });
-      setEvents(data.events);
+      // console.log({ data });
+      if (data.events) setEvents(data.events);
     };
     fetchRemainders();
-  }, [selectedDay, currentMonth, currentYear, monthData]);
+  }, [currentMonth, currentYear, monthData]);
 
   if (!yearData) return <div>Loading...</div>;
   return (
@@ -152,43 +161,58 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
             <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50 font-semibold">
               <h1>{selectedDay && nepaliNumber(selectedDay)}</h1>
             </div>
-            <p className="mt-2 text-sm text-gray-500">
-              {getWeekDayNepali(monthData[parseInt(selectedDay) - 1]?.week_day)}
-            </p>
+            <p className="mt-2 text-sm text-gray-500">{getWeekDayNepali(selectedDayData?.week_day)}</p>
           </div>
 
           <div className="ml-4 text-left">
             <h2 className="font-semibold">
               {new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric" }).format(
-                new Date(monthData[parseInt(selectedDay) - 1]?.events[0]?.ad)
+                new Date(selectedDayData?.ad)
               )}
             </h2>
             <p className="mt-2 text-sm text-gray-500">
-              {`${getTithi(monthData[parseInt(selectedDay) - 1]?.AD_date?.tithi)},
-              ${getChandrama(monthData[parseInt(selectedDay) - 1]?.AD_date?.chandrama)} •
-              ${monthData[parseInt(selectedDay) - 1]?.events.map((event) => event?.jds?.ne).join(" | ")}`}
+              {`${getTithi(selectedDayData?.AD_date?.tithi)},
+              ${getChandrama(selectedDayData?.AD_date?.chandrama)} •
+              ${selectedDayData?.events.map((event) => event?.jds?.ne).join(" | ")}`}
             </p>
           </div>
         </div>
-        <ReminderPopupModal date={`${selectedDay}-${currentMonth}-${currentYear}`} />
+        <ReminderPopupModal startDate={new Date(selectedDayData?.ad)} />
         <div className="m-2 rounded-lg bg-white px-4 py-2 shadow-lg">
           <h1 className="font-semibold">Your Events</h1>
           <hr className="my-2" />
-          {events.map((event) => {
-            return (
-              <div key={event.id} className="items-center border-b py-2 text-start">
-                <h1 className="font-bold">{event.summary}</h1>
-                <div className="flex items-center gap-2">
-                  <span
-                    className=" h-2 w-2 rounded-full"
-                    style={{
-                      backgroundColor: event.colorId ? colors[event.colorId] : "transparent",
-                    }}></span>
-                  <p>{event.start.date || event.start.dateTime}</p>
+          {events
+            .filter((event) => {
+              const hasStartDate = event.start.date || event.start.dateTime;
+              if (!hasStartDate) {
+                return false;
+              }
+              // console.log({ date: new Date(hasStartDate) });
+              const eventStartDate = new Date(hasStartDate);
+              const hasEndDate = event.end.date || event.end.dateTime;
+              if (!hasEndDate) {
+                return true;
+              }
+              const eventEndDate = new Date(hasEndDate);
+              const selectedDate = new Date(selectedDayData?.ad);
+              // check if same day or in between
+              return sameOrAfter(eventStartDate, selectedDate) && sameOrBefore(eventEndDate, selectedDate);
+            })
+            .map((event) => {
+              return (
+                <div key={event.id} className="items-center border-b py-2 text-start">
+                  <h1 className="font-bold">{event.summary}</h1>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className=" h-2 w-2 rounded-full"
+                      style={{
+                        backgroundColor: event.colorId ? colors[event.colorId] : "transparent",
+                      }}></span>
+                    <p>{event.start.date || event.start.dateTime}</p>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
       </div>
     </div>

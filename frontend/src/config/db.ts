@@ -2,7 +2,6 @@ import Dexie, { Table } from "dexie";
 
 export interface Event {
   id?: number;
-  date?: string; //dd-mm-yyyy
   summary?: string;
   location?: string;
   description?: string;

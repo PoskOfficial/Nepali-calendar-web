@@ -1,4 +1,5 @@
 import NepaliDate from "nepali-date-converter";
+import { isSameDay, isBefore, isAfter } from "date-fns";
 
 export function getToday() {
   const today = new NepaliDate(new Date());
@@ -111,3 +112,11 @@ export function getNepaliMonth(index: number): string {
   ];
   return nepaliMonth[index];
 }
+
+export const sameOrBefore = (d1 = new Date(), d2 = new Date()) => {
+  return isSameDay(d1, d2) || isBefore(d1, d2);
+};
+
+export const sameOrAfter = (d1 = new Date(), d2 = new Date()) => {
+  return isSameDay(d1, d2) || isAfter(d1, d2);
+};

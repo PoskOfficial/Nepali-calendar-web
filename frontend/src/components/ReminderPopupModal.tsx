@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { db } from "../config/db";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { PencilSquareIcon, MapPinIcon, Bars3BottomLeftIcon, SwatchIcon } from "@heroicons/react/24/outline";
 import colors from "../constants/colors";
 
-function RemindersPopupModal({ date }: { date: string }) {
+function RemindersPopupModal({ startDate }: { startDate: Date }) {
   const [openModel, setOpenModel] = useState(false);
   if (!openModel)
     return (
@@ -17,18 +16,39 @@ function RemindersPopupModal({ date }: { date: string }) {
   const handelSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const id = await db.reminders.add({
-        date,
-        colorId: "",
-        summary: "",
-        location: "",
-        description: "",
-        start: {
-          date: date,
+      const event = await fetch(`/api/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      });
+        body: JSON.stringify({
+          start: {
+            // start date in format yyyy-mm-dd
+            date: startDate.toISOString().split("T")[0],
+          },
+          end: {
+            // next day from start date
+            date: new Date(startDate.getTime() + 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+          },
+          summary: e.currentTarget.summary.value,
+          location: e.currentTarget.location.value,
+          description: e.currentTarget.description.value,
+          colorId: e.currentTarget.colorId.value || null,
+        }),
+      }).then((res) => res.json());
+      console.log({ event });
+      // const id = await db.reminders.add({
+      //   date,
+      //   colorId: "",
+      //   summary: "",
+      //   location: "",
+      //   description: "",
+      //   start: {
+      //     date: date,
+      //   },
+      // });
       setOpenModel(false);
-      if (!id) throw new Error("Something went wrong");
+      // if (!id) throw new Error("Something went wrong");
     } catch (err) {
       console.log(err);
     }
@@ -83,8 +103,8 @@ function RemindersPopupModal({ date }: { date: string }) {
                     return (
                       <input
                         type="radio"
-                        name="color"
-                        value={idx}
+                        name="colorId"
+                        value={color}
                         style={{
                           backgroundColor: colors[color],
                         }}

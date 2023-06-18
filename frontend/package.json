@@ -12,6 +12,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
+    "date-fns": "^2.30.0",
     "dexie": "^3.2.4",
     "nepali-date-converter": "^3.3.1",
     "react": "^18.2.0",
