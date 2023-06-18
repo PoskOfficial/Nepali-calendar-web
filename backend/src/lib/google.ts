@@ -71,3 +71,25 @@ export const createCalendarEvent = async (
     throw error;
   }
 };
+
+export const deleteCalendarEvent = async (
+  accessToken: string,
+  eventID: string
+) => {
+  const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
+
+  try {
+    const response = await calendar.events.delete({
+      oauth_token: accessToken,
+      calendarId: "primary",
+      // requestBody: requestBody,
+      auth: oAuth2Client,
+      eventId: eventID,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting calendar event:", error);
+    throw error;
+  }
+};
