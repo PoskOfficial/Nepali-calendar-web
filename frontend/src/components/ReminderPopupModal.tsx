@@ -2,9 +2,13 @@ import { useState } from "react";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { PencilSquareIcon, MapPinIcon, Bars3BottomLeftIcon, SwatchIcon } from "@heroicons/react/24/outline";
 import colors from "../constants/colors";
+import { Switch } from "@headlessui/react";
 
 function RemindersPopupModal({ startDate }: { startDate: Date }) {
   const [openModel, setOpenModel] = useState(false);
+  const [isAllDayEvent, setIsAllDayEvent] = useState(false);
+  const [eventStartDate, setEventStartDate] = useState(startDate);
+  const [eventEndDate, setEventEndDate] = useState(new Date(startDate.getTime() + 24 * 60 * 60 * 1000));
   if (!openModel)
     return (
       <button
@@ -14,6 +18,26 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
       </button>
     );
   const handelSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    let start = {};
+    let end = {};
+    if (isAllDayEvent) {
+      start = {
+        // format date to yyyy-mm-dd
+        date: eventStartDate.toISOString().split("T")[0],
+      };
+      end = {
+        date: eventEndDate.toISOString().split("T")[0],
+      };
+    } else {
+      start = {
+        // format date to yyyy-mm-ddThh:mm:ss
+        dateTime: eventStartDate.toISOString(),
+      };
+      end = {
+        dateTime: eventEndDate.toISOString(),
+      };
+    }
+
     e.preventDefault();
     try {
       const event = await fetch(`/api/create`, {
@@ -22,14 +46,8 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          start: {
-            // start date in format yyyy-mm-dd
-            date: startDate.toISOString().split("T")[0],
-          },
-          end: {
-            // next day from start date
-            date: new Date(startDate.getTime() + 24 * 60 * 60 * 1000).toISOString().split("T")[0],
-          },
+          start,
+          end,
           summary: e.currentTarget.summary.value,
           location: e.currentTarget.location.value,
           description: e.currentTarget.description.value,
@@ -61,6 +79,56 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
         <div className="modal-body">
           <form onSubmit={handelSubmit}>
             <div className="py-4">
+              <div className="my-2 flex w-full items-center gap-2">
+                <span className="font-sans">All day</span>
+                <Switch
+                  checked={isAllDayEvent}
+                  onChange={() => {
+                    setIsAllDayEvent(!isAllDayEvent);
+                    setEventStartDate(new Date(eventStartDate));
+                    setEventEndDate(new Date(eventEndDate));
+                  }}
+                  className={`${
+                    isAllDayEvent ? "bg-indigo-600" : "bg-gray-200"
+                  }  inline-flex h-6 w-11 items-center rounded-full transition-all duration-100 ease-linear`}>
+                  <span className="sr-only">toggle all day event</span>
+                  <span
+                    className={`${
+                      isAllDayEvent ? "translate-x-6" : "translate-x-1"
+                    } inline-block h-4 w-4 transform rounded-full bg-white`}
+                  />
+                </Switch>
+              </div>
+              <div className="my-2 flex w-full items-center gap-2">
+                <span className="font-sans">From: </span>
+                <input
+                  type={isAllDayEvent ? "date" : "datetime-local"}
+                  name="location"
+                  className="w-full flex-1 rounded-lg border px-2 py-1 outline-none focus:outline-blue-600 "
+                  placeholder="location"
+                  value={
+                    isAllDayEvent
+                      ? new Date(eventStartDate).toISOString().split("T")[0]
+                      : new Date(eventStartDate).toISOString().substring(0, 16)
+                  }
+                  onChange={(e) => setEventStartDate(new Date(e.target.value))}
+                />
+              </div>
+              <div className="my-2 flex w-full items-center gap-2">
+                <span className="font-sans">To:</span>
+                <input
+                  type={isAllDayEvent ? "date" : "datetime-local"}
+                  name="location"
+                  className="w-full flex-1 rounded-lg border px-2 py-1 outline-none focus:outline-blue-600 "
+                  placeholder="location"
+                  value={
+                    isAllDayEvent
+                      ? new Date(eventEndDate).toISOString().split("T")[0]
+                      : new Date(eventEndDate).toISOString().substring(0, 16)
+                  }
+                  onChange={(e) => setEventEndDate(new Date(e.target.value))}
+                />
+              </div>
               <div className="my-2 flex w-full items-center gap-2">
                 <PencilSquareIcon className="h-6 w-6" />
                 <input
@@ -102,13 +170,14 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
                   {Object.keys(colors).map((color, idx) => {
                     return (
                       <input
+                        key={idx}
                         type="radio"
                         name="colorId"
                         value={color}
                         style={{
                           backgroundColor: colors[color],
                         }}
-                        className={`m-1 h-6 w-6 appearance-none rounded-full border border-gray-300 shadow-sm outline-none focus:outline-blue-600`}
+                        className={`m-1 h-6 w-6 cursor-pointer appearance-none rounded-full border border-gray-300 shadow-sm outline-none focus:outline-blue-600`}
                       />
                     );
                   })}

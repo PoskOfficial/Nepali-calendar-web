@@ -35,7 +35,7 @@ const getEventsOfSelectedDay = (events: Event[], day: Date) => {
     }
     // console.log({ date: new Date(hasStartDate) });
     const eventStartDate = new Date(hasStartDate);
-    const hasEndDate = event.end.dateTime;
+    const hasEndDate = event.end.date || event.end.dateTime;
     if (!hasEndDate) {
       return true;
     }
@@ -181,13 +181,15 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
             </button>
           ))}
         </div>
-        <Link
-          type="button"
-          to="/upcoming"
-          className="mt-8 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-          View all events
-        </Link>
-        <div className="mt-1 flex items-start rounded-xl bg-white p-4 shadow-lg">
+        <div className="px-2">
+          <Link
+            type="button"
+            to="/upcoming"
+            className="mt-8 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            View all events
+          </Link>
+        </div>
+        <div className="mx-2 mt-1 flex items-start rounded-xl bg-white p-4 shadow-lg">
           <div className="flex-col">
             <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50 font-semibold">
               <h1>{selectedDay && nepaliNumber(selectedDay)}</h1>
@@ -220,7 +222,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
                   <span
                     className=" h-2 w-2 rounded-full"
                     style={{
-                      backgroundColor: event.colorId ? colors[event.colorId] : "transparent",
+                      backgroundColor: event.colorId ? colors[event.colorId] : "#039be5",
                     }}></span>
                   <p>{event.start.date || event.start.dateTime}</p>
                 </div>
