@@ -8,6 +8,7 @@ import {
   createCalendarEvent,
   getAccessToken,
   getCalendarEvents,
+  deleteCalendarEvent,
 } from "./lib/google";
 import "dotenv/config";
 
@@ -102,6 +103,31 @@ app.post("/create", isAuthenticated, async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal Server Error", error });
   }
 });
+
+// delete event route
+app.delete(
+  `/delete/:eventId`,
+  isAuthenticated,
+  async (req: Request, res: Response) => {
+    const user = req.user as any;
+    const refreshToken = user.refreshToken;
+    const eventId = req.params.eventId;
+    if (!eventId) {
+      res.status(400).json({ message: "Event ID is required" });
+    }
+    try {
+      const accessToken = await getAccessToken(refreshToken);
+      // console.log({ accessToken });
+      if (!accessToken) {
+        throw new Error("Access token not found");
+      }
+      const event = await deleteCalendarEvent(accessToken, eventId);
+      res.json({ event });
+    } catch (error) {
+      res.status(500).json({ message: "Internal Server Error", error });
+    }
+  }
+);
 
 // endpoint to get user profile, return unauthorized if not logged in
 app.get("/profile", isAuthenticated, (req: Request, res: Response) => {
