@@ -225,7 +225,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
                   <span
                     className=" h-2 w-2 rounded-full"
                     style={{
-                      backgroundColor: event.colorId ? colors[event.colorId] : "#039be5",
+                      backgroundColor: event.colorId ? colors[event.colorId] : "#475569",
                     }}></span>
                   <p>{event.start.date || event.start.dateTime}</p>
                 </div>

@@ -9,6 +9,7 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
   const [isAllDayEvent, setIsAllDayEvent] = useState(false);
   const [eventStartDate, setEventStartDate] = useState(startDate);
   const [eventEndDate, setEventEndDate] = useState(new Date(startDate.getTime() + 24 * 60 * 60 * 1000));
+  const [isLoading, setIsLoading] = useState(false);
   if (!openModel)
     return (
       <button
@@ -18,25 +19,13 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
       </button>
     );
   const handelSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    let start = {};
-    let end = {};
-    if (isAllDayEvent) {
-      start = {
-        // format date to yyyy-mm-dd
-        date: eventStartDate.toISOString().split("T")[0],
-      };
-      end = {
-        date: eventEndDate.toISOString().split("T")[0],
-      };
-    } else {
-      start = {
-        // format date to yyyy-mm-ddThh:mm:ss
-        dateTime: eventStartDate.toISOString(),
-      };
-      end = {
-        dateTime: eventEndDate.toISOString(),
-      };
-    }
+    setIsLoading(true);
+    const startEndDates = isAllDayEvent
+      ? {
+          start: { date: eventStartDate.toISOString().split("T")[0] },
+          end: { date: eventEndDate.toISOString().split("T")[0] },
+        }
+      : { start: { dateTime: eventStartDate.toISOString() }, end: { dateTime: eventEndDate.toISOString() } };
 
     e.preventDefault();
     try {
@@ -46,14 +35,16 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          start,
-          end,
+          ...startEndDates,
           summary: e.currentTarget.summary.value,
           location: e.currentTarget.location.value,
           description: e.currentTarget.description.value,
           colorId: e.currentTarget.colorId.value || null,
         }),
-      }).then((res) => res.json());
+      }).then((res) => {
+        return res.json();
+      });
+      setIsLoading(false);
       console.log({ event });
       // const id = await db.reminders.add({
       //   date,
@@ -193,7 +184,8 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
               </button>
               <button
                 type="submit"
-                className="mt-8 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                disabled={isLoading}
+                className="mt-8 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-progress disabled:bg-indigo-400">
                 Add reminder
               </button>
             </div>

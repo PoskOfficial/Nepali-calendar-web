@@ -1,7 +1,7 @@
 const colors: {
   [key: string]: string;
 } = {
-  // for undefined the color is called who knows #039be5
+  // for undefined the color is called who knows #475569
   "1": "#7986cb",
   "2": "#33b679",
   "3": "#8e24aa",
