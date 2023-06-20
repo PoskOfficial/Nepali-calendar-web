@@ -27,7 +27,12 @@ function classNames(...classes: Array<string | undefined | boolean>) {
 const getEventsOfSelectedDay = (events: Event[], day: Date) => {
   return events.filter((event) => {
     if (event.start.date && event.end.date) {
-      return isSameDay(new Date(event.start.date), day);
+      const startDate = new Date(event.start.date);
+      const endDate = new Date(new Date(event.end.date).getTime() - 24 * 60 * 60 * 1000);
+      return (
+        isSameDay(new Date(event.start.date), day) ||
+        (sameOrAfter(day, startDate) && sameOrBefore(day, endDate))
+      );
     }
     const hasStartDate = event.start.date || event.start.dateTime;
     if (!hasStartDate) {
@@ -212,8 +217,6 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
         </div>
         <ReminderPopupModal startDate={new Date(selectedDayData?.ad)} />
         <div className="m-2 rounded-lg bg-white px-4 py-2 shadow-lg">
-          <h1 className="font-semibold">Your Events</h1>
-          <hr className="my-2" />
           {getEventsOfSelectedDay(events, new Date(selectedDayData?.ad)).map((event) => {
             return (
               <div key={event.id} className="items-center border-b py-2 text-start">
