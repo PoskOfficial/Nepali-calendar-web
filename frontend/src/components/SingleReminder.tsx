@@ -1,14 +1,24 @@
 import colors from "../constants/colors";
 import { Event } from "../config/db";
 import { useState } from "react";
-import EventPopupModel from "./EventPopupModal";
-import { getDurationString } from "../helper/getDurationString";
+import { getDurationString } from "../helper/times";
+import MyModal from "./EventDialog";
 function SingleReminder({ event }: { event: Event }) {
   const [modalOpen, setModalOpen] = useState(false);
   console.log(modalOpen);
   return (
     <div onClick={() => setModalOpen(true)} className="items-center border-b py-2 text-start">
-      {modalOpen && <EventPopupModel modalOpen={modalOpen} event={event} setModalOpen={setModalOpen} />}
+      {/* {modalOpen && (
+        <EventPopupModel
+          event={event}
+          modalOpen={modalOpen}
+          onClose={() => {
+            setModalOpen(false);
+            console.log("onclose called");
+          }}
+        />
+      )} */}
+      {modalOpen && <MyModal modalOpen={modalOpen} event={event} onClose={() => setModalOpen(false)} />}
       <h1 className="font-bold">{event.summary}</h1>
       <div className="flex items-center gap-2">
         <span
@@ -16,7 +26,7 @@ function SingleReminder({ event }: { event: Event }) {
           style={{
             backgroundColor: event.colorId ? colors[event.colorId] : "transparent",
           }}></span>
-        <p className="text-sm">{getDurationString(event)}</p>
+        <p className="">{getDurationString(event)}</p>
       </div>
     </div>
   );
