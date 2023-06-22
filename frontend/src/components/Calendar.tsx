@@ -28,7 +28,12 @@ function classNames(...classes: Array<string | undefined | boolean>) {
 const getEventsOfSelectedDay = (events: Event[], day: Date) => {
   return events.filter((event) => {
     if (event.start.date && event.end.date) {
-      return isSameDay(new Date(event.start.date), day);
+      const startDate = new Date(event.start.date);
+      const endDate = new Date(new Date(event.end.date).getTime() - 24 * 60 * 60 * 1000);
+      return (
+        isSameDay(new Date(event.start.date), day) ||
+        (sameOrAfter(day, startDate) && sameOrBefore(day, endDate))
+      );
     }
     const hasStartDate = event.start.date || event.start.dateTime;
     if (!hasStartDate) {
@@ -36,7 +41,7 @@ const getEventsOfSelectedDay = (events: Event[], day: Date) => {
     }
     // console.log({ date: new Date(hasStartDate) });
     const eventStartDate = new Date(hasStartDate);
-    const hasEndDate = event.end.dateTime;
+    const hasEndDate = event.end.date || event.end.dateTime;
     if (!hasEndDate) {
       return true;
     }
@@ -183,13 +188,15 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
             </button>
           ))}
         </div>
-        <Link
-          type="button"
-          to="/upcoming"
-          className="mt-8 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-          View all events
-        </Link>
-        <div className="mt-1 flex items-start rounded-xl bg-white p-4 shadow-lg">
+        <div className="px-2">
+          <Link
+            type="button"
+            to="/upcoming"
+            className="mt-8 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            View all events
+          </Link>
+        </div>
+        <div className="mx-2 mt-1 flex items-start rounded-xl bg-white p-4 shadow-lg">
           <div className="flex-col">
             <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50 font-semibold">
               <h1>{selectedDay && nepaliNumber(selectedDay)}</h1>
@@ -212,8 +219,6 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
         </div>
         <ReminderPopupModal startDate={new Date(selectedDayData?.ad)} />
         <div className="m-2 rounded-lg bg-white px-4 py-2 shadow-lg">
-          <h1 className="font-semibold">Your Events</h1>
-          <hr className="my-2" />
           {getEventsOfSelectedDay(events, new Date(selectedDayData?.ad)).map((event) => {
             return <SingleReminder key={event.id} event={event} />;
           })}
