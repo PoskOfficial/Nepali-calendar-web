@@ -7,13 +7,13 @@ const isAllDayEvent = (event: Event) =>
   event.start.date &&
   event.end.date &&
   isSameDay(new Date(event.start.date), new Date(new Date(event.end.date).getTime() - 24 * 60 * 60 * 1000));
-export const getDurationString = (event: Event) => {
+export const eventDurationString = (event: Event) => {
   if (isAllDayEvent(event)) return "All Day";
   else if (event.start.date && event.end.date) {
     const startDate = new NepaliDate(new Date(event.start.date));
     const endDate = new NepaliDate(new Date(event.end.date));
-    return `${nepaliNumber(startDate.getDate().toString() )+ "/" + mahina(Number(startDate.getMonth()))} - ${
-      nepaliNumber(endDate.getDate().toString()) + "/" +mahina( Number(endDate.getMonth()))
+    return `${nepaliNumber(startDate.getDate().toString() )+ " " + mahina(Number(startDate.getMonth()))} - ${
+      nepaliNumber(endDate.getDate().toString()) + " " +mahina( Number(endDate.getMonth()))
     }`;
   } else if (event.start.dateTime && event.end.dateTime) {
     const startDateTime = new Date(event.start.dateTime);

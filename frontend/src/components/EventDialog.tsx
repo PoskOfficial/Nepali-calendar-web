@@ -6,6 +6,8 @@ import { isSameDay } from "date-fns";
 import NepaliDate from "nepali-date-converter";
 import nepaliNumber from "../helper/nepaliNumber";
 import mahina from "../constants/mahina";
+import { AmOrPm } from "../helper/times";
+import Spinner from "./Spinner";
 
 export default function MyModal({
   modalOpen,
@@ -16,20 +18,20 @@ export default function MyModal({
   onClose: ()=>void;
   event: Event;
 }) {
-  const [isOpen, setIsOpen] = useState(modalOpen);
-  const durationInsidePopup = (event: Event) => {
+  const [deleteLoading,setDeleteLoading]=useState(false);
+  const eventDurationString = (event: Event) => {
     if (event.start.date && event.end.date) {
-      //it is a whole day
       const startDate = new NepaliDate(new Date(event.start.date));
-      return ` ${nepaliNumber(startDate.getDate().toString()) + "/" +mahina( Number(startDate.getMonth()))}`
+      if(!isSameDay(new Date(event.start.date),new Date(event.end.date).getTime()-24*60*60*1000)) return "All Day"
+      return ` ${nepaliNumber(startDate.getDate().toString())+" "+ mahina( Number(startDate.getMonth()))}`
     }else if (event.start.dateTime && event.end.dateTime) {
       const startDate = new NepaliDate(new Date(event.start.dateTime));
       const endDate = new NepaliDate(new Date(event.end.dateTime));
       if (!isSameDay(new Date(event.start.dateTime), new Date(event.end.dateTime)))
-        return `${nepaliNumber(startDate.getDate().toString()) + "/" +mahina( Number(startDate.getMonth()))} - ${
-          nepaliNumber(endDate.getDate().toString()) + "/" + mahina(Number(endDate.getMonth() ))
+        return `${nepaliNumber(startDate.getDate().toString()) + " " +mahina( Number(startDate.getMonth()))} - ${
+          nepaliNumber(endDate.getDate().toString()) + " " + mahina(Number(endDate.getMonth() ))
         }`;
-      else return `${nepaliNumber(startDate.getDate().toString())}  / ${mahina(startDate.getMonth())}`;
+      else return `  ${nepaliNumber(startDate.getDate().toString())} ${mahina(startDate.getMonth())} , ${AmOrPm(new Date(event.start.dateTime).getHours(),new Date(event.start.dateTime).getMinutes())} - ${AmOrPm(new Date(event.end.dateTime).getHours(),new Date(event.end.dateTime).getMinutes())} `;
     }
     return "";
   };
@@ -38,17 +40,19 @@ export default function MyModal({
     onClose();
   }
   const deleteEvent = async () => {
-    await fetch(`/api/delete/${event.id}`, {
+    setDeleteLoading(true);
+    const response=await fetch(`/api/delete/${event.id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
     });
+    response.status==200 && setDeleteLoading(false);
   };
 
   return (
     <>
-      <Transition appear show={isOpen} as={Fragment}>
+      <Transition appear show={modalOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
           <Transition.Child
             as={Fragment}
@@ -71,15 +75,15 @@ export default function MyModal({
                 leave="ease-in duration-200"
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95">
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white pl-6 pr-6 pt-6 pb-2 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
                     <div className="title  border-bordersubtle flex items-center  justify-between border-b py-3 text-center">
                       <div>
-                        <h1 className="font-medium">{event.summary}</h1>
-                        {durationInsidePopup(event).length > 0 && (
+                        <h1 className="font-medium text-left">{event.summary}</h1>
+                        {eventDurationString(event).length > 0 && (
                           <div className="time flex gap-3 text-left text-sm text-gray-500 ">
                             <ClockIcon className="h-5 w-5" />
-                            <h1>{durationInsidePopup(event)}</h1>
+                            <h1>{eventDurationString(event)}</h1>
                           </div>
                         )}
                       </div>
@@ -95,22 +99,23 @@ export default function MyModal({
                   )}
 
                   <div className="mt-4">
-                    <div className="event__details py-2">
+                    <div className="event__details py-1">
                       {event.location && (
                         <div className="location flex w-full items-center gap-2 py-1">
                           <MapPinIcon className="h-6 w-6" />
                           <h1 className="text-gray-500"> {event.location}</h1>
                         </div>
                       )}
-                      <div
-                        onClick={() => {
-                          deleteEvent();
+                      <button disabled={deleteLoading}
+                        onClick={async () => {
+                            await deleteEvent();
                           onClose();
                         }}
-                        className="delete__button absolute  bottom-2 right-3 ml-auto flex  max-w-[140px] cursor-pointer items-center justify-center gap-1 rounded-md border border-transparent bg-indigo-600 px-3 py-1 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2  focus:ring-indigo-500 focus:ring-offset-2">
-                        <h1>Delete</h1>
-                        <TrashIcon className="h-5 w-5" />
-                      </div>
+                        className=" disabled:bg-indigo-400 ml-auto flex  max-w-[140px] cursor-pointer items-center justify-center gap-1 rounded-md border border-transparent bg-indigo-600 px-3 py-1 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2  focus:ring-indigo-500 focus:ring-offset-2">
+
+                        <h1>{deleteLoading? <Spinner  className="h-5 w-5 fill-white"/> : "Delete"}</h1>
+                        {!deleteLoading && <TrashIcon className="h-5 w-5" />}
+                      </button>
                     </div>
                   </div>
                 </Dialog.Panel>

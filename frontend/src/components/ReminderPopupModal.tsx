@@ -99,9 +99,10 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
               <div className="my-2 flex w-full items-start gap-2">
                 <SwatchIcon className="h-6 w-6" />
                 <div className="flex flex-wrap">
-                  {Object.keys(colors).map((color) => {
+                  {Object.keys(colors).map((color,idx) => {
                     return (
                       <input
+                      key={idx}
                         type="radio"
                         name="colorId"
                         value={color}
