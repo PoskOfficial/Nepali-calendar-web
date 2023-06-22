@@ -2,3 +2,4 @@
 .space
 .env
 start.ps1
+node_modules
