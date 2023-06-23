@@ -31,19 +31,17 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
     );
   const handelSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setIsLoading(true);
-    const endTime = e.currentTarget.endTime.value;
-    const startTime = e.currentTarget.startTime.value;
+    e.preventDefault();
     const startEndDates = isAllDayEvent
       ? {
           start: { date: eventStartDate.toISOString().split("T")[0] },
           end: { date: eventEndDate.toISOString().split("T")[0] },
         }
       : {
-          start: { dateTime: getCombinedDateTime(startDate, startTime) },
-          end: { dateTime: getCombinedDateTime(eventEndDate, endTime) },
+          start: { dateTime: getCombinedDateTime(startDate, e.currentTarget.startTime.value) },
+          end: { dateTime: getCombinedDateTime(eventEndDate, e.currentTarget.endTime.value) },
         };
 
-    e.preventDefault();
     try {
       const event = await fetch(`/api/create`, {
         method: "POST",
@@ -138,12 +136,12 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
               </div> */}
               <div className="my-2 flex w-full items-center gap-2">
                 <span>From: </span>
-                <NepaliDatePicker setDate={setEventStartDate} />
-                {!isAllDayEvent && <input type="time" name="startTime" className="rounded-lg border p-1 " />}
+                <NepaliDatePicker setDate={setEventStartDate} date={eventStartDate} />
+                {!isAllDayEvent && <input type="time" name="startTime" className="rounded-lg border p-1" />}
               </div>
               <div className="my-2 flex w-full items-center gap-2">
                 <span>To:</span>
-                <NepaliDatePicker setDate={setEventEndDate} />
+                <NepaliDatePicker setDate={setEventEndDate} date={eventEndDate} />
                 {!isAllDayEvent && <input type="time" name="endTime" className="rounded-lg border p-1" />}
               </div>
               <div className="my-2 flex w-full items-center gap-2">

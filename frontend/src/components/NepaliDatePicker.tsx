@@ -1,4 +1,4 @@
-import { Dispatch, Fragment, useEffect, useState } from "react";
+import { Dispatch, Fragment, useMemo, useState } from "react";
 import NepaliDate from "nepali-date-converter";
 import { Combobox, Transition } from "@headlessui/react";
 import { ChevronUpDownIcon, CheckIcon } from "@heroicons/react/20/solid";
@@ -11,11 +11,11 @@ function Picker({
   title,
   setYYMMDD,
 }: {
-  date: string;
+  date: string | undefined;
   hasValueLabel?: boolean;
   data: any;
   title: string;
-  setYYMMDD: Dispatch<React.SetStateAction<{ year: string; month: string; day: string }>>;
+  setYYMMDD: Dispatch<React.SetStateAction<Date>>;
 }) {
   const [query, setQuery] = useState("");
   const filtered = hasValueLabel
@@ -30,14 +30,22 @@ function Picker({
     <div className={`${title == "year" ? "w-24" : "w-20"}`}>
       <Combobox
         value={date}
-        onChange={(value) =>
+        onChange={(value) => {
           setYYMMDD((prev) => {
-            return {
-              ...prev,
-              [title]: value,
-            };
-          })
-        }>
+            const oldDate = new NepaliDate(prev);
+            if (title === "year") {
+              oldDate.setYear(+value);
+            }
+            if (title === "month") {
+              oldDate.setMonth(+value);
+              console.log("day modified", oldDate);
+            }
+            if (title === "day") {
+              oldDate.setDate(+value);
+            }
+            return oldDate.toJsDate();
+          });
+        }}>
         <div className="relative">
           <div className="relative w-full cursor-default overflow-hidden rounded-lg border bg-white text-left shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
             <Combobox.Input
@@ -68,11 +76,12 @@ function Picker({
                         active ? "bg-amber-100 text-amber-900" : "text-gray-900"
                       }`
                     }
-                    value={num}>
+                    value={title == "month" ? (parseInt(num) - 1).toString() : num}>
                     {({ selected, active }) => (
                       <>
                         <span className={`block truncate ${selected ? "font-medium" : "font-normal"}`}>
                           {num}
+                          {/* {`${console.log("num", num)}`} */}
                         </span>
                         {selected ? (
                           <span
@@ -94,28 +103,28 @@ function Picker({
     </div>
   );
 }
-function NepaliDatePicker({ setDate }: { setDate: Dispatch<React.SetStateAction<Date>> }) {
+function NepaliDatePicker({ setDate, date }: { setDate: Dispatch<React.SetStateAction<Date>>; date: Date }) {
+  console.log("date", date);
   const monthData = [
-    { value: "0", label: "01" },
-    { value: "01", label: "02" },
-    { value: "02", label: "03" },
-    { value: "03", label: "04" },
-    { value: "04", label: "05" },
-    { value: "05", label: "06" },
-    { value: "06", label: "07" },
-    { value: "07", label: "08" },
-    { value: "08", label: "09" },
-    { value: "09", label: "10" },
+    { value: "0", label: "1" },
+    { value: "1", label: "2" },
+    { value: "2", label: "3" },
+    { value: "3", label: "4" },
+    { value: "4", label: "5" },
+    { value: "5", label: "6" },
+    { value: "6", label: "7" },
+    { value: "7", label: "8" },
+    { value: "8", label: "9" },
+    { value: "9", label: "10" },
     { value: "10", label: "11" },
     { value: "11", label: "12" },
   ];
-  const today = new NepaliDate(new Date());
-  const [YYMMDD, setYYMMDD] = useState({
-    year: today.getYear().toString(),
-    month: today.getMonth().toString(),
-    day: today.getDate().toString(),
-  });
-  console.log(YYMMDD);
+  const dateBs = useMemo(() => {
+    return { ...new NepaliDate(date).getBS(), month: new NepaliDate(date).getBS().month + 1 };
+  }, [date]);
+
+  // console.log("dateBs", dateBs);
+
   const getDays = (year: keyof typeof nepaliDateData | null, month: string | null) => {
     if (!year || !month) return [];
     const days = nepaliDateData[year][+month];
@@ -125,22 +134,29 @@ function NepaliDatePicker({ setDate }: { setDate: Dispatch<React.SetStateAction<
     }
     return dayData;
   };
-  useEffect(() => {
-    // @ts-ignore
-    const date = new Date(new NepaliDate(`${YYMMDD.year}-${YYMMDD.month}-${YYMMDD.day}`));
-    setDate(date);
-  }, [YYMMDD]);
+
   return (
     <div className="flex items-center gap-2">
-      <Picker date={YYMMDD.year} data={Object.keys(nepaliDateData)} title="year" setYYMMDD={setYYMMDD} />
-      <Picker date={YYMMDD.month} data={monthData} hasValueLabel title="month" setYYMMDD={setYYMMDD} />
       <Picker
-        date={YYMMDD.day}
+        date={dateBs.year.toString()}
+        data={Object.keys(nepaliDateData)}
+        title="year"
+        setYYMMDD={setDate}
+      />
+      <Picker
+        date={dateBs.month.toString()}
+        data={monthData}
+        hasValueLabel
+        title="month"
+        setYYMMDD={setDate}
+      />
+      <Picker
+        date={dateBs.date?.toString()}
         // @ts-ignore
-        data={getDays(YYMMDD.year, YYMMDD.month)}
+        data={getDays(dateBs.year?.toString(), dateBs.month?.toString())}
         hasValueLabel
         title="day"
-        setYYMMDD={setYYMMDD}
+        setYYMMDD={setDate}
       />
     </div>
   );
