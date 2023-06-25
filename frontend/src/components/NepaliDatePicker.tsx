@@ -37,7 +37,7 @@ function Picker({
               oldDate.setYear(+value);
             }
             if (title === "month") {
-              oldDate.setMonth(+value);
+              oldDate.setMonth(+value - 1);
               console.log("day modified", oldDate);
             }
             if (title === "day") {
@@ -76,7 +76,13 @@ function Picker({
                         active ? "bg-amber-100 text-amber-900" : "text-gray-900"
                       }`
                     }
-                    value={title == "month" ? (parseInt(num) - 1).toString() : num}>
+                    value={
+                      title == "month"
+                        ? num
+                        : (parseInt(num) - 1).toString()
+                        ? num
+                        : (parseInt(num) - 1).toString()
+                    }>
                     {({ selected, active }) => (
                       <>
                         <span className={`block truncate ${selected ? "font-medium" : "font-normal"}`}>
