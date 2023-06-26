@@ -3,6 +3,17 @@ import { PlusIcon } from "@heroicons/react/20/solid";
 import { PencilSquareIcon, MapPinIcon, Bars3BottomLeftIcon, SwatchIcon } from "@heroicons/react/24/outline";
 import colors from "../constants/colors";
 import { Switch } from "@headlessui/react";
+import NepaliDatePicker from "./NepaliDatePicker";
+
+function getCombinedDateTime(date: Date, time: string) {
+  const timeParts = time.split(":");
+  date.setHours(parseInt(timeParts[0], 10));
+  console.log(timeParts);
+  console.log("hours combined:", date.toLocaleString());
+  date.setMinutes(parseInt(timeParts[1], 10));
+  console.log("minutes combined", date);
+  return date.toISOString();
+}
 
 function RemindersPopupModal({ startDate }: { startDate: Date }) {
   const [openModel, setOpenModel] = useState(false);
@@ -20,14 +31,17 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
     );
   const handelSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setIsLoading(true);
+    e.preventDefault();
     const startEndDates = isAllDayEvent
       ? {
           start: { date: eventStartDate.toISOString().split("T")[0] },
           end: { date: eventEndDate.toISOString().split("T")[0] },
         }
-      : { start: { dateTime: eventStartDate.toISOString() }, end: { dateTime: eventEndDate.toISOString() } };
+      : {
+          start: { dateTime: getCombinedDateTime(startDate, e.currentTarget.startTime.value) },
+          end: { dateTime: getCombinedDateTime(eventEndDate, e.currentTarget.endTime.value) },
+        };
 
-    e.preventDefault();
     try {
       const event = await fetch(`/api/create`, {
         method: "POST",
@@ -90,7 +104,7 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
                   />
                 </Switch>
               </div>
-              <div className="my-2 flex w-full items-center gap-2">
+              {/* <div className="my-2 flex w-full items-center gap-2">
                 <span className="font-sans">From: </span>
                 <input
                   type={isAllDayEvent ? "date" : "datetime-local"}
@@ -119,6 +133,16 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
                   }
                   onChange={(e) => setEventEndDate(new Date(e.target.value))}
                 />
+              </div> */}
+              <div className="my-2 flex w-full items-center gap-2">
+                <span>From: </span>
+                <NepaliDatePicker setDate={setEventStartDate} date={eventStartDate} />
+                {!isAllDayEvent && <input type="time" name="startTime" className="rounded-lg border p-1" />}
+              </div>
+              <div className="my-2 flex w-full items-center gap-2">
+                <span>To:</span>
+                <NepaliDatePicker setDate={setEventEndDate} date={eventEndDate} />
+                {!isAllDayEvent && <input type="time" name="endTime" className="rounded-lg border p-1" />}
               </div>
               <div className="my-2 flex w-full items-center gap-2">
                 <PencilSquareIcon className="h-6 w-6" />
@@ -138,15 +162,6 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
                   placeholder="location"
                 />
               </div>
-              {/* <div className="my-2 flex w-full items-center gap-2">
-                <CalendarDaysIcon className="h-6 w-6" />
-                <input
-                  type="date"
-                  name="date"
-                  className="w-full flex-1 rounded-lg border px-4 py-1 outline-none focus:outline-blue-600 "
-                  placeholder="date"
-                />
-              </div> */}
               <div className="my-2 flex w-full items-start gap-2">
                 <Bars3BottomLeftIcon className="h-6 w-6" />
                 <textarea
