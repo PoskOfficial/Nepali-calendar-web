@@ -1,0 +1,29 @@
+{
+  "name": "miti-nepali-calendar",
+  "version": "1.0.0",
+  "description": "An open source Nepali Calendar App with cross compatibility with google calendar",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "cd frontend && pnpm install && cd .. && cd backend && pnpm install && cd ..",
+    "dev": "concurrently \"cd frontend && pnpm run dev\" \"cd backend && pnpm run dev\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/poskOfficial/Nepali-calendar-web.git"
+  },
+  "keywords": [
+    "Calendar",
+    "Nepal-calendar",
+    "PWA",
+    "Nepal"
+  ],
+  "author": "@ParajuliBkrm, @POSKOfficial",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/poskOfficial/Nepali-calendar-web/issues"
+  },
+  "homepage": "https://github.com/poskOfficial/Nepali-calendar-web#readme",
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}

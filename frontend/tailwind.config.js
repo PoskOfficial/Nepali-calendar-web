@@ -5,6 +5,7 @@ export default {
     extend: {
       colors: {
         modalbg: "rgba(0, 0, 0, .5)",
+        hovercolor: "rgba(125, 133, 144, 0.1) ",
       },
     },
     fontFamily: {

@@ -19,6 +19,7 @@ import ReminderPopupModal from "./ReminderPopupModal";
 import colors from "../constants/colors";
 import { Link } from "react-router-dom";
 import { isSameDay } from "date-fns";
+import SingleReminder from "./SingleReminder";
 
 function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
@@ -111,6 +112,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
   }, [currentMonth, currentYear, monthData]);
 
   if (!yearData) return <div>Loading...</div>;
+  console.log(getEventsOfSelectedDay(events, new Date(selectedDayData?.ad)));
   return (
     <div>
       <div className="mx-auto mt-1 max-w-lg text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9">
@@ -218,19 +220,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
         <ReminderPopupModal startDate={new Date(selectedDayData?.ad)} />
         <div className="m-2 rounded-lg bg-white px-4 py-2 shadow-lg">
           {getEventsOfSelectedDay(events, new Date(selectedDayData?.ad)).map((event) => {
-            return (
-              <div key={event.id} className="items-center border-b py-2 text-start">
-                <h1 className="font-bold">{event.summary}</h1>
-                <div className="flex items-center gap-2">
-                  <span
-                    className=" h-2 w-2 rounded-full"
-                    style={{
-                      backgroundColor: event.colorId ? colors[event.colorId] : "#475569",
-                    }}></span>
-                  <p>{event.start.date || event.start.dateTime}</p>
-                </div>
-              </div>
-            );
+            return <SingleReminder key={event.id} event={event} />;
           })}
         </div>
       </div>
