@@ -3,13 +3,14 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { checkIfUserIsLoggedInOrOffline } from "../helper/api";
 import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const navigation = [
-  { name: "Home", href: "/" },
-  { name: "Upcoming Events", href: "/upcoming" },
-  { name: "Date Converter", href: "/test" },
-  { name: "About", href: "/about" },
-  { name: "Privacy Policy", href: "/privacy" },
+  { name: "Home.1", href: "/" },
+  { name: "Upcoming Events.1", href: "/upcoming" },
+  { name: "Date Converter.1", href: "/test" },
+  { name: "About.1", href: "/about" },
+  { name: "Privacy Policy.1", href: "/privacy" },
 ];
 
 function classNames(...classes: string[]): string {
@@ -32,6 +33,7 @@ export default function Navbar() {
   useEffect(() => {
     checkStatus();
   }, []);
+  const { t, i18n } = useTranslation();
 
   return (
     <Disclosure as="nav" className="border-b bg-white">
@@ -56,7 +58,7 @@ export default function Navbar() {
                   <img className="hidden h-8 w-auto lg:block" src="/icon-512x512.png" alt="Your Company" />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
+                  <div className="flex items-center space-x-4">
                     {navigation.map((item) => (
                       <Link
                         key={item.name}
@@ -66,9 +68,11 @@ export default function Navbar() {
                           "rounded-md px-3 py-2 text-sm font-medium"
                         )}
                         aria-current={item.href === location.pathname ? "page" : undefined}>
-                        {item.name}
+                        {t(item.name)}
                       </Link>
                     ))}
+                    <h1 onClick={() => i18n.changeLanguage("en-US")}>EN</h1>
+                    <h1 onClick={() => i18n.changeLanguage("ne-NP")}>NP</h1>
                   </div>
                 </div>
               </div>
