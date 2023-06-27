@@ -1,5 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Event } from "../config/db";
 import { MapPinIcon, TrashIcon, Bars3BottomLeftIcon, XMarkIcon, ClockIcon } from "@heroicons/react/20/solid";
 import { isSameDay } from "date-fns";

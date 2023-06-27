@@ -9,7 +9,7 @@ import {
   sameOrBefore,
 } from "../helper/dates";
 import nepaliNumber from "../helper/nepaliNumber";
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { Event } from "../config/db";
 import { nepaliMonths } from "../constants/mahina";
 import availableYears from "../constants/availableYears";
@@ -20,7 +20,7 @@ import colors from "../constants/colors";
 import { Link } from "react-router-dom";
 import { isSameDay } from "date-fns";
 import SingleReminder from "./SingleReminder";
-import { useQuery, QueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
@@ -75,8 +75,6 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
     getCurrentMonth() === currentMonth ? getToday().dateStr : "01"
   );
 
-  const queryClient = new QueryClient();
-
   const handleNextMonth = () => {
     if (currentMonth == 11) {
       setSelectedDay(getCurrentMonth() === 0 ? getToday().dateStr : "01");
@@ -109,10 +107,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
     return data.events;
   };
 
-  const {
-    data: events,
-    error,
-  } = useQuery({
+  const { data: events, error } = useQuery({
     queryKey: ["events"],
     queryFn: fetchRemainders,
     enabled: !!monthData.length,
