@@ -107,7 +107,11 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
     return data.events;
   };
 
-  const { data: events, error } = useQuery({
+  const {
+    data: events,
+    error,
+    isLoading,
+  } = useQuery({
     queryKey: ["events"],
     queryFn: fetchRemainders,
     enabled: !!monthData.length,
@@ -221,7 +225,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
           </div>
         </div>
         <ReminderPopupModal startDate={new Date(selectedDayData?.ad)} />
-        {!error && (
+        {!error && !isLoading && (
           <div className="m-2 rounded-lg bg-white px-4 py-2 shadow-lg">
             <div className="flex items-center justify-between"></div>
             {getEventsOfSelectedDay(events, new Date(selectedDayData?.ad))?.map((event) => {
