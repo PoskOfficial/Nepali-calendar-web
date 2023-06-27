@@ -20,6 +20,8 @@ import colors from "../constants/colors";
 import { Link } from "react-router-dom";
 import { isSameDay } from "date-fns";
 import SingleReminder from "./SingleReminder";
+import { useTranslation } from "react-i18next";
+import Spinner from "./Spinner";
 
 function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
@@ -98,6 +100,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
   };
   const monthData = useMemo(() => getMonthData(yearData, currentMonth), [yearData, currentMonth]);
   const selectedDayData = useMemo(() => monthData[parseInt(selectedDay) - 1], [monthData, selectedDay]);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchRemainders = async () => {
@@ -111,8 +114,12 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
     fetchRemainders();
   }, [currentMonth, currentYear, monthData]);
 
-  if (!yearData) return <div>Loading...</div>;
-  console.log(getEventsOfSelectedDay(events, new Date(selectedDayData?.ad)));
+  if (!yearData)
+    return (
+      <div className="flex justify-center">
+        <Spinner className="h-5 w-5" />
+      </div>
+    );
   return (
     <div>
       <div className="mx-auto mt-1 max-w-lg text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9">
@@ -193,7 +200,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
             type="button"
             to="/upcoming"
             className="mt-8 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-            View all events
+            {t("View all events.1")}
           </Link>
         </div>
         <div className="mx-2 mt-1 flex items-start rounded-xl bg-white p-4 shadow-lg">

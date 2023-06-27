@@ -1,20 +1,29 @@
 {
   "Home": {
-    "1": "Home"
+    "1": "होम"
   },
-  "Upcoming Events": {
-    "1": "UPPPPP"
+  "Upcoming Days": {
+    "1": "आउदा दिनहरु"
   },
   "Date Converter": {
-    "1": "xxxx"
-  },
-  "About": {
-    "1": "aboutt"
+    "1": "मिती परिवर्तन "
   },
   "Privacy Policy": {
-    "1": "full"
+    "1": "गोपनीयता नीति"
+  },
+  "About": {
+    "1": "बारेमा"
   },
   "View all events": {
-    "1": "nepali transalatio"
+    "1": "आउदा दिनहरु हेर्नुस"
+  },
+  "Login": {
+    "1": "लगईन "
+  },
+  "offline": {
+    "1": "अफलाईन "
+  },
+  "Sign out": {
+    "1": "साईन आउट"
   }
 }

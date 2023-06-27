@@ -2,8 +2,8 @@
   "Home": {
     "1": "Home"
   },
-  "Upcoming Events": {
-    "1": "Upcoming Events"
+  "Upcoming Days": {
+    "1": "Upcoming Days"
   },
   "Date Converter": {
     "1": "Date Converter"
@@ -14,7 +14,17 @@
   "Privacy Policy": {
     "1": "Privacy Policy"
   },
+
   "View all events": {
-    "1": "english transalation"
+    "1": "View all events"
+  },
+  "Login": {
+    "1": "Login "
+  },
+  "offline": {
+    "1": "offline "
+  },
+  "Sign out": {
+    "1": "Sign out"
   }
 }

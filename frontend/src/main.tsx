@@ -8,10 +8,16 @@ import PrivacyPolicy from "./PrivacyPolicy.tsx";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Navbar from "./components/Navbar.tsx";
 import "./i18next";
+import Spinner from "./components/Spinner.tsx";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <Suspense fallback={<div>Loading~~~</div>}>
+    <Suspense
+      fallback={
+        <div className="flex justify-center">
+          <Spinner className="h-5 w-5" />
+        </div>
+      }>
       <BrowserRouter>
         <Navbar />
         <Routes>

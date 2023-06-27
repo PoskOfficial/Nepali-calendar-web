@@ -4,10 +4,11 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { checkIfUserIsLoggedInOrOffline } from "../helper/api";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import LanguageChangeDropDown from "./LanguageChangeDropDown";
 
 const navigation = [
   { name: "Home.1", href: "/" },
-  { name: "Upcoming Events.1", href: "/upcoming" },
+  { name: "Upcoming Days.1", href: "/upcoming" },
   { name: "Date Converter.1", href: "/test" },
   { name: "About.1", href: "/about" },
   { name: "Privacy Policy.1", href: "/privacy" },
@@ -33,7 +34,8 @@ export default function Navbar() {
   useEffect(() => {
     checkStatus();
   }, []);
-  const { t, i18n } = useTranslation();
+
+  const { t } = useTranslation();
 
   return (
     <Disclosure as="nav" className="border-b bg-white">
@@ -71,8 +73,7 @@ export default function Navbar() {
                         {t(item.name)}
                       </Link>
                     ))}
-                    <h1 onClick={() => i18n.changeLanguage("en-US")}>EN</h1>
-                    <h1 onClick={() => i18n.changeLanguage("ne-NP")}>NP</h1>
+                    <LanguageChangeDropDown />
                   </div>
                 </div>
               </div>
@@ -111,7 +112,7 @@ export default function Navbar() {
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
                               )}>
-                              Sign out
+                              {t("Sign out.1")}
                             </a>
                           )}
                         </Menu.Item>
@@ -123,10 +124,10 @@ export default function Navbar() {
                     href="/api/auth/google"
                     target="_self"
                     className="rounded-md px-3 py-2 text-sm font-medium text-gray-900">
-                    Login
+                    {t("Login.1")}
                   </a>
                 ) : (
-                  "offline"
+                  <h1>{t("offline.1")}</h1>
                 )}
               </div>
             </div>
@@ -144,9 +145,10 @@ export default function Navbar() {
                     "block rounded-md px-3 py-2 text-base font-medium"
                   )}
                   aria-current={item.href === location.pathname ? "page" : undefined}>
-                  {item.name}
+                  {t(item.name)}
                 </Disclosure.Button>
               ))}
+              <LanguageChangeDropDown />
             </div>
           </Disclosure.Panel>
         </>
