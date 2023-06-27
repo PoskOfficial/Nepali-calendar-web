@@ -20,13 +20,15 @@ import colors from "../constants/colors";
 import { Link } from "react-router-dom";
 import { isSameDay } from "date-fns";
 import SingleReminder from "./SingleReminder";
+import { useQuery, QueryClient } from "@tanstack/react-query";
 
 function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
 }
 
 const getEventsOfSelectedDay = (events: Event[], day: Date) => {
-  return events.filter((event) => {
+  if (!events) return [];
+  return events?.filter((event) => {
     if (event.start.date && event.end.date) {
       const startDate = new Date(event.start.date);
       const endDate = new Date(new Date(event.end.date).getTime() - 24 * 60 * 60 * 1000);
@@ -73,7 +75,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
     getCurrentMonth() === currentMonth ? getToday().dateStr : "01"
   );
 
-  const [events, setEvents] = useState<Event[]>([]);
+  const queryClient = new QueryClient();
 
   const handleNextMonth = () => {
     if (currentMonth == 11) {
@@ -99,19 +101,23 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
   const monthData = useMemo(() => getMonthData(yearData, currentMonth), [yearData, currentMonth]);
   const selectedDayData = useMemo(() => monthData[parseInt(selectedDay) - 1], [monthData, selectedDay]);
 
-  useEffect(() => {
-    const fetchRemainders = async () => {
-      if (!monthData.length) return;
-      const data = await fetch(
-        `/api/events?timeMin=${monthData[0].ad}&timeMax=${monthData[monthData.length - 1].ad}`
-      ).then((res) => res.json());
-      // console.log({ data });
-      if (data.events) setEvents(data.events);
-    };
-    fetchRemainders();
-  }, [currentMonth, currentYear, monthData]);
+  const fetchRemainders = async () => {
+    const res = await fetch(
+      `/api/events?timeMin=${monthData[0].ad}&timeMax=${monthData[monthData.length - 1].ad}`
+    );
+    const data = await res.json();
+    return data.events;
+  };
 
-  if (!yearData) return <div>Loading...</div>;
+  const {
+    data: events,
+    error,
+  } = useQuery({
+    queryKey: ["events"],
+    queryFn: fetchRemainders,
+    enabled: !!monthData.length,
+  });
+
   console.log(getEventsOfSelectedDay(events, new Date(selectedDayData?.ad)));
   return (
     <div>
@@ -167,14 +173,15 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
                 selectedDay === day.day && "bg-indigo-600",
                 (day.events.find((event) => event.jds?.gh == "1") || day.week_day === 6) && "text-rose-600"
               )}>
-              {Array.from(
-                new Set(getEventsOfSelectedDay(events, new Date(day?.ad)).map((event) => event.colorId))
-              ).map((color, i) => (
-                <span
-                  key={i}
-                  style={{ backgroundColor: color ? colors[color] : "#475569" }}
-                  className={classNames(`mx-[1px] inline-block h-1 w-1 rounded-full`)}></span>
-              ))}
+              {events &&
+                Array.from(
+                  new Set(getEventsOfSelectedDay(events, new Date(day?.ad))?.map((event) => event.colorId))
+                )?.map((color, i) => (
+                  <span
+                    key={i}
+                    style={{ backgroundColor: color ? colors[color] : "#475569" }}
+                    className={classNames(`mx-[1px] inline-block h-1 w-1 rounded-full`)}></span>
+                ))}
               <time
                 dateTime={day.AD_date.bs}
                 className={classNames(
@@ -206,23 +213,27 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
 
           <div className="ml-4 text-left">
             <h2 className="font-semibold">
-              {new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric" }).format(
-                new Date(selectedDayData?.ad)
-              )}
+              {selectedDayData?.ad &&
+                new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric" }).format(
+                  new Date(selectedDayData?.ad)
+                )}
             </h2>
             <p className="mt-2 text-sm text-gray-500">
               {`${getTithi(selectedDayData?.AD_date?.tithi)},
               ${getChandrama(selectedDayData?.AD_date?.chandrama)} •
-              ${selectedDayData?.events.map((event) => event?.jds?.ne).join(" | ")}`}
+              ${selectedDayData?.events?.map((event) => event?.jds?.ne).join(" | ")}`}
             </p>
           </div>
         </div>
         <ReminderPopupModal startDate={new Date(selectedDayData?.ad)} />
-        <div className="m-2 rounded-lg bg-white px-4 py-2 shadow-lg">
-          {getEventsOfSelectedDay(events, new Date(selectedDayData?.ad)).map((event) => {
-            return <SingleReminder key={event.id} event={event} />;
-          })}
-        </div>
+        {!error && (
+          <div className="m-2 rounded-lg bg-white px-4 py-2 shadow-lg">
+            <div className="flex items-center justify-between"></div>
+            {getEventsOfSelectedDay(events, new Date(selectedDayData?.ad))?.map((event) => {
+              return <SingleReminder key={event.id} event={event} />;
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
