@@ -1,8 +1,8 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { checkIfUserIsLoggedInOrOffline } from "../helper/api";
 import { Link, useLocation } from "react-router-dom";
+import useUser from "../helper/useUser";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -17,22 +17,9 @@ function classNames(...classes: string[]): string {
 }
 
 export default function Navbar() {
-  const [status, setStatus] = useState<"OFFLINE" | "NOT_LOGGED_IN" | "LOGGED_IN">("OFFLINE");
   // find current route
   const location = useLocation();
-  const [photoUrl, setPhotoUrl] = useState(null);
-
-  const checkStatus = async () => {
-    const resp = await checkIfUserIsLoggedInOrOffline();
-    setStatus(resp.status);
-    if (resp.status === "LOGGED_IN") {
-      setPhotoUrl(resp.data.user._json.picture);
-    }
-  };
-  useEffect(() => {
-    checkStatus();
-  }, []);
-
+  const { photoUrl, status } = useUser();
   return (
     <Disclosure as="nav" className="border-b bg-white">
       {({ open }) => (

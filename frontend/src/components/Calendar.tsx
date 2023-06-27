@@ -21,6 +21,7 @@ import { Link } from "react-router-dom";
 import { isSameDay } from "date-fns";
 import SingleReminder from "./SingleReminder";
 import { useQuery } from "@tanstack/react-query";
+import useUser from "../helper/useUser";
 
 function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
@@ -63,7 +64,7 @@ const getMonthData = (yearData: YearData | null, currentMonth: number): Day[] =>
   if (!yearData) return [];
   const today = getToday().date;
   const monthData = yearData[currentMonth + 1 < 10 ? "0" + (currentMonth + 1) : currentMonth + 1];
-  if (currentMonth === getToday().month) {
+  if (currentMonth === getToday().month - 1) {
     monthData[today - 1].is_today = true;
   }
   return monthData;
@@ -98,6 +99,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
   };
   const monthData = useMemo(() => getMonthData(yearData, currentMonth), [yearData, currentMonth]);
   const selectedDayData = useMemo(() => monthData[parseInt(selectedDay) - 1], [monthData, selectedDay]);
+  const { status } = useUser();
 
   const fetchRemainders = async () => {
     const res = await fetch(
@@ -112,7 +114,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
     error,
     isLoading,
   } = useQuery({
-    queryKey: ["events"],
+    queryKey: ["events", status],
     queryFn: fetchRemainders,
     enabled: !!monthData.length,
   });
@@ -224,7 +226,9 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
             </p>
           </div>
         </div>
-        <ReminderPopupModal startDate={new Date(selectedDayData?.ad)} />
+        {selectedDayData?.ad && status === "LOGGED_IN" && (
+          <ReminderPopupModal startDate={new Date(selectedDayData?.ad)} />
+        )}
         {!error && !isLoading && (
           <div className="m-2 rounded-lg bg-white px-4 py-2 shadow-lg">
             <div className="flex items-center justify-between"></div>
