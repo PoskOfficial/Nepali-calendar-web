@@ -12,6 +12,11 @@ export default defineConfig({
       manifest: {
         name: "Miti - Nepali Calendar",
         short_name: "Miti",
+        description: "Minimal Nepali Calendar Progressive Web App",
+        edge_side_panel: {
+          preferred_width: 360,
+        },
+
         start_url: "/",
         display: "standalone",
         background_color: "#ffffff",
@@ -90,6 +95,7 @@ export default defineConfig({
       workbox: {
         navigateFallbackDenylist: [/^\/api/],
         globPatterns: ["**/*.{js,css,html,ico,png,svg,json}"],
+
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -136,11 +142,11 @@ export default defineConfig({
           },
           {
             // cache api call /events for 10 days with newtwork first strategy, use relative path
-            urlPattern: /^\/events/i,
+            urlPattern: /\/api\/.*/i,
             handler: "NetworkFirst",
             options: {
               backgroundSync: {
-                name: "events-queue",
+                name: "events",
                 options: {
                   maxRetentionTime: 60 * 60 * 24 * 10, // <== 10 days
                 },
@@ -148,6 +154,7 @@ export default defineConfig({
               fetchOptions: {
                 credentials: "include",
               },
+
               cacheName: "events-cache",
               expiration: {
                 maxEntries: 10,
