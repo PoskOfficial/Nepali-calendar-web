@@ -114,7 +114,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
     error,
     isLoading,
   } = useQuery({
-    queryKey: ["events", status],
+    queryKey: ["events", status, monthData],
     queryFn: fetchRemainders,
     enabled: !!monthData.length,
   });
