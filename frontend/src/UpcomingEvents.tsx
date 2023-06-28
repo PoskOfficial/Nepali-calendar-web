@@ -6,12 +6,15 @@ import { useEffect } from "react";
 import NepaliDate from "nepali-date-converter";
 import { fetchYearlyData } from "./helper/api";
 import DropDown from "./components/DropDown";
-import availableYears from "./constants/availableYears";
-import { nepaliMonths } from "./constants/mahina";
+import UseLanguage from "./helper/useLanguage";
+import { en_availableYears, np_availableYears } from "./constants/availableYears";
+import { np_nepaliMonths, en_nepaliMonths } from "./constants/mahina";
 function UpcomingEvents() {
   function classNames(...classes: Array<string | undefined | boolean>) {
     return classes.filter(Boolean).join(" ");
   }
+  const { isNepaliLanguage } = UseLanguage();
+  const availableYears = en_availableYears;
   const today = new NepaliDate(); //gets today's nepali date
   const [activeYear, setActiveYear] = useState(today.getYear());
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
@@ -66,8 +69,17 @@ function UpcomingEvents() {
           <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
         </button>
         <div className="flex w-96 flex-auto items-center justify-center gap-4 font-mukta font-semibold">
-          <DropDown selected={activeYear} setSelected={setActiveYear} items={availableYears} isValue />
-          <DropDown selected={currentMonth} setSelected={setCurrentMonth} items={nepaliMonths} />
+          <DropDown
+            selected={activeYear}
+            setSelected={setActiveYear}
+            items={isNepaliLanguage ? np_availableYears : en_availableYears}
+            isValue
+          />
+          <DropDown
+            selected={currentMonth}
+            setSelected={setCurrentMonth}
+            items={isNepaliLanguage ? np_nepaliMonths : en_nepaliMonths}
+          />
         </div>
         <button
           type="button"

@@ -5,9 +5,10 @@ import { MapPinIcon, TrashIcon, Bars3BottomLeftIcon, XMarkIcon, ClockIcon } from
 import { isSameDay } from "date-fns";
 import NepaliDate from "nepali-date-converter";
 import nepaliNumber from "../helper/nepaliNumber";
-import mahina from "../constants/mahina";
-import { AmOrPm } from "../helper/times";
+import mahina, { englishMonth } from "../constants/mahina";
+import { en_AmOrPm, ne_AmOrPm } from "../helper/times";
 import Spinner from "./Spinner";
+import useLanguage from "../helper/useLanguage";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function MyModal({
@@ -19,27 +20,62 @@ export default function MyModal({
   onClose: () => void;
   event: Event;
 }) {
+  const { isNepaliLanguage, t } = useLanguage();
+
   const queryClient = useQueryClient();
   const eventDurationString = (event: Event) => {
-    if (event.start.date && event.end.date) {
-      const startDate = new NepaliDate(new Date(event.start.date));
-      if (!isSameDay(new Date(event.start.date), new Date(event.end.date).getTime() - 24 * 60 * 60 * 1000))
-        return "All Day";
-      return ` ${nepaliNumber(startDate.getDate().toString()) + " " + mahina(Number(startDate.getMonth()))}`;
-    } else if (event.start.dateTime && event.end.dateTime) {
-      const startDate = new NepaliDate(new Date(event.start.dateTime));
-      const endDate = new NepaliDate(new Date(event.end.dateTime));
-      if (!isSameDay(new Date(event.start.dateTime), new Date(event.end.dateTime)))
-        return `${
+    if (isNepaliLanguage) {
+      //in nepali
+      if (event.start.date && event.end.date) {
+        const startDate = new NepaliDate(new Date(event.start.date));
+        if (!isSameDay(new Date(event.start.date), new Date(event.end.date).getTime() - 24 * 60 * 60 * 1000))
+          return "All Day";
+        return ` ${
           nepaliNumber(startDate.getDate().toString()) + " " + mahina(Number(startDate.getMonth()))
-        } - ${nepaliNumber(endDate.getDate().toString()) + " " + mahina(Number(endDate.getMonth()))}`;
-      else
-        return `  ${nepaliNumber(startDate.getDate().toString())} ${mahina(startDate.getMonth())} , ${AmOrPm(
-          new Date(event.start.dateTime).getHours(),
-          new Date(event.start.dateTime).getMinutes()
-        )} - ${AmOrPm(new Date(event.end.dateTime).getHours(), new Date(event.end.dateTime).getMinutes())} `;
+        }`;
+      } else if (event.start.dateTime && event.end.dateTime) {
+        const startDate = new NepaliDate(new Date(event.start.dateTime));
+        const endDate = new NepaliDate(new Date(event.end.dateTime));
+        if (!isSameDay(new Date(event.start.dateTime), new Date(event.end.dateTime)))
+          return `${
+            nepaliNumber(startDate.getDate().toString()) + " " + mahina(Number(startDate.getMonth()))
+          } - ${nepaliNumber(endDate.getDate().toString()) + " " + mahina(Number(endDate.getMonth()))}`;
+        else
+          return `  ${nepaliNumber(startDate.getDate().toString())} ${mahina(
+            startDate.getMonth()
+          )} , ${ne_AmOrPm(
+            new Date(event.start.dateTime).getHours(),
+            new Date(event.start.dateTime).getMinutes()
+          )} - ${ne_AmOrPm(
+            new Date(event.end.dateTime).getHours(),
+            new Date(event.end.dateTime).getMinutes()
+          )} `;
+      }
+      return "";
+    } else {
+      if (event.start.date && event.end.date) {
+        const startDate = new NepaliDate(new Date(event.start.date));
+        if (!isSameDay(new Date(event.start.date), new Date(event.end.date).getTime() - 24 * 60 * 60 * 1000))
+          return "All Day";
+        return ` ${startDate.getDate().toString() + " " + englishMonth(Number(startDate.getMonth()))}`;
+      } else if (event.start.dateTime && event.end.dateTime) {
+        const startDate = new NepaliDate(new Date(event.start.dateTime));
+        const endDate = new NepaliDate(new Date(event.end.dateTime));
+        if (!isSameDay(new Date(event.start.dateTime), new Date(event.end.dateTime)))
+          return `${startDate.getDate().toString() + " " + englishMonth(Number(startDate.getMonth()))} - ${
+            endDate.getDate().toString() + " " + englishMonth(Number(endDate.getMonth()))
+          }`;
+        else
+          return `  ${startDate.getDate().toString()} ${englishMonth(startDate.getMonth())} , ${en_AmOrPm(
+            new Date(event.start.dateTime).getHours(),
+            new Date(event.start.dateTime).getMinutes()
+          )} - ${en_AmOrPm(
+            new Date(event.end.dateTime).getHours(),
+            new Date(event.end.dateTime).getMinutes()
+          )} `;
+      }
+      return "";
     }
-    return "";
   };
 
   function closeModal() {
@@ -124,7 +160,9 @@ export default function MyModal({
                           onClose();
                         }}
                         className=" ml-auto flex max-w-[140px]  cursor-pointer items-center justify-center gap-1 rounded-md border border-transparent bg-indigo-600 px-3 py-1 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500  focus:ring-offset-2 disabled:bg-indigo-400">
-                        <h1>{isLoading ? <Spinner className="h-5 w-5 fill-white" /> : "Delete"}</h1>
+                        <h1>
+                          {isLoading ? <Spinner className="h-5 w-5 fill-white" /> : t("homepage.Delete")}
+                        </h1>
                         {!isLoading && <TrashIcon className="h-5 w-5" />}
                       </button>
                     </div>

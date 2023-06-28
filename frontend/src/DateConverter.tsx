@@ -3,7 +3,7 @@ import NepaliDate from "nepali-date-converter";
 import { ArrowsRightLeftIcon } from "@heroicons/react/20/solid";
 import nepaliNumber from "./helper/nepaliNumber";
 import { getWeekDayNepali } from "./helper/dates";
-import { nepaliMonths } from "./constants/mahina";
+import { np_nepaliMonths as nepaliMonths } from "./constants/mahina";
 
 import { useState } from "react";
 const DateConverter = () => {
