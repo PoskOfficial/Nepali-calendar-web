@@ -2,7 +2,7 @@ import { getWeekDayEnglish, getWeekDayNepali } from "../helper/dates";
 import englishMonth from "../helper/englishMonth";
 import nepaliNumber from "../helper/nepaliNumber";
 import { Event } from "../types";
-import UseLanguage from "./useLanguage";
+import UseLanguage from "../helper/useLanguage";
 function SingleEvent({
   nepaliDate,
   englishDate,

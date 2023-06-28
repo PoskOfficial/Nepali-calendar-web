@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import NepaliDate from "nepali-date-converter";
 import { fetchYearlyData } from "./helper/api";
 import DropDown from "./components/DropDown";
-import UseLanguage from "./components/useLanguage";
+import UseLanguage from "./helper/useLanguage";
 import { en_availableYears, np_availableYears } from "./constants/availableYears";
 import { np_nepaliMonths, en_nepaliMonths } from "./constants/mahina";
 function UpcomingEvents() {

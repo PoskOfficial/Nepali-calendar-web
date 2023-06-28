@@ -1,7 +1,7 @@
 import colors from "../constants/colors";
 import { Event } from "../config/db";
 import { useState } from "react";
-import UseLanguage from "./useLanguage";
+import UseLanguage from "../helper/useLanguage";
 import { en_eventDurationString, ne_eventDurationString } from "../helper/times";
 import EventDialog from "./EventDialog";
 function SingleReminder({ event }: { event: Event }) {

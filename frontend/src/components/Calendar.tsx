@@ -25,7 +25,7 @@ import { isSameDay } from "date-fns";
 import SingleReminder from "./SingleReminder";
 import { useTranslation } from "react-i18next";
 import Spinner from "./Spinner";
-import useLanguage from "./useLanguage";
+import useLanguage from "../helper/useLanguage";
 import { useQuery } from "@tanstack/react-query";
 import useUser from "../helper/useUser";
 

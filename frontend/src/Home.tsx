@@ -4,7 +4,7 @@ import { fetchYearlyData } from "./helper/api";
 import { getCurrentYear } from "./helper/dates";
 import { Day } from "./types";
 import { fetchYearlyDataHelper } from "./constants/availableYears";
-import UseLanguage from "./components/useLanguage";
+import UseLanguage from "./helper/useLanguage";
 import nepaliNumber from "./helper/nepaliNumber";
 function Home() {
   const { isNepaliLanguage } = UseLanguage();

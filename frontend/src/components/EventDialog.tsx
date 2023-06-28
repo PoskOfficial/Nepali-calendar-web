@@ -8,7 +8,7 @@ import nepaliNumber from "../helper/nepaliNumber";
 import mahina, { englishMonth } from "../constants/mahina";
 import { en_AmOrPm, ne_AmOrPm } from "../helper/times";
 import Spinner from "./Spinner";
-import useLanguage from "./useLanguage";
+import useLanguage from "../helper/useLanguage";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function MyModal({
