@@ -3,6 +3,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, useLocation } from "react-router-dom";
 import useUser from "../helper/useUser";
+import InstallPWA from "./InstallBtn";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -64,6 +65,9 @@ export default function Navbar() {
                         {item.name}
                       </Link>
                     ))}
+                    <InstallPWA>
+                      <button className="rounded-md px-3 py-2 text-sm font-medium">Install</button>
+                    </InstallPWA>
                   </div>
                 </div>
               </div>
@@ -138,6 +142,11 @@ export default function Navbar() {
                   {item.name}
                 </Disclosure.Button>
               ))}
+              <InstallPWA>
+                <Disclosure.Button className="block rounded-md px-3 py-2 text-base font-medium">
+                  Install
+                </Disclosure.Button>
+              </InstallPWA>
             </div>
           </Disclosure.Panel>
         </>
