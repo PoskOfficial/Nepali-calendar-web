@@ -7,6 +7,7 @@ import PrivacyPolicy from "./PrivacyPolicy.tsx";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Navbar from "./components/Navbar.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "react-hot-toast";
 
 const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
@@ -19,6 +20,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           <Route path="/upcoming" element={<UpcomingEvents />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
         </Routes>
+        <Toaster position="bottom-center" />
       </QueryClientProvider>
     </BrowserRouter>
   </React.StrictMode>
