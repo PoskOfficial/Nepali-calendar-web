@@ -100,7 +100,7 @@ export default function Navbar() {
                         <Menu.Item>
                           {({ active }) => (
                             <a
-                              onClick={() => fetch("/api/auth/logout")}
+                              href="/api/auth/logout"
                               target="_self"
                               className={classNames(
                                 active ? "bg-gray-100" : "",
