@@ -1,30 +1,26 @@
 {
-  "Home": {
-    "1": "Home"
+  "homepage": {
+    "View_all_events": "View all events",
+    "S": "S",
+    "M": "M",
+    "T": "T",
+    "W": "W",
+    "Th": "T",
+    "F": "F",
+    "Sa": "S",
+    "Delete": "Delete"
   },
-  "Upcoming Days": {
-    "1": "Upcoming Days"
-  },
-  "Date Converter": {
-    "1": "Date Converter"
-  },
-  "About": {
-    "1": "About"
-  },
-  "Privacy Policy": {
-    "1": "Privacy Policy"
-  },
+  "navbar": {
+    "Home": "Home",
+    "Upcoming_Days": "Upcoming Days",
+    "Date_Converter": "Date Converter ",
+    "Privacy_Policy": "Privacy Policy",
 
-  "View all events": {
-    "1": "View all events"
-  },
-  "Login": {
-    "1": "Login "
-  },
-  "offline": {
-    "1": "offline "
-  },
-  "Sign out": {
-    "1": "Sign out"
+    "About": "About",
+
+    "Login": "Login ",
+    "offline": "offline ",
+
+    "Sign_out": "Sign Out"
   }
 }

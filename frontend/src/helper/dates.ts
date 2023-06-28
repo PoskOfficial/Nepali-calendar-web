@@ -28,7 +28,7 @@ export function getCurrentYear() {
   const year = new NepaliDate(today).getYear();
   return year;
 }
-export function getTithi(index: number): string {
+export function getTithiNepali(index: number): string {
   const tithiName: {
     [key: number]: string;
   } = {
@@ -51,8 +51,32 @@ export function getTithi(index: number): string {
   };
   return tithiName[index];
 }
+export function getTithiEnglish(index: number): string {
+  const tithiName: {
+    [key: number]: string;
+  } = {
+    1: "Prathama",
+    2: "Dwitiya",
+    3: "Tritiya",
+    4: "Chaturthi",
+    5: "Panchami",
+    6: "Shashti",
+    7: "Saptami",
+    8: "Ashtami",
+    9: "Navami",
+    10: "Dashami",
+    11: "Ekadashi",
+    12: "Dwadashi",
+    13: "Thrayodashi",
+    14: "Chaturdashi",
+    15: "Purnima",
+    30: "Ausi",
+  };
 
-export function getChandrama(index: number): string {
+  return tithiName[index];
+}
+
+export function getChandramaNepali(index: number): string {
   const chandraNames = [
     "\u0915\u093e\u0930\u094d\u0924\u093f\u0915 \u0936\u0941\u0915\u094d\u0932\u092a\u0915\u094d\u0937",
     "\u092e\u093e\u0930\u094d\u0917 \u0915\u0943\u0937\u094d\u0923\u092a\u0915\u094d\u0937",
@@ -81,6 +105,35 @@ export function getChandrama(index: number): string {
   ];
   return chandraNames[index];
 }
+export function getChandramaEnglish(index: number): string {
+  const chandraNames = [
+    "Kartik Shuklapaksha",
+    "Marg Krishna Paksha",
+    "Marg Shuklapaksha",
+    "Poush Krishna Paksha",
+    "Poush Shuklapaksha",
+    "Magh Krishna Paksha",
+    "Magh Shuklapaksha",
+    "Falgun Krishna Paksha",
+    "Falgun Shuklapaksha",
+    "Chaitra Krishna Paksha",
+    "Chaitra Shuklapaksha",
+    "Baisakh Krishna Paksha",
+    "Baisakh Shuklapaksha",
+    "Jestha Krishna Paksha",
+    "Jestha Shuklapaksha",
+    "Ashadh Krishna Paksha",
+    "Ashadh Shuklapaksha",
+    "Shrawan Krishna Paksha",
+    "Shrawan Shuklapaksha",
+    "Bhadra Krishna Paksha",
+    "Bhadra Shuklapaksha",
+    "Ashwin Krishna Paksha",
+    "Ashwin Shuklapaksha",
+    "Kartik Krishna Paksha",
+  ];
+  return chandraNames[index];
+}
 
 export function getWeekDayNepali(index: number): string {
   const weekDayNepali = [
@@ -93,6 +146,10 @@ export function getWeekDayNepali(index: number): string {
     "\u0936\u0928\u093f\u092c\u093e\u0930",
   ];
   return weekDayNepali[index];
+}
+export function getWeekDayEnglish(index: number): string {
+  const weekDayEnglish = ["Sunday", "Monday", "Tuesday", "Wenesday", "Thursday", "Friday", "Saturday"];
+  return weekDayEnglish[index];
 }
 
 export function getNepaliMonth(index: number): string {

@@ -7,11 +7,11 @@ import { useTranslation } from "react-i18next";
 import LanguageChangeDropDown from "./LanguageChangeDropDown";
 
 const navigation = [
-  { name: "Home.1", href: "/" },
-  { name: "Upcoming Days.1", href: "/upcoming" },
-  { name: "Date Converter.1", href: "/test" },
-  { name: "About.1", href: "/about" },
-  { name: "Privacy Policy.1", href: "/privacy" },
+  { name: "navbar.Home", href: "/" },
+  { name: "navbar.Upcoming_Days", href: "/upcoming" },
+  { name: "navbar.Date_Converter", href: "/test" },
+  { name: "navbar.About", href: "/about" },
+  { name: "navbar.Privacy_Policy", href: "/privacy" },
 ];
 
 function classNames(...classes: string[]): string {
@@ -124,10 +124,10 @@ export default function Navbar() {
                     href="/api/auth/google"
                     target="_self"
                     className="rounded-md px-3 py-2 text-sm font-medium text-gray-900">
-                    {t("Login.1")}
+                    {t("navbar.Login")}
                   </a>
                 ) : (
-                  <h1>{t("offline.1")}</h1>
+                  <h1>{t("navbar.offline")}</h1>
                 )}
               </div>
             </div>

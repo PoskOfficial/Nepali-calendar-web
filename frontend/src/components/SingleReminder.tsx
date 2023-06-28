@@ -1,11 +1,14 @@
 import colors from "../constants/colors";
 import { Event } from "../config/db";
 import { useState } from "react";
-import { eventDurationString } from "../helper/times";
+import UseLanguage from "./useLanguage";
+import { en_eventDurationString, ne_eventDurationString } from "../helper/times";
 import EventDialog from "./EventDialog";
 function SingleReminder({ event }: { event: Event }) {
   const [modalOpen, setModalOpen] = useState(false);
   console.log(modalOpen);
+  const { isNepaliLanguage } = UseLanguage();
+
   return (
     <div onClick={() => setModalOpen(true)} className="items-center border-b py-2 text-start">
       {modalOpen && <EventDialog modalOpen={modalOpen} event={event} onClose={() => setModalOpen(false)} />}
@@ -16,7 +19,7 @@ function SingleReminder({ event }: { event: Event }) {
           style={{
             backgroundColor: event.colorId ? colors[event.colorId] : "transparent",
           }}></span>
-        <p className="">{eventDurationString(event)}</p>
+        <p className="">{isNepaliLanguage ? ne_eventDurationString(event) : en_eventDurationString(event)}</p>
       </div>
     </div>
   );

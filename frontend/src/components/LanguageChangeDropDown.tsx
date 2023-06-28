@@ -2,14 +2,13 @@ import { Fragment, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { useTranslation } from "react-i18next";
-
 export default function LanguageChangeDropDown() {
   const { i18n } = useTranslation();
   const langauges = [
     { name: "English", onClick: () => i18n.changeLanguage("en-US") },
     { name: "नेपाली", onClick: () => i18n.changeLanguage("ne-NP") },
   ];
-  const [selected, setSelected] = useState(langauges[0]);
+  const [selected, setSelected] = useState(i18n.language == "en-US" ? langauges[0] : langauges[1]);
   return (
     <div className=" z-50 flex w-[120px] items-center justify-center">
       <Listbox value={selected} onChange={setSelected}>

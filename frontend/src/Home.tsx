@@ -3,6 +3,7 @@ import Calendar from "./components/Calendar";
 import { fetchYearlyData } from "./helper/api";
 import { getCurrentYear } from "./helper/dates";
 import { Day } from "./types";
+import { fetchYearlyDataHelper } from "./constants/availableYears";
 
 function Home() {
   const [yearData, setYearData] = useState<{ [key: string]: Day[] } | null>(null);
@@ -11,9 +12,8 @@ function Home() {
     const data = await fetchYearlyData(currentYear.toString());
     setYearData(data);
   }
-
   useEffect(() => {
-    fetchCalendarData(currentYear);
+    fetchCalendarData(fetchYearlyDataHelper(currentYear.toString()));
   }, [currentYear]);
 
   return (

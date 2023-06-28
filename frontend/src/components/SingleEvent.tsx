@@ -1,7 +1,8 @@
-import { getWeekDayNepali } from "../helper/dates";
+import { getWeekDayEnglish, getWeekDayNepali } from "../helper/dates";
 import englishMonth from "../helper/englishMonth";
 import nepaliNumber from "../helper/nepaliNumber";
 import { Event } from "../types";
+import UseLanguage from "./useLanguage";
 function SingleEvent({
   nepaliDate,
   englishDate,
@@ -13,15 +14,22 @@ function SingleEvent({
   week_day: number;
   events: Event[];
 }) {
-  const nepaliEvents = events.map((event) => event?.jds?.ne);
+  const { isNepaliLanguage } = UseLanguage();
+  const nepaliEvents = isNepaliLanguage
+    ? events.map((event) => event?.jds?.ne)
+    : events.map((event) => event?.jds?.en);
   const eventsString: string = nepaliEvents.join(" / ");
   return (
     <div>
       {eventsString.length > 0 && (
         <div className="border-bordersubtle flex max-w-[600px] border py-3 pl-1 font-mukta">
           <div className="date_info  border-bordersubtle min-w-[80px]  border-r pr-2">
-            <h1 className="text-center font-semibold">{nepaliNumber(nepaliDate.split(".")[0])}</h1>
-            <h2 className="text-center">{getWeekDayNepali(week_day)}</h2>
+            <h1 className="text-center font-semibold">
+              {isNepaliLanguage ? nepaliNumber(nepaliDate.split(".")[0]) : nepaliDate.split(".")[0]}
+            </h1>
+            <h2 className="text-center">
+              {isNepaliLanguage ? getWeekDayNepali(week_day) : getWeekDayEnglish(week_day)}
+            </h2>
           </div>
           <div className=" events pl-3">
             <h3 className="text-sm">
