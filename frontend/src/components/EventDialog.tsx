@@ -8,7 +8,7 @@ import nepaliNumber from "../helper/nepaliNumber";
 import mahina, { englishMonth } from "../constants/mahina";
 import { en_AmOrPm, ne_AmOrPm } from "../helper/times";
 import Spinner from "./Spinner";
-import UseLanguage from "./useLanguage";
+import useLanguage from "./useLanguage";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function MyModal({
@@ -20,7 +20,7 @@ export default function MyModal({
   onClose: () => void;
   event: Event;
 }) {
-  const { isNepaliLanguage, t } = UseLanguage();
+  const { isNepaliLanguage, t } = useLanguage();
 
   const queryClient = useQueryClient();
   const eventDurationString = (event: Event) => {

@@ -1,7 +1,6 @@
 import { Dispatch, Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { ChevronUpDownIcon, CheckIcon } from "@heroicons/react/20/solid";
-import { useTranslation } from "react-i18next";
 
 interface DropDownProps {
   selected: number;
@@ -11,7 +10,6 @@ interface DropDownProps {
 }
 
 const DropDown = ({ selected, setSelected, items, isValue }: DropDownProps) => {
-  const { t } = useTranslation();
   return (
     <div className="w-32 ">
       <Listbox value={selected} onChange={(value) => setSelected(value)}>

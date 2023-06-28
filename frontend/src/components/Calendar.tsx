@@ -25,7 +25,7 @@ import { isSameDay } from "date-fns";
 import SingleReminder from "./SingleReminder";
 import { useTranslation } from "react-i18next";
 import Spinner from "./Spinner";
-import UseLanguage from "./useLanguage";
+import useLanguage from "./useLanguage";
 import { useQuery } from "@tanstack/react-query";
 import useUser from "../helper/useUser";
 
@@ -77,7 +77,7 @@ const getMonthData = (yearData: YearData | null, currentMonth: number): Day[] =>
 };
 
 export default function Calendar({ yearData, setCurrentYear, currentYear }: Calender) {
-  const { isNepaliLanguage } = UseLanguage();
+  const { isNepaliLanguage } = useLanguage();
 
   const [currentMonth, setCurrentMonth] = useState(getCurrentMonth());
   const [selectedDay, setSelectedDay] = useState<string>(
