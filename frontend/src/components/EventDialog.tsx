@@ -1,5 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Event } from "../config/db";
 import { MapPinIcon, TrashIcon, Bars3BottomLeftIcon, XMarkIcon, ClockIcon } from "@heroicons/react/20/solid";
 import { isSameDay } from "date-fns";
@@ -9,6 +9,7 @@ import mahina, { englishMonth } from "../constants/mahina";
 import { en_AmOrPm, ne_AmOrPm } from "../helper/times";
 import Spinner from "./Spinner";
 import UseLanguage from "./useLanguage";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function MyModal({
   modalOpen,
@@ -21,7 +22,7 @@ export default function MyModal({
 }) {
   const { isNepaliLanguage, t } = UseLanguage();
 
-  const [deleteLoading, setDeleteLoading] = useState(false);
+  const queryClient = useQueryClient();
   const eventDurationString = (event: Event) => {
     if (isNepaliLanguage) {
       //in nepali
@@ -81,15 +82,20 @@ export default function MyModal({
     onClose();
   }
   const deleteEvent = async () => {
-    setDeleteLoading(true);
-    const response = await fetch(`/api/delete/${event.id}`, {
+    await fetch(`/api/delete/${event.id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
     });
-    response.status == 200 && setDeleteLoading(false);
   };
+
+  const { mutateAsync, isLoading } = useMutation(() => deleteEvent(), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["events"]);
+      closeModal();
+    },
+  });
 
   return (
     <>
@@ -148,16 +154,16 @@ export default function MyModal({
                         </div>
                       )}
                       <button
-                        disabled={deleteLoading}
+                        disabled={isLoading}
                         onClick={async () => {
-                          await deleteEvent();
+                          await mutateAsync();
                           onClose();
                         }}
                         className=" ml-auto flex max-w-[140px]  cursor-pointer items-center justify-center gap-1 rounded-md border border-transparent bg-indigo-600 px-3 py-1 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500  focus:ring-offset-2 disabled:bg-indigo-400">
                         <h1>
-                          {deleteLoading ? <Spinner className="h-5 w-5 fill-white" /> : t("homepage.Delete")}
+                          {isLoading ? <Spinner className="h-5 w-5 fill-white" /> : t("homepage.Delete")}
                         </h1>
-                        {!deleteLoading && <TrashIcon className="h-5 w-5" />}
+                        {!isLoading && <TrashIcon className="h-5 w-5" />}
                       </button>
                     </div>
                   </div>

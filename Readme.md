@@ -29,14 +29,20 @@ curl -fsSL https://deta.space/assets/space-cli.sh | sh
 
 ## Installation
 
-Clone the repository
+Fork the repository and clone it to your local machine
 
 ```bash
-git clone https://github.com/poskOfficial/Nepali-calendar-web.git
+git clone https://github.com/<your username>/Nepali-calendar-web.git
 ```
 
 
 Login to Deta Space
+
+- Sign up for a free account at [https://deta.space](https://deta.space) (enable developer mode)
+- Skip onboarding
+- Search for settings on the search bar at the buttom 
+- Create access token
+- Paste the access token on the terminal after running the following command
 
 ```bash
 space login
@@ -51,12 +57,9 @@ space new
 Install dependencies for both backend and frontend
 
 ```bash
-cd backend && pnpm install
+pnpm install
 ```
-
-```bash
-cd frontend && pnpm install
-```
+Note: You need to use pnpm for package management. You can install pnpm by running `npm install -g pnpm`
 
 Run on dev mode
 
@@ -64,18 +67,7 @@ Run on dev mode
 space dev
 ```
 
-Additionally to test if it works on prod, you can run the following command
-
-```bash
-space push
-```
-
-Note: Dude to current limitation of Deta Space, you need to run `cd backend && pnpm build` to compile typescript before running `space push` command.
-
-```bash
-space open
-```
-
+If you are getting issues related to nodemon not being installed, you can install it globally by running `npm install -g nodemon`
 
 ## Environment Variables
 
@@ -91,4 +83,13 @@ To set environment variable on local you can pass it as a command line argument
 GOOGLE_CLIENT_ID=your_client_id GOOGLE_CLIENT_SECRET=your_client_secret space dev
 ```
 
+```powershell
+$env:GOOGLE_CLIENT_ID="your_client_id"
+$env:GOOGLE_CLIENT_SECRET="your_client_secret"
+space dev
+```
+
+
 For more information on how to get `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` check [this](https://developers.google.com/identity/protocols/oauth2) out. You need to enable calendar api and create credentials to get these values.
+
+If you are having issues with this part, you can contact the team at our [Discord Server](https://discord.gg/W5DJv9zSaW).

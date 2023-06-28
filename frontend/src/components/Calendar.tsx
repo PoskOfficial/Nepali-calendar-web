@@ -12,7 +12,7 @@ import {
   getChandramaEnglish,
 } from "../helper/dates";
 import nepaliNumber from "../helper/nepaliNumber";
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { Event } from "../config/db";
 import { en_nepaliMonths, np_nepaliMonths } from "../constants/mahina";
 import { en_availableYears, np_availableYears } from "../constants/availableYears";
@@ -26,12 +26,16 @@ import SingleReminder from "./SingleReminder";
 import { useTranslation } from "react-i18next";
 import Spinner from "./Spinner";
 import UseLanguage from "./useLanguage";
+import { useQuery } from "@tanstack/react-query";
+import useUser from "../helper/useUser";
+
 function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
 }
 
 const getEventsOfSelectedDay = (events: Event[], day: Date) => {
-  return events.filter((event) => {
+  if (!events) return [];
+  return events?.filter((event) => {
     if (event.start.date && event.end.date) {
       const startDate = new Date(event.start.date);
       const endDate = new Date(new Date(event.end.date).getTime() - 24 * 60 * 60 * 1000);
@@ -66,7 +70,7 @@ const getMonthData = (yearData: YearData | null, currentMonth: number): Day[] =>
   if (!yearData) return [];
   const today = getToday().date;
   const monthData = yearData[currentMonth + 1 < 10 ? "0" + (currentMonth + 1) : currentMonth + 1];
-  if (currentMonth === getToday().month) {
+  if (currentMonth === getToday().month - 1) {
     monthData[today - 1].is_today = true;
   }
   return monthData;
@@ -79,8 +83,6 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
   const [selectedDay, setSelectedDay] = useState<string>(
     getCurrentMonth() === currentMonth ? getToday().dateStr : "01"
   );
-
-  const [events, setEvents] = useState<Event[]>([]);
 
   const handleNextMonth = () => {
     if (currentMonth == 11) {
@@ -107,18 +109,26 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
   console.log(monthData);
   const selectedDayData = useMemo(() => monthData[parseInt(selectedDay) - 1], [monthData, selectedDay]);
   const { t, i18n } = useTranslation();
+  const { status } = useUser();
 
-  useEffect(() => {
-    const fetchRemainders = async () => {
-      if (!monthData.length) return;
-      const data = await fetch(
-        `/api/events?timeMin=${monthData[0].ad}&timeMax=${monthData[monthData.length - 1].ad}`
-      ).then((res) => res.json());
-      // console.log({ data });
-      if (data.events) setEvents(data.events);
-    };
-    fetchRemainders();
-  }, [currentMonth, currentYear, monthData]);
+  const fetchRemainders = async () => {
+    const res = await fetch(
+      `/api/events?timeMin=${monthData[0].ad}&timeMax=${monthData[monthData.length - 1].ad}`
+    );
+    const data = await res.json();
+    return data.events;
+  };
+
+  const {
+    data: events,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["events", status, monthData],
+    queryFn: fetchRemainders,
+    enabled: !!monthData.length,
+    networkMode: "offlineFirst",
+  });
 
   if (!yearData)
     return (
@@ -190,14 +200,15 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
                 selectedDay === day.day && "bg-indigo-600",
                 (day.events.find((event) => event.jds?.gh == "1") || day.week_day === 6) && "text-rose-600"
               )}>
-              {Array.from(
-                new Set(getEventsOfSelectedDay(events, new Date(day?.ad)).map((event) => event.colorId))
-              ).map((color, i) => (
-                <span
-                  key={i}
-                  style={{ backgroundColor: color ? colors[color] : "#475569" }}
-                  className={classNames(`mx-[1px] inline-block h-1 w-1 rounded-full`)}></span>
-              ))}
+              {events &&
+                Array.from(
+                  new Set(getEventsOfSelectedDay(events, new Date(day?.ad))?.map((event) => event.colorId))
+                )?.map((color, i) => (
+                  <span
+                    key={i}
+                    style={{ backgroundColor: color ? colors[color] : "#475569" }}
+                    className={classNames(`mx-[1px] inline-block h-1 w-1 rounded-full`)}></span>
+                ))}
               <time
                 dateTime={day.AD_date.bs}
                 className={classNames(
@@ -233,9 +244,10 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
 
           <div className="ml-4 text-left">
             <h2 className="font-semibold">
-              {new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric" }).format(
-                new Date(selectedDayData?.ad)
-              )}
+              {selectedDayData?.ad &&
+                new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric" }).format(
+                  new Date(selectedDayData?.ad)
+                )}
             </h2>
             <p className="mt-2 text-sm text-gray-500">
               {i18n.language != "en-US"
@@ -248,12 +260,17 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
             </p>
           </div>
         </div>
-        <ReminderPopupModal startDate={new Date(selectedDayData?.ad)} />
-        <div className="m-2 rounded-lg bg-white px-4 py-2 shadow-lg">
-          {getEventsOfSelectedDay(events, new Date(selectedDayData?.ad)).map((event) => {
-            return <SingleReminder key={event.id} event={event} />;
-          })}
-        </div>
+        {selectedDayData?.ad && status === "LOGGED_IN" && (
+          <ReminderPopupModal startDate={new Date(selectedDayData?.ad)} />
+        )}
+        {!error && !isLoading && (
+          <div className="m-2 rounded-lg bg-white px-4 py-2 shadow-lg">
+            <div className="flex items-center justify-between"></div>
+            {getEventsOfSelectedDay(events, new Date(selectedDayData?.ad))?.map((event) => {
+              return <SingleReminder key={event.id} event={event} />;
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

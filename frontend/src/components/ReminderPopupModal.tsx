@@ -3,13 +3,68 @@ import { PlusIcon } from "@heroicons/react/20/solid";
 import { PencilSquareIcon, MapPinIcon, Bars3BottomLeftIcon, SwatchIcon } from "@heroicons/react/24/outline";
 import colors from "../constants/colors";
 import { Switch } from "@headlessui/react";
+import NepaliDatePicker from "./NepaliDatePicker";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+
+function getCombinedDateTime(date: Date, time: string) {
+  const timeParts = time.split(":");
+  date.setHours(parseInt(timeParts[0], 10));
+  date.setMinutes(parseInt(timeParts[1], 10));
+  return date.toISOString();
+}
 
 function RemindersPopupModal({ startDate }: { startDate: Date }) {
   const [openModel, setOpenModel] = useState(false);
   const [isAllDayEvent, setIsAllDayEvent] = useState(false);
   const [eventStartDate, setEventStartDate] = useState(startDate);
   const [eventEndDate, setEventEndDate] = useState(new Date(startDate.getTime() + 24 * 60 * 60 * 1000));
-  const [isLoading, setIsLoading] = useState(false);
+
+  const queryClient = useQueryClient();
+
+  const { mutateAsync, isLoading, data } = useMutation({
+    onSuccess: () => {
+      queryClient.invalidateQueries(["events"]);
+      setOpenModel(false);
+    },
+    mutationFn: async (eventData: any) => {
+      const res = await fetch("/api/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(eventData),
+      });
+      return await res.json();
+    },
+  });
+
+  const handelSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const startEndDates = isAllDayEvent
+      ? {
+          start: { date: eventStartDate.toISOString().split("T")[0] },
+          end: { date: eventEndDate.toISOString().split("T")[0] },
+        }
+      : {
+          start: { dateTime: getCombinedDateTime(startDate, e.currentTarget.startTime.value) },
+          end: { dateTime: getCombinedDateTime(eventEndDate, e.currentTarget.endTime.value) },
+        };
+
+    try {
+      const eventData = {
+        ...startEndDates,
+        summary: e.currentTarget.summary.value,
+        location: e.currentTarget.location.value,
+        description: e.currentTarget.description.value,
+        colorId: e.currentTarget.colorId.value || null,
+      };
+
+      await mutateAsync(eventData);
+      console.log({ event: data });
+    } catch (err) {
+      console.log(err);
+    }
+  };
   if (!openModel)
     return (
       <button
@@ -18,51 +73,6 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
         <PlusIcon className="m-3" />
       </button>
     );
-  const handelSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    setIsLoading(true);
-    const startEndDates = isAllDayEvent
-      ? {
-          start: { date: eventStartDate.toISOString().split("T")[0] },
-          end: { date: eventEndDate.toISOString().split("T")[0] },
-        }
-      : { start: { dateTime: eventStartDate.toISOString() }, end: { dateTime: eventEndDate.toISOString() } };
-
-    e.preventDefault();
-    try {
-      const event = await fetch(`/api/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...startEndDates,
-          summary: e.currentTarget.summary.value,
-          location: e.currentTarget.location.value,
-          description: e.currentTarget.description.value,
-          colorId: e.currentTarget.colorId.value || null,
-        }),
-      }).then((res) => {
-        return res.json();
-      });
-      setIsLoading(false);
-      console.log({ event });
-      // const id = await db.reminders.add({
-      //   date,
-      //   colorId: "",
-      //   summary: "",
-      //   location: "",
-      //   description: "",
-      //   start: {
-      //     date: date,
-      //   },
-      // });
-      setOpenModel(false);
-      // if (!id) throw new Error("Something went wrong");
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
     <div className="fixed inset-0 flex items-end bg-gray-900/50 md:items-center md:justify-center ">
       <div className="flex-end w-full rounded-t-lg bg-white px-4 pb-4 md:w-2/3 md:rounded-b-lg lg:w-2/4">
@@ -90,7 +100,7 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
                   />
                 </Switch>
               </div>
-              <div className="my-2 flex w-full items-center gap-2">
+              {/* <div className="my-2 flex w-full items-center gap-2">
                 <span className="font-sans">From: </span>
                 <input
                   type={isAllDayEvent ? "date" : "datetime-local"}
@@ -119,6 +129,16 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
                   }
                   onChange={(e) => setEventEndDate(new Date(e.target.value))}
                 />
+              </div> */}
+              <div className="my-2 flex w-full items-center gap-2">
+                <span>From: </span>
+                <NepaliDatePicker setDate={setEventStartDate} date={eventStartDate} />
+                {!isAllDayEvent && <input type="time" name="startTime" className="rounded-lg border p-1" />}
+              </div>
+              <div className="my-2 flex w-full items-center gap-2">
+                <span>To:</span>
+                <NepaliDatePicker setDate={setEventEndDate} date={eventEndDate} />
+                {!isAllDayEvent && <input type="time" name="endTime" className="rounded-lg border p-1" />}
               </div>
               <div className="my-2 flex w-full items-center gap-2">
                 <PencilSquareIcon className="h-6 w-6" />
@@ -138,15 +158,6 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
                   placeholder="location"
                 />
               </div>
-              {/* <div className="my-2 flex w-full items-center gap-2">
-                <CalendarDaysIcon className="h-6 w-6" />
-                <input
-                  type="date"
-                  name="date"
-                  className="w-full flex-1 rounded-lg border px-4 py-1 outline-none focus:outline-blue-600 "
-                  placeholder="date"
-                />
-              </div> */}
               <div className="my-2 flex w-full items-start gap-2">
                 <Bars3BottomLeftIcon className="h-6 w-6" />
                 <textarea
