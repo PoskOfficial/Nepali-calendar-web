@@ -1,4 +1,4 @@
-export const nepaliMonths = [
+export const np_nepaliMonths = [
   "बैशाख",
   "जेठ",
   "असार",
@@ -12,9 +12,26 @@ export const nepaliMonths = [
   "फाल्गुन",
   "चैत्र",
 ];
+export const en_nepaliMonths = [
+  "Baisakh",
+  "Jestha",
+  "Ashad",
+  "Shrawn",
+  "Bhadra",
+  "Ashoj",
+  "Kartik",
+  "Mangshir",
+  "Paush",
+  "Magh",
+  "Falgun",
+  "Chaitra",
+];
 
 const mahina = (index: number): string => {
-  return nepaliMonths[index];
+  return np_nepaliMonths[index];
+};
+export const englishMonth = (index: number): string => {
+  return en_nepaliMonths[index];
 };
 
 export default mahina;

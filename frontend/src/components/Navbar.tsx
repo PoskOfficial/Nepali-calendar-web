@@ -2,15 +2,17 @@ import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+// import LanguageChangeDropDown from "./LanguageChangeDropDown";
+
 import useUser from "../helper/useUser";
 import InstallPWA from "./InstallBtn";
-
 const navigation = [
-  { name: "Home", href: "/" },
-  { name: "Upcoming Events", href: "/upcoming" },
-  { name: "Date Converter", href: "/converter" },
-  { name: "About", href: "/about" },
-  { name: "Privacy Policy", href: "/privacy" },
+  { name: "navbar.Home", href: "/" },
+  { name: "navbar.Upcoming_Days", href: "/upcoming" },
+  { name: "navbar.Date_Converter", href: "/converter" },
+  { name: "navbar.About", href: "/about" },
+  { name: "navbar.Privacy_Policy", href: "/privacy" },
 ];
 
 function classNames(...classes: string[]): string {
@@ -20,6 +22,8 @@ function classNames(...classes: string[]): string {
 export default function Navbar() {
   // find current route
   const location = useLocation();
+  const { t } = useTranslation();
+
   const { photoUrl, status } = useUser();
   return (
     <Disclosure as="nav" className="border-b bg-white">
@@ -52,7 +56,7 @@ export default function Navbar() {
                   />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
+                  <div className="flex items-center space-x-4">
                     {navigation.map((item) => (
                       <Link
                         key={item.name}
@@ -62,9 +66,10 @@ export default function Navbar() {
                           "rounded-md px-3 py-2 text-sm font-medium"
                         )}
                         aria-current={item.href === location.pathname ? "page" : undefined}>
-                        {item.name}
+                        {t(item.name)}
                       </Link>
                     ))}
+                    {/* <LanguageChangeDropDown /> */}
                     <InstallPWA>
                       <button className="rounded-md px-3 py-2 text-sm font-medium">Install</button>
                     </InstallPWA>
@@ -106,7 +111,7 @@ export default function Navbar() {
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
                               )}>
-                              Sign out
+                              {t("Sign out.1")}
                             </a>
                           )}
                         </Menu.Item>
@@ -118,10 +123,10 @@ export default function Navbar() {
                     href="/api/auth/google"
                     target="_self"
                     className="rounded-md px-3 py-2 text-sm font-medium text-gray-900">
-                    Login
+                    {t("navbar.Login")}
                   </a>
                 ) : (
-                  "offline"
+                  <h1>{t("navbar.offline")}</h1>
                 )}
               </div>
             </div>
@@ -139,9 +144,10 @@ export default function Navbar() {
                     "block rounded-md px-3 py-2 text-base font-medium"
                   )}
                   aria-current={item.href === location.pathname ? "page" : undefined}>
-                  {item.name}
+                  {t(item.name)}
                 </Disclosure.Button>
               ))}
+              {/* <LanguageChangeDropDown /> */}
               <InstallPWA>
                 <Disclosure.Button className="block rounded-md px-3 py-2 text-base font-medium">
                   Install
