@@ -1,13 +1,14 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { checkIfUserIsLoggedInOrOffline } from "../helper/api";
 import { Link, useLocation } from "react-router-dom";
+import useUser from "../helper/useUser";
+import InstallPWA from "./InstallBtn";
 
 const navigation = [
   { name: "Home", href: "/" },
   { name: "Upcoming Events", href: "/upcoming" },
-  { name: "Date Converter", href: "/test" },
+  { name: "Date Converter", href: "/converter" },
   { name: "About", href: "/about" },
   { name: "Privacy Policy", href: "/privacy" },
 ];
@@ -17,22 +18,9 @@ function classNames(...classes: string[]): string {
 }
 
 export default function Navbar() {
-  const [status, setStatus] = useState<"OFFLINE" | "NOT_LOGGED_IN" | "LOGGED_IN">("OFFLINE");
   // find current route
   const location = useLocation();
-  const [photoUrl, setPhotoUrl] = useState(null);
-
-  const checkStatus = async () => {
-    const resp = await checkIfUserIsLoggedInOrOffline();
-    setStatus(resp.status);
-    if (resp.status === "LOGGED_IN") {
-      setPhotoUrl(resp.data.user._json.picture);
-    }
-  };
-  useEffect(() => {
-    checkStatus();
-  }, []);
-
+  const { photoUrl, status } = useUser();
   return (
     <Disclosure as="nav" className="border-b bg-white">
       {({ open }) => (
@@ -52,8 +40,16 @@ export default function Navbar() {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <img className="block h-8 w-auto lg:hidden" src="/icon-512x512.png" alt="Your Company" />
-                  <img className="hidden h-8 w-auto lg:block" src="/icon-512x512.png" alt="Your Company" />
+                  <img
+                    className="block h-8 w-auto lg:hidden"
+                    src="/icons/icon-512x512.png"
+                    alt="Your Company"
+                  />
+                  <img
+                    className="hidden h-8 w-auto lg:block"
+                    src="/icons/icon-512x512.png"
+                    alt="Your Company"
+                  />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
@@ -69,6 +65,9 @@ export default function Navbar() {
                         {item.name}
                       </Link>
                     ))}
+                    <InstallPWA>
+                      <button className="rounded-md px-3 py-2 text-sm font-medium">Install</button>
+                    </InstallPWA>
                   </div>
                 </div>
               </div>
@@ -101,7 +100,7 @@ export default function Navbar() {
                         <Menu.Item>
                           {({ active }) => (
                             <a
-                              onClick={() => fetch("/api/auth/logout")}
+                              href="/api/auth/logout"
                               target="_self"
                               className={classNames(
                                 active ? "bg-gray-100" : "",
@@ -143,6 +142,11 @@ export default function Navbar() {
                   {item.name}
                 </Disclosure.Button>
               ))}
+              <InstallPWA>
+                <Disclosure.Button className="block rounded-md px-3 py-2 text-base font-medium">
+                  Install
+                </Disclosure.Button>
+              </InstallPWA>
             </div>
           </Disclosure.Panel>
         </>

@@ -79,7 +79,8 @@ export function getChandrama(index: number): string {
     "\u0906\u0936\u094d\u0935\u093f\u0928 \u0936\u0941\u0915\u094d\u0932\u092a\u0915\u094d\u0937",
     "\u0915\u093e\u0930\u094d\u0924\u093f\u0915 \u0915\u0943\u0937\u094d\u0923\u092a\u0915\u094d\u0937",
   ];
-  return chandraNames[index];
+
+  return (Math.floor(index - 1) < index - 1 ? "अधिक " : "") + chandraNames[Math.floor(index - 1)];
 }
 
 export function getWeekDayNepali(index: number): string {
