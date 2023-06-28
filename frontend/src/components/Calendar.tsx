@@ -117,6 +117,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
     queryKey: ["events", status, monthData],
     queryFn: fetchRemainders,
     enabled: !!monthData.length,
+    networkMode: "offlineFirst",
   });
 
   console.log(getEventsOfSelectedDay(events, new Date(selectedDayData?.ad)));
