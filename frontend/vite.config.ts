@@ -85,12 +85,12 @@ export default defineConfig({
         shortcuts: [
           {
             name: "Homepage",
-            url: "homepage",
+            url: "/",
             description: "Go to homepage",
             icons: [
               {
                 src: "/icons/home.png",
-                sizes: "64x64",
+                sizes: "96x96",
               },
             ],
           },
@@ -101,7 +101,7 @@ export default defineConfig({
             icons: [
               {
                 src: "/icons/converter.png",
-                sizes: "64x64",
+                sizes: "96x96",
               },
             ],
           },
