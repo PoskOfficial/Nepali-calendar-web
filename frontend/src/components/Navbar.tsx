@@ -8,7 +8,7 @@ import InstallPWA from "./InstallBtn";
 const navigation = [
   { name: "Home", href: "/" },
   { name: "Upcoming Events", href: "/upcoming" },
-  { name: "Date Converter", href: "/test" },
+  { name: "Date Converter", href: "/converter" },
   { name: "About", href: "/about" },
   { name: "Privacy Policy", href: "/privacy" },
 ];
