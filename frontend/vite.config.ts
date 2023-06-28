@@ -8,6 +8,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
+      strategies: "generateSW",
       injectRegister: "auto",
       manifest: {
         name: "Miti - Nepali Calendar",
@@ -86,6 +87,50 @@ export default defineConfig({
             name: "Homepage",
             url: "homepage",
             description: "Go to homepage",
+            icons: [
+              {
+                src: "/icons/home.png",
+                sizes: "64x64",
+              },
+            ],
+          },
+          {
+            name: "Date Converter",
+            url: "converter",
+            description: "Go to date converter",
+            icons: [
+              {
+                src: "/icons/converter.png",
+                sizes: "64x64",
+              },
+            ],
+          },
+        ],
+        screenshots: [
+          {
+            src: "/screenshots/image1.png",
+            sizes: "1357x678",
+            type: "image/png",
+          },
+          {
+            src: "/screenshots/image2.png",
+            sizes: "1357x678",
+            type: "image/png",
+          },
+          {
+            src: "/screenshots/image3.png",
+            sizes: "1357x678",
+            type: "image/png",
+          },
+          {
+            src: "/screenshots/image4.png",
+            sizes: "1357x678",
+            type: "image/png",
+          },
+          {
+            src: "/screenshots/image5.png",
+            sizes: "1357x678",
+            type: "image/png",
           },
         ],
       },
