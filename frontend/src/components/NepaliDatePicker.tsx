@@ -129,7 +129,6 @@ function NepaliDatePicker({ setDate, date }: { setDate: Dispatch<React.SetStateA
     return { ...new NepaliDate(date).getBS(), month: new NepaliDate(date).getBS().month + 1 };
   }, [date]);
 
-  // console.log("dateBs", dateBs);
 
   const getDays = (year: keyof typeof nepaliDateData | null, month: string | null) => {
     if (!year || !month) return [];
