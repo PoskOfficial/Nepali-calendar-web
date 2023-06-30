@@ -10,23 +10,11 @@ i18n
   .init({
     fallbackLng: "en-US",
     debug: true,
-    whitelist: languages,
+    // whitelist: languages,
     interpolation: {
       escapeValue: false, // not needed for react!!
     },
-
-    // react i18next special options (optional)
-    // override if needed - omit if ok with defaults
-    /*
-    react: {
-      bindI18n: 'languageChanged',
-      bindI18nStore: '',
-      transEmptyNodeValue: '',
-      transSupportBasicHtmlNodes: true,
-      transKeepBasicHtmlNodesFor: ['br', 'strong', 'i'],
-      useSuspense: true,
-    }
-    */
+    supportedLngs: languages,
   });
 
 export default i18n;
