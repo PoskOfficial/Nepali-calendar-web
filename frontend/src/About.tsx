@@ -9,10 +9,11 @@ const AboutPage = () => {
           individuals live by. I was looking for a minimalist Nepali calendar app that would allow me to sync
           events with google calendar. Imagine a scenario, you have an appointment for a meeting with Ram on
           Asadh 15 and you want to create a reminder, it requires you to first convert the date to the
-          Gregorian calendar and then create the event. We understand the challenges faced when scheduling
-          events or appointments in one calendar system and trying to decipher the corresponding date in the
-          other. Miti is here to simplify your life by seamlessly syncing events between the Nepali and
-          Gregorian calendars.
+          Gregorian calendar and then create a reminder on your calendar app. I proposed to develop a minimal
+          calendar app as a part of our open source effort to the team at POSK. The team understood the
+          challenges faced when scheduling events or appointments in one calendar system and trying to
+          decipher the corresponding date in the other and Miti started out as a soluton. Miti is here to
+          simplify your life by seamlessly syncing events between the Nepali and Gregorian calendars.
         </p>
       </div>
       <div className="mb-8">
@@ -33,8 +34,8 @@ const AboutPage = () => {
         <p className="text-gray-600">
           With Miti, creating events using the Nepali date and viewing them in the Gregorian date format and
           vice versa becomes effortless. You can simply input the Nepali date for your event in the Miti app,
-          and it will automatically be converted to the corresponding Gregorian date in Google Calendar. We
-          also provide a converter tool that allows you to convert dates between the Nepali and Gregorian
+          and it will automatically be converted to the corresponding Gregorian date in Google Calendar. Miti
+          also provides a converter tool that allows you to convert dates between the Nepali and Gregorian
           calendar.
         </p>
       </div>
@@ -51,11 +52,8 @@ const AboutPage = () => {
         <h2 className="mb-4 text-xl font-semibold">Simplicity and Efficiency:</h2>
         <p className="text-gray-600">
           Unlike existing calendar apps that are often bloated and lack essential features, Miti focuses on
-          being a minimalistic and efficient tool. We understand that simplicity is key when it comes to
-          managing your schedule, which is why Miti offers a clutter-free interface and prioritizes the
-          essential functionalities you need in a calendar app – sync, reminders, and an intuitive user
-          experience. We have intentionally limited the features to ensure that the app remains lightweight
-          and minimal.
+          being a minimalistic and efficient tool. We have intentionally limited the features to ensure that
+          the app remains lightweight and minimal.
         </p>
       </div>
       <div className="mb-8">
@@ -81,12 +79,84 @@ const AboutPage = () => {
           to reach out to us with your ideas.
         </p>
       </div>
-      <div>
+      <div className="mb-8">
         <p className="text-gray-600">
           Join us on this journey of simplifying your calendar management and embracing the Nepali and
           Gregorian calendars seamlessly. Add Miti to your homescreen today and experience the convenience of
           a calendar app tailored for you, by the community, and for the community.
         </p>
+      </div>
+      <div className="mb-8">
+        <h2 className="mb-4 text-xl font-semibold">Credits:</h2>
+        <p className="text-gray-600">
+          I would like to thank all the individuals who have contributed to the development of Miti. Special
+          thanks to{" "}
+          <a
+            href="https://github.com/nirajacharyaa"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-indigo-600">
+            @nirajacharyaa
+          </a>{" "}
+          <a
+            href="https://github.com/headshigh"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-indigo-600">
+            @headshigh
+          </a>{" "}
+          for their contributions to the project. I couldn't have done it without their tremendous effort. I
+          would also like to thank{" "}
+          <a
+            href="https://github.com/poudelsanchit"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-indigo-600">
+            @poudelsanchit
+          </a>{" "}
+          for his contributions on the date converter,{" "}
+          <a
+            href="https://github.com/nabin-kandel"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-indigo-600">
+            @nabin-kandel
+          </a>{" "}
+          for his efforts on the logo design,{" "}
+          <a
+            href="https://github.com/sareeka61"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-indigo-600">
+            @sareeka61
+          </a>{" "}
+          and the whole{" "}
+          <a
+            href="https://github.com/PoskOfficial"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-indigo-600">
+            POSK team{" "}
+          </a>
+          for their support and feedback.
+        </p>
+      </div>
+      <div className="mb-8">
+        <b> Github Contributors:</b>
+        <a href="https://github.com/PoskOfficial/Nepali-calendar-web/graphs/contributors">
+          <img className="mt-3" src="https://contrib.rocks/image?repo=PoskOfficial/Nepali-calendar-web" />
+        </a>
+      </div>
+      <div className="mb-8">
+        -{" "}
+        <a
+          href="https://github.com/ParajuliBkrm"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-indigo-600">
+          Bikram Parajuli
+        </a>
+        , On behalf of Miti Team
       </div>
     </div>
   );
