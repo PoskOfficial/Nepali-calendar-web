@@ -141,6 +141,29 @@ const AboutPage = () => {
           for their support and feedback.
         </p>
       </div>
+
+      <div className="mb-8">
+        <h2 className="mb-4 text-xl font-semibold">Contact Us:</h2>
+        <p className="text-gray-600">
+          If you have any questions, feedback, or suggestions, please feel free to reach out to us at{" "}
+          <a href="mailto:calendar@bikram.io" className="text-indigo-600">
+            calendar@bikram.io
+          </a>{" "}
+          or our discord server at{" "}
+          <a href="https://dsc.gg/posk" className="text-indigo-600" target="_blank" rel="noopener noreferrer">
+            https://dsc.gg/posk
+          </a>
+          . We would love to hear from you. For issues, feature-requests and contribution check out our github
+          repo{" "}
+          <a
+            href="https://github.com/PoskOfficial/Nepali-calendar-web "
+            className="text-indigo-600"
+            target="_blank"
+            rel="noopener noreferrer">
+            Nepali Calendar.
+          </a>
+        </p>
+      </div>
       <div className="mb-8">
         <b> Github Contributors:</b>
         <a href="https://github.com/PoskOfficial/Nepali-calendar-web/graphs/contributors">
@@ -156,7 +179,7 @@ const AboutPage = () => {
           className="text-indigo-600">
           Bikram Parajuli
         </a>
-        , On behalf of Miti Team
+        , On behalf of Miti Team d
       </div>
     </div>
   );
