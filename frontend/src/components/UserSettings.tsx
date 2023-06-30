@@ -1,7 +1,8 @@
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { Cog6ToothIcon, SunIcon } from "@heroicons/react/24/outline";
 import { useTranslation } from "react-i18next";
+import { DarkModeContext } from "./DarkModeProvider";
 
 function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
@@ -9,6 +10,7 @@ function classNames(...classes: Array<string | undefined | boolean>) {
 
 const UserSettings = ({ photoUrl, status }: { photoUrl?: string | null; status: string }) => {
   const { t, i18n } = useTranslation();
+  const { toggleDarkMode, darkMode } = useContext(DarkModeContext);
   return (
     <Menu as="div" className="relative ml-3">
       <div className="flex items-center gap-1 rounded-full border p-0.5 shadow-sm ">
@@ -80,7 +82,7 @@ const UserSettings = ({ photoUrl, status }: { photoUrl?: string | null; status: 
             </div>
             <div className="ml-auto flex w-1/2 items-center justify-center">
               {/* for future */}
-              <button>
+              <button onClick={toggleDarkMode} color={darkMode ? "blue" : "red"}>
                 <SunIcon className="h-6" />
               </button>
             </div>

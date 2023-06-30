@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import Calendar from "./components/Calendar";
-import { fetchYearlyData } from "./helper/api";
-import { getCurrentYear } from "./helper/dates";
-import { Day } from "./types";
-import { fetchYearlyDataHelper } from "./constants/availableYears";
+import Calendar from "../components/Calendar";
+import { fetchYearlyData } from "../helper/api";
+import { getCurrentYear } from "../helper/dates";
+import { Day } from "../types";
+import { fetchYearlyDataHelper } from "../constants/availableYears";
 function Home() {
   const [yearData, setYearData] = useState<{ [key: string]: Day[] } | null>(null);
   const [currentYear, setCurrentYear] = useState<number>(getCurrentYear());
