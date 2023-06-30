@@ -44,7 +44,7 @@ const UserSettings = ({ photoUrl, status }: { photoUrl?: string | null; status: 
         leave="transition ease-in duration-75"
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95">
-        <Menu.Items className="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           {status != "OFFLINE" && (
             <Menu.Item>
               {({ active }) => (
@@ -56,12 +56,9 @@ const UserSettings = ({ photoUrl, status }: { photoUrl?: string | null; status: 
                     "block cursor-pointer text-sm text-gray-700"
                   )}>
                   {status == "NOT_LOGGED_IN" ? (
-                    <img
-                      src="../../public/icons/btn_google_signin_light_focus_web.png"
-                      alt="sign in with google"
-                    />
+                  <img src="/icons/btn_google_signin_light_normal_web@2x.png" alt="sign in with google" />
                   ) : (
-                    <span className="px-4 py-2 block">{t("navbar.Sign_out")}</span>
+                    <span className="block px-4 py-2">{t("navbar.Sign_out")}</span>
                   )}
                 </a>
               )}
@@ -74,11 +71,11 @@ const UserSettings = ({ photoUrl, status }: { photoUrl?: string | null; status: 
 
               {i18n.language == "en-US" ? (
                 <button onClick={() => i18n.changeLanguage("ne-NP")}>
-                  <img src="../../public/icons/np.png" alt="Nepali" className="h-4" />
+                  <img src="/icons/np.png" alt="Nepali" className="h-4" />
                 </button>
               ) : (
                 <button onClick={() => i18n.changeLanguage("en-US")}>
-                  <img src="../../public/icons/en.png" className="h-4" alt="English" />
+                  <img src="/icons/en.png" className="h-4" alt="English" />
                 </button>
               )}
             </div>
