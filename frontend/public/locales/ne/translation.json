@@ -1,7 +1,6 @@
 {
   "homepage": {
     "View_all_events": "आउदा दिनहरु हेर्नुस",
-
     "S": "आ",
     "M": "सो",
     "T": "मं",
@@ -12,7 +11,7 @@
     "Delete": "हटाउनुहोश्"
   },
   "navbar": {
-    "Home": "घर",
+    "Home": "गृहपृष्ठ",
     "Upcoming_Days": "आउदा दिनहरु",
     "Date_Converter": "मिती परिवर्तन ",
     "Privacy_Policy": "गोपनीयता नीति",
