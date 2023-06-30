@@ -37,7 +37,7 @@ const DateConverter = () => {
                 type="date"
                 value={date.toISOString().split("T")[0]}
                 onChange={(e) => {
-                  setDate(new Date(e.target.value));
+                  setDate(e.target.value ? new Date(e.target.value) : new Date());
                 }}
                 className="cursor-pointer appearance-none rounded-md border px-20 py-3 text-sm shadow-sm  outline-none  sm:px-10 "
                 max={maxDate}
@@ -48,15 +48,15 @@ const DateConverter = () => {
         </div>
         <div className="mt-10">
           <p className="text-xl ">
-            {`${nepaliNumber(`${nepaliDate.getYear()}`)}${nepaliMonths[nepaliDate.getMonth()]} ${nepaliNumber(
-              `${nepaliDate.getDate()},${getWeekDayNepali(nepaliDate.getDay())}`
-            )}`}
+            {`${nepaliNumber(`${nepaliDate.getYear()}`)} ${
+              nepaliMonths[nepaliDate.getMonth()]
+            } ${nepaliNumber(`${nepaliDate.getDate()}, ${getWeekDayNepali(nepaliDate.getDay())}`)}`}
           </p>
           <p className="font-mukta text-2xl font-semibold ">
-            {`${date.toLocaleString("default", { weekday: "long" })}${date.getDate()}, ${date.toLocaleString(
+            {`${date.toLocaleString("default", { weekday: "long" })} ${date.getDate()}, ${date.toLocaleString(
               "default",
               { month: "long" }
-            )}${date.getFullYear()}`}
+            )} ${date.getFullYear()}`}
           </p>
         </div>
       </div>
