@@ -6,22 +6,23 @@ import { getWeekDayNepali } from "./helper/dates";
 import { np_nepaliMonths as nepaliMonths } from "./constants/mahina";
 
 import { useState } from "react";
+import useLanguage from "./helper/useLanguage";
 const DateConverter = () => {
   const [date, setDate] = useState(new Date());
   const nepaliDate = new NepaliDate(date);
   const minDate = "1943-04-14";
   const maxDate = "2034-03-26";
-
+  const { t } = useLanguage();
   return (
     <>
       <div className="mx-auto mt-10 flex max-w-3xl flex-col items-center pb-20 text-center font-mukta lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9">
-        <div className=" font-mukta text-2xl font-semibold">Miti Converter</div>
+        <div className=" font-mukta text-2xl font-semibold">{t("dc.Date_Converter")}</div>
         <div className="mt-5 w-4/5 sm:w-full">
           <div className="flex flex-col  items-center justify-around  pb-5 sm:flex-row sm:items-center">
             <div className="flex flex-row items-center gap-2 sm:flex-col">
               <div className="font-mukta font-semibold">
                 {" "}
-                <span className="hidden sm:inline-block">Bikram Sambat </span> B.S.
+                <span className="hidden sm:inline-block">{t("dc.B.S")}</span>
               </div>
               <NepaliDatePicker date={date} setDate={setDate} />
             </div>
@@ -31,7 +32,7 @@ const DateConverter = () => {
             <div className="flex flex-row items-center gap-2 sm:flex-col">
               <div className="font-mukta font-semibold">
                 {" "}
-                <span className="hidden sm:inline-block"> Anno Domini</span> A.D.
+                <span className="hidden sm:inline-block"> {t("dc.A.D")}</span>
               </div>
               <input
                 type="date"
@@ -53,10 +54,10 @@ const DateConverter = () => {
             )}`}
           </p>
           <p className="font-mukta text-2xl font-semibold ">
-            {`${date.toLocaleString("default", { weekday: "long" })}${date.getDate()}, ${date.toLocaleString(
+            {`${date.toLocaleString("default", { weekday: "long" })} ${date.getDate()}  ${date.toLocaleString(
               "default",
               { month: "long" }
-            )}${date.getFullYear()}`}
+            )} ${date.getFullYear()}`}
           </p>
         </div>
       </div>

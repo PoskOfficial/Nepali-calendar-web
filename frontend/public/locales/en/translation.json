@@ -8,7 +8,15 @@
     "Th": "T",
     "F": "F",
     "Sa": "S",
-    "Delete": "Delete"
+    "Delete": "Delete",
+    "2075": "2075",
+    "2076": "2076",
+    "2077": "2077",
+    "2078": "2078",
+    "2079": "2079",
+    "2080": "2080",
+    "2081": "2081",
+    "2082": "2082"
   },
   "navbar": {
     "Home": "Home",
@@ -22,5 +30,12 @@
     "offline": "offline ",
 
     "Sign_out": "Sign Out"
+  },
+  "dc": {
+    "Date_Converter": "Date Converter ",
+    "Anno_Domini": "Anno Domini",
+    "A.D": "A.D",
+    "Bikram_Sambat": "Bikram Sambat",
+    "B.S": "B.S"
   }
 }

@@ -2,6 +2,7 @@ import { getWeekDayEnglish, getWeekDayNepali } from "../helper/dates";
 import englishMonth from "../helper/englishMonth";
 import nepaliNumber from "../helper/nepaliNumber";
 import { Event } from "../types";
+import { daysDifferenceString } from "../helper/dates";
 import UseLanguage from "../helper/useLanguage";
 function SingleEvent({
   nepaliDate,
@@ -20,7 +21,7 @@ function SingleEvent({
     : events.map((event) => event?.jds?.en);
   const eventsString: string = nepaliEvents.join(" / ");
   return (
-    <div>
+    <div className="relative">
       {eventsString.length > 0 && (
         <div className="border-bordersubtle flex max-w-[600px] border py-3 pl-1 font-mukta">
           <div className="date_info  border-bordersubtle min-w-[80px]  border-r pr-2">
@@ -31,15 +32,20 @@ function SingleEvent({
               {isNepaliLanguage ? getWeekDayNepali(week_day) : getWeekDayEnglish(week_day)}
             </h2>
           </div>
-          <div className=" events pl-3">
-            <h3 className="text-sm">
-              {englishMonth(Number(englishDate.split("-")[1])) +
-                " " +
-                englishDate.split("-")[2] +
-                " " +
-                englishDate.split("-")[0]}
-            </h3>
-            <h1 className="py-1">{eventsString}</h1>
+          <div className=" events flex justify-between pl-3">
+            <div>
+              <h3 className="text-sm">
+                {englishMonth(Number(englishDate.split("-")[1])) +
+                  " " +
+                  englishDate.split("-")[2] +
+                  " " +
+                  englishDate.split("-")[0]}
+              </h3>
+              <h1 className="py-1 tracking-wider">{eventsString}</h1>
+            </div>
+            <h1 className="absolute right-2 text-sm">
+              {daysDifferenceString(englishDate, isNepaliLanguage)}
+            </h1>
           </div>
         </div>
       )}

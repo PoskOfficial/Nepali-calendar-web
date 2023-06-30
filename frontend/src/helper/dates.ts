@@ -178,3 +178,18 @@ export const sameOrBefore = (d1 = new Date(), d2 = new Date()) => {
 export const sameOrAfter = (d1 = new Date(), d2 = new Date()) => {
   return isSameDay(d1, d2) || isAfter(d1, d2);
 };
+export function daysDifferenceString(dateStr: string, isNepaliLanguage: boolean) {
+  const today = new Date().setHours(0, 0, 0, 0);
+  const date = new Date(dateStr).setHours(0, 0, 0, 0);
+  const difference = Math.floor((date - today) / (1000 * 60 * 60 * 24));
+  if (isNepaliLanguage) {
+    if (difference == 0) {
+      return "आज";
+    }
+    return difference > 0 ? difference + " दिन पछि " : Math.abs(difference) + " दिन आघि";
+  }
+  if (difference == 0) {
+    return "Today";
+  }
+  return difference > 0 ? difference + " Days after" : Math.abs(difference) + " Days before";
+}

@@ -3,21 +3,25 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { Day, YearData } from "./types";
 import { useMemo, useState } from "react";
 import { useEffect } from "react";
-import NepaliDate from "nepali-date-converter";
 import { fetchYearlyData } from "./helper/api";
 import DropDown from "./components/DropDown";
 import UseLanguage from "./helper/useLanguage";
-import { en_availableYears, np_availableYears } from "./constants/availableYears";
+import { useLocation } from "react-router-dom";
+import { en_availableYears, fetchYearlyDataHelper } from "./constants/availableYears";
 import { np_nepaliMonths, en_nepaliMonths } from "./constants/mahina";
+import NepaliDate from "nepali-date-converter";
 function UpcomingEvents() {
   function classNames(...classes: Array<string | undefined | boolean>) {
     return classes.filter(Boolean).join(" ");
   }
   const { isNepaliLanguage } = UseLanguage();
   const availableYears = en_availableYears;
-  const today = new NepaliDate(); //gets today's nepali date
-  const [activeYear, setActiveYear] = useState(today.getYear());
-  const [currentMonth, setCurrentMonth] = useState(today.getMonth());
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const today = new NepaliDate();
+  const [activeYear, setActiveYear] = useState(Number(queryParams.get("year")) || today.getYear());
+  const [currentMonth, setCurrentMonth] = useState(Number(queryParams.get("month")) || today.getMonth());
+
   // const [nepaliMonthNumber] = useState(today.getMonth() + 1);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({} as YearData);
@@ -32,7 +36,7 @@ function UpcomingEvents() {
 
   const handleNextMonth = () => {
     if (currentMonth == 11) {
-      setActiveYear((prev: number) => prev + 1);
+      setActiveYear((prev: number) => fetchYearlyDataHelper(prev.toString()) + 1);
       setCurrentMonth((prev: number) => prev % 11);
     } else {
       setCurrentMonth((prev) => prev + 1);
@@ -41,7 +45,7 @@ function UpcomingEvents() {
 
   const handlePrevMonth = () => {
     if (currentMonth == 0) {
-      setActiveYear((prev: number) => prev - 1);
+      setActiveYear((prev: number) => fetchYearlyDataHelper(prev.toString()) - 1);
       setCurrentMonth(11);
     } else {
       setCurrentMonth((prev) => prev - 1);
@@ -72,8 +76,9 @@ function UpcomingEvents() {
           <DropDown
             selected={activeYear}
             setSelected={setActiveYear}
-            items={isNepaliLanguage ? np_availableYears : en_availableYears}
+            items={en_availableYears}
             isValue
+            usecase="year"
           />
           <DropDown
             selected={currentMonth}
@@ -92,7 +97,6 @@ function UpcomingEvents() {
           <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
         </button>
       </div>
-
       {monthData?.map((day: Day) => {
         return (
           day.events?.length > 0 && (

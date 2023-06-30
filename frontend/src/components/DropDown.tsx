@@ -1,15 +1,18 @@
 import { Dispatch, Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { ChevronUpDownIcon, CheckIcon } from "@heroicons/react/20/solid";
+import useLanguage from "../helper/useLanguage";
 
 interface DropDownProps {
   selected: number;
   setSelected: Dispatch<React.SetStateAction<number>>;
   items: string[] | number[];
   isValue?: boolean;
+  usecase?: string;
 }
 
-const DropDown = ({ selected, setSelected, items, isValue }: DropDownProps) => {
+const DropDown = ({ selected, setSelected, items, isValue, usecase }: DropDownProps) => {
+  const { t } = useLanguage();
   return (
     <div className="w-32 ">
       <Listbox value={selected} onChange={(value) => setSelected(value)}>
@@ -38,7 +41,7 @@ const DropDown = ({ selected, setSelected, items, isValue }: DropDownProps) => {
                   {({ selected }) => (
                     <>
                       <span className={`block truncate ${selected ? "font-medium" : "font-normal"}`}>
-                        {item}
+                        {usecase == "year" ? `${t(`homepage.` + item.toString())}` : `${item}`}
                       </span>
                       {selected ? (
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">

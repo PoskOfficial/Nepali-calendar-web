@@ -15,7 +15,7 @@ import nepaliNumber from "../helper/nepaliNumber";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { Event } from "../config/db";
 import { en_nepaliMonths, np_nepaliMonths } from "../constants/mahina";
-import { en_availableYears, np_availableYears } from "../constants/availableYears";
+import { en_availableYears } from "../constants/availableYears";
 import { Day, YearData } from "../types";
 import DropDown from "./DropDown";
 import ReminderPopupModal from "./ReminderPopupModal";
@@ -28,11 +28,9 @@ import Spinner from "./Spinner";
 import useLanguage from "../helper/useLanguage";
 import { useQuery } from "@tanstack/react-query";
 import useUser from "../helper/useUser";
-
 function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
 }
-
 const getEventsOfSelectedDay = (events: Event[], day: Date) => {
   if (!events) return [];
   return events?.filter((event) => {
@@ -155,7 +153,8 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
             <DropDown
               selected={currentYear}
               setSelected={setCurrentYear}
-              items={isNepaliLanguage ? np_availableYears : en_availableYears}
+              usecase="year"
+              items={en_availableYears}
               isValue
             />
             <DropDown
@@ -189,7 +188,9 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
             <button
               key={day.day}
               type="button"
-              onClick={() => setSelectedDay(day.day)}
+              onClick={() => {
+                setSelectedDay(day.day);
+              }}
               style={dayIdx === 0 ? { gridColumnStart: day.week_day + 1 } : {}}
               className={classNames(
                 "p-1 font-mukta leading-3 hover:bg-gray-100 focus:z-10",
@@ -225,7 +226,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
         <div className="px-2">
           <Link
             type="button"
-            to="/upcoming"
+            to={`/upcoming?year=${currentYear}&&month=${currentMonth}&&day=${selectedDay}`}
             className="mt-8 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
             {t("homepage.View_all_events")}
           </Link>
