@@ -9,7 +9,6 @@ function classNames(...classes: Array<string | undefined | boolean>) {
 
 const UserSettings = ({ photoUrl, status }: { photoUrl?: string | null; status: string }) => {
   const { t, i18n } = useTranslation();
-  console.log("Status:", status);
   return (
     <Menu as="div" className="relative ml-3">
       <div className="flex items-center gap-1 rounded-full border p-0.5 shadow-sm ">
@@ -56,7 +55,7 @@ const UserSettings = ({ photoUrl, status }: { photoUrl?: string | null; status: 
                     "block cursor-pointer text-sm text-gray-700"
                   )}>
                   {status == "NOT_LOGGED_IN" ? (
-                  <img src="/icons/btn_google_signin_light_normal_web@2x.png" alt="sign in with google" />
+                    <img src="/icons/btn_google_signin_light_normal_web@2x.png" alt="sign in with google" />
                   ) : (
                     <span className="block px-4 py-2">{t("navbar.Sign_out")}</span>
                   )}

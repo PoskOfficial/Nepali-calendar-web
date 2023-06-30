@@ -179,7 +179,7 @@ const AboutPage = () => {
           className="text-indigo-600">
           Bikram Parajuli
         </a>
-        , On behalf of Miti Team d
+        , On behalf of Miti Team
       </div>
     </div>
   );
