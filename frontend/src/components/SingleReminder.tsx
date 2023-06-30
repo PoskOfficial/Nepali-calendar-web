@@ -6,7 +6,6 @@ import { en_eventDurationString, ne_eventDurationString } from "../helper/times"
 import EventDialog from "./EventDialog";
 function SingleReminder({ event }: { event: Event }) {
   const [modalOpen, setModalOpen] = useState(false);
-  console.log(modalOpen);
   const { isNepaliLanguage } = useLanguage();
 
   return (

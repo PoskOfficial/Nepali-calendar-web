@@ -48,7 +48,6 @@ const getEventsOfSelectedDay = (events: Event[], day: Date) => {
     if (!hasStartDate) {
       return false;
     }
-    // console.log({ date: new Date(hasStartDate) });
     const eventStartDate = new Date(hasStartDate);
     const hasEndDate = event.end.date || event.end.dateTime;
     if (!hasEndDate) {
