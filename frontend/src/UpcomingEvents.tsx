@@ -10,6 +10,7 @@ import { useLocation } from "react-router-dom";
 import { en_availableYears, fetchYearlyDataHelper } from "./constants/availableYears";
 import { np_nepaliMonths, en_nepaliMonths } from "./constants/mahina";
 import NepaliDate from "nepali-date-converter";
+import Spinner from "./components/Spinner";
 function UpcomingEvents() {
   function classNames(...classes: Array<string | undefined | boolean>) {
     return classes.filter(Boolean).join(" ");
@@ -57,7 +58,11 @@ function UpcomingEvents() {
   }, [data, currentMonth]);
 
   if (loading || !data) {
-    return <>loading...</>;
+    return (
+      <div className="flex justify-center">
+        <Spinner className="h-5 w-5 " />
+      </div>
+    );
   }
   return (
     <div className="lg:1/2 mx-auto mb-4 max-w-lg px-4 md:w-2/3">
