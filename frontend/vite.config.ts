@@ -9,7 +9,7 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       strategies: "generateSW",
-      injectRegister: "auto",
+      injectRegister: "inline",
       manifest: {
         name: "Miti - Nepali Calendar",
         short_name: "Miti",
@@ -139,8 +139,7 @@ export default defineConfig({
       },
       workbox: {
         navigateFallbackDenylist: [/^\/api/],
-        globPatterns: ["**/*.{js,css,html,ico,png,svg,json}"],
-
+        globPatterns: ["**/*.{js,css,html,ico,png,json}", "**/data/*.{js,css,html,ico,png,json}"],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -171,21 +170,6 @@ export default defineConfig({
             },
           },
           {
-            // all json files
-            urlPattern: /^https:\/\/nepali-calendar\.vercel\.app\/data\/.*/i,
-            handler: "CacheFirst",
-            options: {
-              cacheName: "json-cache",
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
-              },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
-          {
             // cache api call /events for 10 days with newtwork first strategy, use relative path
             urlPattern: /\/api\/.*/i,
             handler: "NetworkFirst",
@@ -196,6 +180,7 @@ export default defineConfig({
                   maxRetentionTime: 60 * 60 * 24 * 10, // <== 10 days
                 },
               },
+
               fetchOptions: {
                 credentials: "include",
               },

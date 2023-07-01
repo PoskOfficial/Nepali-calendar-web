@@ -23,8 +23,8 @@ function SingleEvent({
   return (
     <div className="relative">
       {eventsString.length > 0 && (
-        <div className="border-bordersubtle flex max-w-[600px] border py-3 pl-1 font-mukta">
-          <div className="date_info  border-bordersubtle min-w-[80px]  border-r pr-2">
+        <div className="flex max-w-[600px] border py-3 pl-1 font-mukta">
+          <div className="min-w-[80px]  border-r pr-2">
             <h1 className="text-center font-semibold">
               {isNepaliLanguage ? nepaliNumber(nepaliDate.split(".")[0]) : nepaliDate.split(".")[0]}
             </h1>
