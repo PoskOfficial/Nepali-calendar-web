@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 interface DarkModeContextProps {
   darkMode: boolean;
@@ -12,10 +12,15 @@ export const DarkModeContext = createContext<DarkModeContextProps>({
     return;
   },
 });
+const darkModeLocalStorageKey = "Miti_dark";
 
 // Create a Dark Mode provider component
 export const DarkModeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(localStorage.getItem(darkModeLocalStorageKey) === "true");
+
+  useEffect(() => {
+    localStorage.setItem(darkModeLocalStorageKey, `${darkMode}`);
+  }, [darkMode]);
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
