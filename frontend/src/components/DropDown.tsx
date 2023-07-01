@@ -41,7 +41,7 @@ const DropDown = ({ selected, setSelected, items, isValue, usecase }: DropDownPr
                   {({ selected }) => (
                     <>
                       <span className={`block truncate ${selected ? "font-medium" : "font-normal"}`}>
-                        {usecase == "year" ? t("homepage.2075") : `${item}`}
+                        {usecase == "year" ? t(`homepage.${item}`) : `${item}`}
                       </span>
                       {selected ? (
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
