@@ -3,7 +3,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import LanguageChangeDropDown from "./LanguageChangeDropDown";
+// import LanguageChangeDropDown from "./LanguageChangeDropDown";
 
 import useUser from "../helper/useUser";
 import InstallPWA from "./InstallBtn";
@@ -69,7 +69,7 @@ export default function Navbar() {
                         {t(item.name)}
                       </Link>
                     ))}
-                    <LanguageChangeDropDown />
+                    {/* <LanguageChangeDropDown /> */}
                     <InstallPWA>
                       <button className="rounded-md px-3 py-2 text-sm font-medium">Install</button>
                     </InstallPWA>
@@ -147,7 +147,7 @@ export default function Navbar() {
                   {t(item.name)}
                 </Disclosure.Button>
               ))}
-              <LanguageChangeDropDown />
+              {/* <LanguageChangeDropDown /> */}
               <InstallPWA>
                 <Disclosure.Button className="block rounded-md px-3 py-2 text-base font-medium">
                   Install
