@@ -5,20 +5,19 @@ import { useTranslation } from "react-i18next";
 import useUser from "../helper/useUser";
 import InstallPWA from "./InstallBtn";
 import UserSettings from "./UserSettings";
-const navigation = [
-  { name: "navbar.Home", href: "/" },
-  { name: "navbar.Upcoming_Days", href: "/upcoming" },
-  { name: "navbar.Date_Converter", href: "/converter" },
-  { name: "navbar.About", href: "/about" },
-  { name: "navbar.Privacy_Policy", href: "/privacy" },
-];
-
 function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Navbar() {
   // find current route
+  const navigation = [
+    { name: "navbar.Home", href: "/" },
+    { name: "navbar.Upcoming_Days", href: "/upcoming" },
+    { name: "navbar.Date_Converter", href: "/converter" },
+    { name: "navbar.About", href: "/about" },
+    { name: "navbar.Privacy_Policy", href: "/privacy" },
+  ];
   const location = useLocation();
   const { t } = useTranslation();
 

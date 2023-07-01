@@ -15,7 +15,7 @@ import nepaliNumber from "../helper/nepaliNumber";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { Event } from "../config/db";
 import { en_nepaliMonths, np_nepaliMonths } from "../constants/mahina";
-import { en_availableYears, np_availableYears } from "../constants/availableYears";
+import { en_availableYears } from "../constants/availableYears";
 import { Day, YearData } from "../types";
 import DropDown from "./DropDown";
 import ReminderPopupModal from "./ReminderPopupModal";
@@ -28,11 +28,9 @@ import Spinner from "./Spinner";
 import useLanguage from "../helper/useLanguage";
 import { useQuery } from "@tanstack/react-query";
 import useUser from "../helper/useUser";
-
 function classNames(...classes: Array<string | undefined | boolean>) {
   return classes.filter(Boolean).join(" ");
 }
-
 const getEventsOfSelectedDay = (events: Event[], day: Date) => {
   if (!events) return [];
   return events?.filter((event) => {
@@ -154,7 +152,8 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
             <DropDown
               selected={currentYear}
               setSelected={setCurrentYear}
-              items={isNepaliLanguage ? np_availableYears : en_availableYears}
+              usecase="year"
+              items={en_availableYears}
               isValue
             />
             <DropDown
@@ -188,7 +187,9 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
             <button
               key={day.day}
               type="button"
-              onClick={() => setSelectedDay(day.day)}
+              onClick={() => {
+                setSelectedDay(day.day);
+              }}
               style={dayIdx === 0 ? { gridColumnStart: day.week_day + 1 } : {}}
               className={classNames(
                 "p-1 font-mukta leading-3 hover:bg-gray-100 focus:z-10",
@@ -213,7 +214,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
                 className={classNames(
                   "mx-auto mt-0 flex items-center justify-center rounded-full pt-0 text-xl"
                 )}>
-                {i18n.language !== "en-US" ? nepaliNumber(day.day) : day.day}
+                {i18n.language !== "en" ? nepaliNumber(day.day) : day.day}
               </time>
               <span className="mx-auto my-0 mt-0 py-0 text-[9px] font-extralight">
                 {day.ad.split("-").pop()}
@@ -224,7 +225,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
         <div className="px-2">
           <Link
             type="button"
-            to="/upcoming"
+            to={`/upcoming?year=${currentYear}&&month=${currentMonth}&&day=${selectedDay}`}
             className="mt-8 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
             {t("homepage.View_all_events")}
           </Link>
@@ -235,7 +236,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
               <h1>{selectedDay && nepaliNumber(selectedDay)}</h1>
             </div>
             <p className="mt-2 text-sm text-gray-500">
-              {i18n.language !== "en-US"
+              {i18n.language !== "en"
                 ? getWeekDayNepali(selectedDayData?.week_day)
                 : getWeekDayEnglish(selectedDayData?.week_day)}
             </p>
@@ -249,7 +250,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
                 )}
             </h2>
             <p className="mt-2 text-sm text-gray-500">
-              {i18n.language != "en-US"
+              {i18n.language != "en"
                 ? `${getTithiNepali(selectedDayData?.AD_date?.tithi)},
               ${getChandramaNepali(selectedDayData?.AD_date?.chandrama)} •
               ${selectedDayData?.events.map((event) => event?.jds?.ne).join(" | ")}`

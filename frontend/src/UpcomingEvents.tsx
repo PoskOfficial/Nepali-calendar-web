@@ -1,17 +1,16 @@
-import SingleEvent from "../components/SingleEvent";
+import SingleEvent from "./components/SingleEvent";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
-import { Day, YearData } from "../types";
+import { Day, YearData } from "./types";
 import { useMemo, useState } from "react";
 import { useEffect } from "react";
-import NepaliDate from "nepali-date-converter";
-import { fetchYearlyData } from "../helper/api";
-import DropDown from "../components/DropDown";
+import { fetchYearlyData } from "./helper/api";
+import DropDown from "./components/DropDown";
+import UseLanguage from "./helper/useLanguage";
 import { useLocation } from "react-router-dom";
-import UseLanguage from "../helper/useLanguage";
-import { en_availableYears } from "../constants/availableYears";
-import Spinner from "../components/Spinner";
-import { fetchYearlyDataHelper } from "../constants/availableYears";
-import { np_nepaliMonths, en_nepaliMonths } from "../constants/mahina";
+import { en_availableYears, fetchYearlyDataHelper } from "./constants/availableYears";
+import { np_nepaliMonths, en_nepaliMonths } from "./constants/mahina";
+import NepaliDate from "nepali-date-converter";
+import Spinner from "./components/Spinner";
 function UpcomingEvents() {
   function classNames(...classes: Array<string | undefined | boolean>) {
     return classes.filter(Boolean).join(" ");
