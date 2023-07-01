@@ -214,7 +214,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
                 className={classNames(
                   "mx-auto mt-0 flex items-center justify-center rounded-full pt-0 text-xl"
                 )}>
-                {i18n.language !== "en-US" ? nepaliNumber(day.day) : day.day}
+                {i18n.language !== "en" ? nepaliNumber(day.day) : day.day}
               </time>
               <span className="mx-auto my-0 mt-0 py-0 text-[9px] font-extralight">
                 {day.ad.split("-").pop()}
@@ -236,7 +236,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
               <h1>{selectedDay && nepaliNumber(selectedDay)}</h1>
             </div>
             <p className="mt-2 text-sm text-gray-500">
-              {i18n.language !== "en-US"
+              {i18n.language !== "en"
                 ? getWeekDayNepali(selectedDayData?.week_day)
                 : getWeekDayEnglish(selectedDayData?.week_day)}
             </p>
@@ -250,7 +250,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
                 )}
             </h2>
             <p className="mt-2 text-sm text-gray-500">
-              {i18n.language != "en-US"
+              {i18n.language != "en"
                 ? `${getTithiNepali(selectedDayData?.AD_date?.tithi)},
               ${getChandramaNepali(selectedDayData?.AD_date?.chandrama)} •
               ${selectedDayData?.events.map((event) => event?.jds?.ne).join(" | ")}`

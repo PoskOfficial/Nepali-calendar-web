@@ -70,12 +70,12 @@ const UserSettings = ({ photoUrl, status }: { photoUrl?: string | null; status: 
             <div className="flex w-1/2 items-center justify-center border-r">
               <span className="sr-only">change language</span>
 
-              {i18n.language == "en-US" ? (
-                <button onClick={() => i18n.changeLanguage("ne-NP")}>
+              {i18n.language == "en" ? (
+                <button onClick={() => i18n.changeLanguage("ne")}>
                   <img src="/icons/np.png" alt="Nepali" className="h-4" />
                 </button>
               ) : (
-                <button onClick={() => i18n.changeLanguage("en-US")}>
+                <button onClick={() => i18n.changeLanguage("en")}>
                   <img src="/icons/en.png" className="h-4" alt="English" />
                 </button>
               )}
