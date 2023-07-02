@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 
 interface BeforeInstallPromptEvent extends Event {
@@ -20,15 +20,19 @@ declare global {
 const InstallPWA = ({ children }: { children: React.ReactNode }): JSX.Element | null => {
   const [supportsPWA, setSupportsPWA] = useState(false);
   const [promptInstall, setPromptInstall] = useState<BeforeInstallPromptEvent | null>(null);
-
+  const deferredPrompt = useRef<BeforeInstallPromptEvent | null>(null);
   useEffect(() => {
     const handler = (e: BeforeInstallPromptEvent): void => {
       e.preventDefault();
-
+      deferredPrompt.current = e;
       setSupportsPWA(true);
       setPromptInstall(e);
     };
     window.addEventListener("beforeinstallprompt", handler);
+    window.addEventListener("appinstalled", () => {
+      toast.dismiss();
+      fetch("/api/installed", {method: "POST"})
+    });
     return () => window.removeEventListener("transitionend", handler);
   }, []);
   const onClick = (event: React.MouseEvent<HTMLElement>): void => {
@@ -38,7 +42,7 @@ const InstallPWA = ({ children }: { children: React.ReactNode }): JSX.Element | 
     }
     promptInstall.prompt().catch((e) => {
       console.log(e);
-    });
+    })
   };
 
   if (!supportsPWA) {

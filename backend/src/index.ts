@@ -153,6 +153,24 @@ app.delete(
   }
 );
 
+app.post("/installed", (req: Request, res: Response) => {
+  fetch(
+    `https://www.google-analytics.com/mp/collect?measurement_id=G-66S48YMB7K&api_secret=hkMQzGhVRJSdF1ZvmTwtBA`,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        client_id: "xyz",
+        events: [
+          {
+            name: "install",
+          },
+        ],
+      }),
+    }
+  );
+  res.json({ message: "ok" });
+});
+
 // endpoint to get user profile, return unauthorized if not logged in
 app.get("/profile", isAuthenticated, (req: Request, res: Response) => {
   res.json({ user: req.user });
