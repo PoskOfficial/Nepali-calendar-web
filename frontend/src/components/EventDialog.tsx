@@ -128,13 +128,15 @@ export default function MyModal({
                 leave="ease-in duration-200"
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95">
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white pb-4 pl-6 pr-6 pt-4 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white pb-4 pl-6 pr-6 pt-4 text-left align-middle shadow-xl transition-all dark:bg-slate-600">
+                  <Dialog.Title
+                    as="h3"
+                    className="text-lg font-medium leading-6 text-gray-900 dark:text-white ">
                     <div className="flex items-center justify-between border-b py-3 text-center">
                       <div>
                         <h1 className="text-left font-medium">{event.summary}</h1>
                         {eventDurationString(event).length > 0 && (
-                          <div className="time flex gap-3 text-left text-sm text-gray-500 ">
+                          <div className="time flex gap-3 text-left text-sm text-gray-500 dark:text-gray-200">
                             <ClockIcon className="h-5 w-5" />
                             <h1>{eventDurationString(event)}</h1>
                           </div>
@@ -143,14 +145,14 @@ export default function MyModal({
 
                       <XMarkIcon
                         onClick={onClose}
-                        className="h-6 w-6 cursor-pointer rounded-full hover:bg-slate-200"
+                        className="h-6 w-6 cursor-pointer rounded-full hover:bg-slate-200 dark:hover:bg-slate-500"
                       />
                     </div>
                   </Dialog.Title>
                   {event.description && (
                     <div className="mt-2 flex gap-2">
-                      <Bars3BottomLeftIcon className="h-6 w-6" />
-                      <p className=" text-gray-500">{event.description}</p>
+                      <Bars3BottomLeftIcon className="h-6 w-6 dark:text-white" />
+                      <p className=" text-gray-500 dark:text-gray-200">{event.description}</p>
                     </div>
                   )}
 
@@ -158,8 +160,8 @@ export default function MyModal({
                     <div>
                       {event.location && (
                         <div className="flex w-full items-center gap-2 py-1">
-                          <MapPinIcon className="h-6 w-6" />
-                          <h1 className="text-gray-500"> {event.location}</h1>
+                          <MapPinIcon className="h-6 w-6 dark:text-white" />
+                          <h1 className="text-gray-500 dark:text-gray-200"> {event.location}</h1>
                         </div>
                       )}
                     </div>
