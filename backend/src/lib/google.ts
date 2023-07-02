@@ -125,30 +125,30 @@ export const getUserCalendarList = async (accessToken: string) => {
   }
 };
 
-export const getEventsFromAllCalendars = async (
-  accessToken: string,
-  timeMin: string,
-  timeMax: string
-) => {
-  const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
+// export const getEventsFromAllCalendars = async (
+//   accessToken: string,
+//   timeMin: string,
+//   timeMax: string
+// ) => {
+//   const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
 
-  try {
-    const response = await calendar.events.list({
-      auth: oAuth2Client,
-      oauth_token: accessToken,
-      timeMin: new Date(timeMin).toISOString(), // Use the current date as the minimum time
-      timeMax: new Date(timeMax).toISOString(), // Use the current date as the maximum time
-      singleEvents: true,
-      orderBy: "startTime",
-    });
+//   try {
+//     const response = await calendar.events.list({
+//       auth: oAuth2Client,
+//       oauth_token: accessToken,
+//       timeMin: new Date(timeMin).toISOString(), // Use the current date as the minimum time
+//       timeMax: new Date(timeMax).toISOString(), // Use the current date as the maximum time
+//       singleEvents: true,
+//       orderBy: "startTime",
+//     });
 
-    const events = response.data.items;
-    return events;
-  } catch (error) {
-    console.error("Error retrieving calendar events:", error);
-    throw error;
-  }
-};
+//     const events = response.data.items;
+//     return events;
+//   } catch (error) {
+//     console.error("Error retrieving calendar events:", error);
+//     throw error;
+//   }
+// };
 
 export const createMitiCalendar = async (accessToken: string) => {
   const calendar = google.calendar({ version: "v3", auth: oAuth2Client });

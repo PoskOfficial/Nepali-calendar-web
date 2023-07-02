@@ -9,6 +9,7 @@ import {
   getAccessToken,
   getCalendarEvents,
   deleteCalendarEvent,
+  getUserCalendarList,
 } from "./lib/google";
 import "dotenv/config";
 
@@ -89,6 +90,22 @@ app.get("/events", isAuthenticated, async (req: Request, res: Response) => {
       calendarId
     );
     res.json({ events });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error", error });
+  }
+});
+
+app.get("/calendars", isAuthenticated, async (req: Request, res: Response) => {
+  const user = req.user as any;
+  const refreshToken = user.refreshToken;
+  try {
+    const accessToken = await getAccessToken(refreshToken);
+    // console.log({ accessToken });
+    if (!accessToken) {
+      throw new Error("Access token not found");
+    }
+    const calendars = await getUserCalendarList(accessToken);
+    res.json({ calendars });
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error", error });
   }
