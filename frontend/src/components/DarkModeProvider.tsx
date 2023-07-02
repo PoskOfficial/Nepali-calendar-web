@@ -1,4 +1,3 @@
-import { da } from "date-fns/locale";
 import React, { createContext, useEffect, useState } from "react";
 
 interface DarkModeContextProps {
