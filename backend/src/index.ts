@@ -77,11 +77,17 @@ app.get("/events", isAuthenticated, async (req: Request, res: Response) => {
     if (!accessToken) {
       throw new Error("Access token not found");
     }
-    const { timeMin, timeMax } = req.query as {
+    const { timeMin, timeMax, calendarId } = req.query as {
       timeMin: string;
       timeMax: string;
+      calendarId?: string[];
     };
-    const events = await getCalendarEvents(accessToken, timeMin, timeMax);
+    const events = await getCalendarEvents(
+      accessToken,
+      timeMin,
+      timeMax,
+      calendarId
+    );
     res.json({ events });
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error", error });
@@ -111,7 +117,8 @@ app.delete(
   async (req: Request, res: Response) => {
     const user = req.user as any;
     const refreshToken = user.refreshToken;
-    const eventId = req.params.eventId;
+    const eventId = req.body.eventId || req.params.eventId;
+    const { calendarId } = req.query as { calendarId: string };
     if (!eventId) {
       res.status(400).json({ message: "Event ID is required" });
     }
@@ -121,7 +128,7 @@ app.delete(
       if (!accessToken) {
         throw new Error("Access token not found");
       }
-      const event = await deleteCalendarEvent(accessToken, eventId);
+      const event = await deleteCalendarEvent(accessToken, eventId, calendarId);
       res.json({ event });
     } catch (error) {
       res.status(500).json({ message: "Internal Server Error", error });
