@@ -139,6 +139,7 @@ export default defineConfig({
       },
       workbox: {
         navigateFallbackDenylist: [/^\/api/],
+        offlineGoogleAnalytics: true,
         globPatterns: ["**/*.{js,css,html,ico,png,json}", "**/data/*.{js,css,html,ico,png,json}"],
         runtimeCaching: [
           {
