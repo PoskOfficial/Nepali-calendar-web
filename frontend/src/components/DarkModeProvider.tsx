@@ -1,3 +1,4 @@
+import { da } from "date-fns/locale";
 import React, { createContext, useEffect, useState } from "react";
 
 interface DarkModeContextProps {
@@ -7,7 +8,7 @@ interface DarkModeContextProps {
 
 // Create a context for Dark Mode
 export const DarkModeContext = createContext<DarkModeContextProps>({
-  darkMode: false,
+  darkMode: true,
   toggleDarkMode: () => {
     return;
   },
@@ -20,6 +21,7 @@ export const DarkModeProvider = ({ children }: { children: React.ReactNode }) =>
 
   useEffect(() => {
     localStorage.setItem(darkModeLocalStorageKey, `${darkMode}`);
+    document.body.classList.toggle("bg-slate-800", darkMode);
   }, [darkMode]);
 
   const toggleDarkMode = () => {

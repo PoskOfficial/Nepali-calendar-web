@@ -66,7 +66,7 @@ function UpcomingEvents() {
   }
   return (
     <div className="lg:1/2 mx-auto mb-4 max-w-lg px-4 md:w-2/3">
-      <div className="flex items-center text-gray-900">
+      <div className="mb-4 flex items-center text-gray-900">
         <button
           type="button"
           disabled={currentMonth === 0 && activeYear === availableYears[0]}

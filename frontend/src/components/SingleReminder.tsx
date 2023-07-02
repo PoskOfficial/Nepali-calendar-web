@@ -9,7 +9,7 @@ function SingleReminder({ event }: { event: Event }) {
   const { isNepaliLanguage } = useLanguage();
 
   return (
-    <div onClick={() => setModalOpen(true)} className="items-center border-b py-2 text-start">
+    <div onClick={() => setModalOpen(true)} className="items-center border-b dark:border-slate-400 py-2 text-start">
       {modalOpen && <EventDialog modalOpen={modalOpen} event={event} onClose={() => setModalOpen(false)} />}
       <h1 className="font-bold">{event.summary}</h1>
       <div className="flex items-center gap-2">
