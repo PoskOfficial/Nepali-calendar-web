@@ -53,6 +53,7 @@ export const getCalendarEvents = async (
         return response.data.items?.map((event) => ({
           ...event,
           calendarId,
+          accessRole: response.data.accessRole,
           calendarSummary: response.data.summary,
         }));
       })
