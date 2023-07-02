@@ -1,6 +1,6 @@
 const PrivacyPolicy = () => {
   return (
-    <div className="mx-3 my-3 lg:mx-auto lg:max-w-3xl">
+    <div className="mx-3 my-3 lg:mx-auto lg:max-w-3xl dark:text-white">
       <h1 className="text-center text-3xl font-bold">
         Privacy Policy for Nepali Calendar (calendar.bikram.io)
       </h1>

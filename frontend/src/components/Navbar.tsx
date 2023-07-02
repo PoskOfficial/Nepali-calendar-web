@@ -23,10 +23,10 @@ export default function Navbar() {
 
   const { photoUrl, status } = useUser();
   return (
-    <Disclosure as="nav" className="border-b bg-white">
+    <Disclosure as="nav" className="border-b bg-white dark:border-slate-600">
       {({ open }) => (
-        <>
-          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div className="dark:bg-slate-800">
+          <div className="mx-auto max-w-7xl px-2 dark:bg-slate-800 sm:px-6 lg:px-8 ">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
@@ -59,7 +59,7 @@ export default function Navbar() {
                         key={item.name}
                         to={item.href}
                         className={classNames(
-                          item.href === location.pathname ? "bg-gray-200" : "text-gray-900",
+                          item.href === location.pathname ? "bg-gray-200" : "text-gray-900 dark:text-white",
                           "rounded-md px-3 py-2 text-sm font-medium"
                         )}
                         aria-current={item.href === location.pathname ? "page" : undefined}>
@@ -67,7 +67,9 @@ export default function Navbar() {
                       </Link>
                     ))}
                     <InstallPWA>
-                      <button className="rounded-md px-3 py-2 text-sm font-medium">Install</button>
+                      <button className="rounded-md px-3 py-2 text-sm font-medium dark:text-white">
+                        Install
+                      </button>
                     </InstallPWA>
                   </div>
                 </div>
@@ -86,14 +88,16 @@ export default function Navbar() {
           </div>
 
           <Disclosure.Panel className="sm:hidden">
-            <div className="space-y-1 px-2 pb-3 pt-2">
+            <div className="space-y-1 px-2 pb-3 pt-2 dark:bg-slate-800 dark:text-white">
               {navigation.map((item) => (
                 <Disclosure.Button
                   key={item.name}
                   as="a"
                   href={item.href}
                   className={classNames(
-                    item.href === location.pathname ? "bg-gray-300" : "text-gray-900",
+                    item.href === location.pathname
+                      ? "bg-gray-300 dark:text-gray-900"
+                      : "text-gray-900 dark:text-white",
                     "block rounded-md px-3 py-2 text-base font-medium"
                   )}
                   aria-current={item.href === location.pathname ? "page" : undefined}>
@@ -108,7 +112,7 @@ export default function Navbar() {
               </InstallPWA>
             </div>
           </Disclosure.Panel>
-        </>
+        </div>
       )}
     </Disclosure>
   );

@@ -173,7 +173,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
             <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
           </button>
         </div>
-        <div className="mt-6 grid grid-cols-7 text-xs leading-10 text-gray-500">
+        <div className="mt-6 grid grid-cols-7 text-xs leading-10 text-gray-500 dark:text-white">
           <div>{t("homepage.S")}</div>
           <div>{t("homepage.M")}</div>
           <div>{t("homepage.T")}</div>
@@ -182,7 +182,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
           <div>{t("homepage.F")}</div>
           <div>{t("homepage.Sa")}</div>
         </div>
-        <div className="isolate mx-1 mt-2 grid grid-cols-7 gap-px overflow-hidden rounded-lg bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200">
+        <div className="isolate mx-1 mt-2 grid grid-cols-7 gap-px overflow-hidden rounded-lg bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200 dark:bg-slate-600 dark:text-white dark:ring-slate-400">
           {getMonthData(yearData, currentMonth)?.map((day: Day, dayIdx: number) => (
             <button
               key={day.day}
@@ -195,7 +195,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
                 "p-1 font-mukta leading-3 hover:bg-gray-100 focus:z-10",
                 (selectedDay == day.day || day.is_today) && "font-semibold",
                 day.is_today && "font-semibold text-indigo-600",
-                !(selectedDay === day.day) && "bg-white",
+                !(selectedDay === day.day) && "bg-white dark:bg-slate-900",
                 selectedDay === day.day && " bg-indigo-600  text-white hover:bg-indigo-700",
                 selectedDay === day.day && "bg-indigo-600",
                 (day.events.find((event) => event.jds?.gh == "1") || day.week_day === 6) && "text-rose-600"
@@ -230,12 +230,12 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
             {t("homepage.View_all_events")}
           </Link>
         </div>
-        <div className="mx-2 mt-1 flex items-start rounded-xl bg-white p-4 shadow-lg">
+        <div className="mx-2 mt-1 flex items-start rounded-xl bg-white p-4 shadow-lg dark:text-white dark:bg-slate-600">
           <div className="flex-col">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50 font-semibold">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full dark:text-slate-900 border border-blue-100 bg-blue-50 font-semibold">
               <h1>{selectedDay && nepaliNumber(selectedDay)}</h1>
             </div>
-            <p className="mt-2 text-sm text-gray-500">
+            <p className="mt-2 text-sm text-gray-500 dark:text-white">
               {i18n.language !== "en"
                 ? getWeekDayNepali(selectedDayData?.week_day)
                 : getWeekDayEnglish(selectedDayData?.week_day)}
@@ -249,7 +249,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
                   new Date(selectedDayData?.ad)
                 )}
             </h2>
-            <p className="mt-2 text-sm text-gray-500">
+            <p className="mt-2 text-sm text-gray-500 dark:text-white">
               {i18n.language != "en"
                 ? `${getTithiNepali(selectedDayData?.AD_date?.tithi)},
               ${getChandramaNepali(selectedDayData?.AD_date?.chandrama)} •
@@ -264,7 +264,7 @@ export default function Calendar({ yearData, setCurrentYear, currentYear }: Cale
           <ReminderPopupModal startDate={new Date(selectedDayData?.ad)} />
         )}
         {!error && !isLoading && (
-          <div className="m-2 rounded-lg bg-white px-4 py-2 shadow-lg">
+          <div className="m-2 rounded-lg bg-white dark:bg-slate-600 dark:text-white px-4 py-2 shadow-lg">
             <div className="flex items-center justify-between"></div>
             {getEventsOfSelectedDay(events, new Date(selectedDayData?.ad))?.map((event) => {
               return <SingleReminder key={event.id} event={event} />;
