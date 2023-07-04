@@ -22,7 +22,6 @@ const getEventsOfSelectedDay = (events: CalendarEventsResult, day: Date) => {
     const dayEnd = new Date(day);
     dayEnd.setHours(23, 59, 59, 999);
     if (event.end.date) endDate.setDate(endDate.getDate() - 1);
-    console.log({ startDate, endDate, day, event: event.summary });
     return startDate <= dayEnd && endDate >= dayStart;
   });
 };

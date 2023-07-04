@@ -6,6 +6,7 @@ import { Switch } from "@headlessui/react";
 import NepaliDatePicker from "./NepaliDatePicker";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { CalendarEvent } from "../types/events";
+import { toast } from "react-hot-toast";
 
 function getCombinedDateTime(date: Date, time: string) {
   const timeParts = time.split(":");
@@ -61,9 +62,9 @@ function AddEventModal({ startDate }: { startDate: Date }) {
       };
 
       await mutateAsync(eventData);
-      console.log({ event: data });
+      // console.log({ event: data });
     } catch (err) {
-      console.log(err);
+      toast.error("Something went wrong");
     }
   };
   if (!openModel)
