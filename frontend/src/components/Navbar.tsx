@@ -5,9 +5,7 @@ import { useTranslation } from "react-i18next";
 import useUser from "../helper/useUser";
 import InstallPWA from "./InstallBtn";
 import UserSettings from "./UserSettings";
-function classNames(...classes: string[]): string {
-  return classes.filter(Boolean).join(" ");
-}
+import { classNames } from "../helper/utils";
 
 export default function Navbar() {
   // find current route
@@ -59,7 +57,7 @@ export default function Navbar() {
                         key={item.name}
                         to={item.href}
                         className={classNames(
-                          item.href === location.pathname ? "bg-gray-200" : "text-gray-900 dark:text-white",
+                          item.href === location.pathname ? "bg-gray-400" : "text-gray-900 dark:text-white",
                           "rounded-md px-3 py-2 text-sm font-medium"
                         )}
                         aria-current={item.href === location.pathname ? "page" : undefined}>

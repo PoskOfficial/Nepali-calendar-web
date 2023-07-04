@@ -2,7 +2,6 @@ import NepaliDatePicker from "../components/NepaliDatePicker";
 import NepaliDate from "nepali-date-converter";
 import { ArrowsRightLeftIcon } from "@heroicons/react/20/solid";
 import nepaliNumber from "../helper/nepaliNumber";
-import { getWeekDayNepali } from "../helper/dates";
 import { np_nepaliMonths as nepaliMonths } from "../constants/mahina";
 
 import { useState } from "react";
@@ -22,17 +21,20 @@ const DateConverter = () => {
             <div className="flex flex-row items-center gap-2 sm:flex-col">
               <div className="font-mukta font-semibold">
                 {" "}
-                <span className="hidden sm:inline-block dark:text-white">{t("dc.B.S")}</span>
+                <span className="hidden dark:text-white sm:inline-block">{t("dc.B.S")}</span>
               </div>
               <NepaliDatePicker date={date} setDate={setDate} />
             </div>
             <div className="flex w-36  flex-row items-center  justify-center ">
-              <ArrowsRightLeftIcon className="h-8 w-8 rotate-90 sm:rotate-0 dark:text-white" aria-hidden="true" />
+              <ArrowsRightLeftIcon
+                className="h-8 w-8 rotate-90 dark:text-white sm:rotate-0"
+                aria-hidden="true"
+              />
             </div>
             <div className="flex flex-row items-center gap-2 sm:flex-col">
               <div className="font-mukta font-semibold">
                 {" "}
-                <span className="hidden sm:inline-block dark:text-white"> {t("dc.A.D")}</span>
+                <span className="hidden dark:text-white sm:inline-block"> {t("dc.A.D")}</span>
               </div>
               <input
                 type="date"
@@ -51,7 +53,9 @@ const DateConverter = () => {
           <p className="text-xl dark:text-white ">
             {`${nepaliNumber(`${nepaliDate.getYear()}`)} ${
               nepaliMonths[nepaliDate.getMonth()]
-            } ${nepaliNumber(`${nepaliDate.getDate()}, ${getWeekDayNepali(nepaliDate.getDay())}`)}`}
+            } ${nepaliNumber(
+              `${nepaliDate.getDate()}, ${nepaliDate.toJsDate().toLocaleString("ne-NP", { weekday: "long" })}`
+            )}`}
           </p>
           <p className="font-mukta text-2xl font-semibold dark:text-white">
             {`${date.toLocaleString("default", { weekday: "long" })} ${date.getDate()}, ${date.toLocaleString(

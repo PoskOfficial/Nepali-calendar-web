@@ -1,23 +1,72 @@
-import { useEffect, useState } from "react";
-import Calendar from "../components/Calendar";
-import { fetchYearlyData } from "../helper/api";
-import { getCurrentYear } from "../helper/dates";
-import { Day } from "../types";
-import { fetchYearlyDataHelper } from "../constants/availableYears";
+import { useEffect, useMemo, useState } from "react";
+import MonthCalendar from "../components/MonthCalendar";
+import { fetchUserEvents, fetchYearlyData } from "../helper/api";
+import YearMonthPicker from "../components/YearMonthPicker";
+import { useParams } from "react-router-dom";
+import NepaliDate from "nepali-date-converter";
+import { useQuery } from "@tanstack/react-query";
+import Spinner from "../components/Spinner";
+import { CalendarData, Months } from "../types/calendar";
+import { CalendarEventsResult } from "../types/events";
+import UpcomingEvents from "./UpcomingEvents";
 function Home() {
-  const [yearData, setYearData] = useState<{ [key: string]: Day[] } | null>(null);
-  const [currentYear, setCurrentYear] = useState<number>(getCurrentYear());
-  async function fetchCalendarData(currentYear: number) {
-    const data = await fetchYearlyData(currentYear.toString());
-    setYearData(data);
-  }
+  const { BSYear, BSMonth, pageType = "calendar" } = useParams();
+
+  const validYearAndMonth = useMemo(() => {
+    if (!BSYear || !BSMonth) return new NepaliDate();
+    const year = parseInt(BSYear);
+    const month = parseInt(BSMonth);
+    const isValid = year >= 2075 && year <= 2082 && month >= 1 && month <= 12;
+    if (isValid) return new NepaliDate(year, month - 1, 1);
+    return new NepaliDate();
+  }, [BSYear, BSMonth]);
+
+  const [currentNepaliDate, setCurrentNepaliDate] = useState<NepaliDate>(validYearAndMonth);
+
   useEffect(() => {
-    fetchCalendarData(fetchYearlyDataHelper(currentYear.toString()));
-  }, [currentYear]);
+    const fixedPageType = pageType === "upcoming" ? "upcoming" : "calendar";
+    // set params in url withour reloading
+    history.replaceState(
+      null,
+      "",
+      `/${fixedPageType}/${currentNepaliDate.getYear()}/${currentNepaliDate.getMonth() + 1}`
+    );
+  }, [currentNepaliDate, pageType]);
+  const { data: calendarData, isLoading } = useQuery<CalendarData>({
+    queryKey: ["calendar", currentNepaliDate.getYear()],
+    queryFn: () => fetchYearlyData(currentNepaliDate.getYear()),
+  });
+
+  const currentMonthInHumanForm = (currentNepaliDate.getBS().month + 1).toString().padStart(2, "0") as Months;
+
+  const monthData = useMemo(() => {
+    if (!calendarData) return [];
+    return calendarData[currentMonthInHumanForm];
+  }, [calendarData, currentMonthInHumanForm]);
+
+  const { data: userEvents } = useQuery<CalendarEventsResult>({
+    queryKey: ["events", currentNepaliDate.getYear(), currentNepaliDate.getMonth()],
+    queryFn: () => fetchUserEvents(monthData[0].AD_date.ad, monthData[monthData.length - 1].AD_date.ad),
+    enabled: !!calendarData && !!monthData.length,
+  });
 
   return (
     <>
-      <Calendar yearData={yearData} setCurrentYear={setCurrentYear} currentYear={currentYear} />
+      <div>
+        <div className="mx-auto mt-1 max-w-lg text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9">
+          <YearMonthPicker
+            currentNepaliDate={currentNepaliDate}
+            setCurrentNepaliDate={setCurrentNepaliDate}
+          />
+          {isLoading ? (
+            <Spinner />
+          ) : pageType === "upcoming" ? (
+            <UpcomingEvents monthData={monthData} />
+          ) : (
+            <MonthCalendar monthData={monthData} userEvents={userEvents} />
+          )}
+        </div>
+      </div>
     </>
   );
 }

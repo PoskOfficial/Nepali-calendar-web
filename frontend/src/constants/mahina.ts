@@ -27,11 +27,8 @@ export const en_nepaliMonths = [
   "Chaitra",
 ];
 
-const mahina = (index: number): string => {
-  return np_nepaliMonths[index];
-};
-export const englishMonth = (index: number): string => {
-  return en_nepaliMonths[index];
+const mahina = (index: number, isNepaliLanguage: boolean): string => {
+  return isNepaliLanguage ? np_nepaliMonths[index] : en_nepaliMonths[index];
 };
 
 export default mahina;

@@ -6,26 +6,26 @@ import nepaliDateData from "../constants/nepaliDateData";
 
 function Picker({
   date,
-  hasValueLabel,
   data,
   title,
   setYYMMDD,
 }: {
   date: string | undefined;
   hasValueLabel?: boolean;
-  data: any;
+  data: string[] | { value: string; label: string }[];
   title: string;
   setYYMMDD: Dispatch<React.SetStateAction<Date>>;
 }) {
   const [query, setQuery] = useState("");
-  const filtered = hasValueLabel
-    ? query === ""
-      ? data.map((d: { value: string; label: string }) => d.label)
-      : data.map((d: { value: string; label: string }) => d.label).filter((num: any) => num.includes(query))
-    : query === ""
-    ? data
-    : data.filter((num: any) => num.includes(query));
-
+  const cleanedData = useMemo(() => {
+    return data.map((item) => {
+      if (typeof item === "string") {
+        return { value: item, label: item };
+      }
+      return item;
+    });
+  }, [data]);
+  const filtered = cleanedData.filter((item) => item.label.toLowerCase().includes(query.toLowerCase()));
   return (
     <div className={`${title == "year" ? "w-24" : "w-20"}`}>
       <Combobox
@@ -68,9 +68,9 @@ function Picker({
                   Nothing found.
                 </div>
               ) : (
-                filtered.map((num: string) => (
+                filtered.map((item) => (
                   <Combobox.Option
-                    key={num}
+                    key={item.value}
                     className={({ active }) =>
                       `relative cursor-default select-none py-2 pl-4 pr-2 ${
                         active ? "bg-amber-100 text-amber-900" : "text-gray-900 dark:text-white"
@@ -78,15 +78,15 @@ function Picker({
                     }
                     value={
                       title == "month"
-                        ? num
-                        : (parseInt(num) - 1).toString()
-                        ? num
-                        : (parseInt(num) - 1).toString()
+                        ? item.value
+                        : (parseInt(item.value) - 1).toString()
+                        ? item.value
+                        : (parseInt(item.value) - 1).toString()
                     }>
                     {({ selected, active }) => (
                       <>
                         <span className={`block truncate ${selected ? "font-medium" : "font-normal"}`}>
-                          {num}
+                          {item.label}
                         </span>
                         {selected ? (
                           <span

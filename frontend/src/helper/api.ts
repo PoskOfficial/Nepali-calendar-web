@@ -1,4 +1,4 @@
-export async function fetchYearlyData(year: string) {
+export async function fetchYearlyData(year: number) {
   const res = await fetch(`/data/${year}-calendar.json`);
   const data = await res.json();
   return data;
@@ -18,3 +18,9 @@ export async function checkIfUserIsLoggedInOrOffline(): Promise<{
   }
   return { status: "OFFLINE" };
 }
+
+export const fetchUserEvents = async (startDate: string, endDate: string) => {
+  const res = await fetch(`/api/events?timeMin=${startDate}&timeMax=${endDate}`);
+  const data = await res.json();
+  return data;
+};

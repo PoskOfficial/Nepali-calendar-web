@@ -5,6 +5,7 @@ import colors from "../constants/colors";
 import { Switch } from "@headlessui/react";
 import NepaliDatePicker from "./NepaliDatePicker";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { CalendarEvent } from "../types/events";
 
 function getCombinedDateTime(date: Date, time: string) {
   const timeParts = time.split(":");
@@ -13,7 +14,7 @@ function getCombinedDateTime(date: Date, time: string) {
   return date.toISOString();
 }
 
-function RemindersPopupModal({ startDate }: { startDate: Date }) {
+function AddEventModal({ startDate }: { startDate: Date }) {
   const [openModel, setOpenModel] = useState(false);
   const [isAllDayEvent, setIsAllDayEvent] = useState(false);
   const [eventStartDate, setEventStartDate] = useState(startDate);
@@ -26,7 +27,7 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
       queryClient.invalidateQueries(["events"]);
       setOpenModel(false);
     },
-    mutationFn: async (eventData: any) => {
+    mutationFn: async (eventData: Partial<CalendarEvent>) => {
       const res = await fetch("/api/create", {
         method: "POST",
         headers: {
@@ -77,7 +78,7 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
     <div className="fixed inset-0 flex items-end bg-gray-900/50 md:items-center md:justify-center ">
       <div className="flex-end w-full rounded-t-lg bg-white px-4 pb-4 dark:bg-slate-800 md:w-2/3 md:rounded-b-lg lg:w-2/4">
         <div className="border-b py-6 text-center font-bold text-gray-900 dark:text-white">
-          Create a Reminder
+          Create an Event
         </div>
         <div className="modal-body">
           <form onSubmit={handelSubmit}>
@@ -102,36 +103,6 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
                   />
                 </Switch>
               </div>
-              {/* <div className="my-2 flex w-full items-center gap-2">
-                <span className="font-sans">From: </span>
-                <input
-                  type={isAllDayEvent ? "date" : "datetime-local"}
-                  name="location"
-                  className="w-full flex-1 rounded-lg border px-2 py-1 outline-none focus:outline-blue-600 "
-                  placeholder="location"
-                  value={
-                    isAllDayEvent
-                      ? new Date(eventStartDate).toISOString().split("T")[0]
-                      : new Date(eventStartDate).toISOString().substring(0, 16)
-                  }
-                  onChange={(e) => setEventStartDate(new Date(e.target.value))}
-                />
-              </div>
-              <div className="my-2 flex w-full items-center gap-2">
-                <span className="font-sans">To:</span>
-                <input
-                  type={isAllDayEvent ? "date" : "datetime-local"}
-                  name="location"
-                  className="w-full flex-1 rounded-lg border px-2 py-1 outline-none focus:outline-blue-600 "
-                  placeholder="location"
-                  value={
-                    isAllDayEvent
-                      ? new Date(eventEndDate).toISOString().split("T")[0]
-                      : new Date(eventEndDate).toISOString().substring(0, 16)
-                  }
-                  onChange={(e) => setEventEndDate(new Date(e.target.value))}
-                />
-              </div> */}
               <div className="my-2 flex w-full items-center gap-2 dark:text-white">
                 <span>From: </span>
                 <NepaliDatePicker setDate={setEventStartDate} date={eventStartDate} />
@@ -203,7 +174,7 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
                 type="submit"
                 disabled={isLoading}
                 className="mt-8 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-progress disabled:bg-indigo-400">
-                Add reminder
+                Add Event
               </button>
             </div>
           </form>
@@ -213,4 +184,4 @@ function RemindersPopupModal({ startDate }: { startDate: Date }) {
   );
 }
 
-export default RemindersPopupModal;
+export default AddEventModal;

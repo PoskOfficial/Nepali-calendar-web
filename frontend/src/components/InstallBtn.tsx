@@ -31,7 +31,7 @@ const InstallPWA = ({ children }: { children: React.ReactNode }): JSX.Element | 
     window.addEventListener("beforeinstallprompt", handler);
     window.addEventListener("appinstalled", () => {
       toast.dismiss();
-      fetch("/api/installed", {method: "POST"})
+      fetch("/api/installed", { method: "POST" });
     });
     return () => window.removeEventListener("transitionend", handler);
   }, []);
@@ -42,7 +42,7 @@ const InstallPWA = ({ children }: { children: React.ReactNode }): JSX.Element | 
     }
     promptInstall.prompt().catch((e) => {
       console.log(e);
-    })
+    });
   };
 
   if (!supportsPWA) {
@@ -62,15 +62,17 @@ const InstallPWA = ({ children }: { children: React.ReactNode }): JSX.Element | 
               <img className="h-10 w-10 rounded-full" src="/icons/icon-96x96.png" alt="" />
             </div>
             <div className="ml-3 flex-1">
-              <p className="text-sm font-medium text-gray-900">App Installation Available.</p>
-              <p className="mt-1 text-sm text-gray-500">~150KB, works offline.</p>
+              <p className="text-sm font-medium text-gray-900 dark:text-gray-200">
+                App Installation Available.
+              </p>
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">~150KB, works offline.</p>
             </div>
           </div>
         </div>
         <div className="flex border-l border-gray-200">
           <button
             onClick={onClick}
-            className="flex w-full items-center justify-center rounded-none rounded-r-lg border border-transparent p-4 text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            className="flex w-full items-center justify-center rounded-none rounded-r-lg border border-transparent p-4 text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:text-white">
             Install
           </button>
         </div>

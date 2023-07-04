@@ -1,33 +1,8 @@
 import NepaliDate from "nepali-date-converter";
-import { isSameDay, isBefore, isAfter } from "date-fns";
+import { isSameDay } from "date-fns";
+import { CalendarEvent } from "../types/events";
+import mahina from "../constants/mahina";
 
-export function getToday() {
-  const today = new NepaliDate(new Date());
-  const year = today.getBS();
-  const month = today.getMonth() + 1;
-  const date = today.getDate();
-
-  const yearStr = year.toString();
-  const monthStr = month.toString().padStart(2, "0");
-  const dateStr = date.toString().padStart(2, "0");
-
-  return { string: `${yearStr}-${monthStr}-${dateStr}`, year, month, date, dateStr };
-}
-export function getYear() {
-  const today = new Date();
-  const year = today.getFullYear();
-  return year;
-}
-export function getCurrentMonth() {
-  const today = new Date();
-  const month = new NepaliDate(today).getMonth();
-  return month;
-}
-export function getCurrentYear() {
-  const today = new Date();
-  const year = new NepaliDate(today).getYear();
-  return year;
-}
 export function getTithiNepali(index: number): string {
   const tithiName: {
     [key: number]: string;
@@ -136,60 +111,48 @@ export function getChandramaEnglish(index: number): string {
   return chandraNames[index];
 }
 
-export function getWeekDayNepali(index: number): string {
-  const weekDayNepali = [
-    "\u0906\u0907\u0924\u092c\u093e\u0930",
-    "\u0938\u094b\u092e\u092c\u093e\u0930",
-    "\u092e\u0919\u094d\u0917\u0932\u092c\u093e\u0930",
-    "\u092c\u0941\u0927\u092c\u093e\u0930",
-    "\u092c\u093f\u0939\u093f\u092c\u093e\u0930",
-    "\u0936\u0941\u0915\u094d\u0930\u092c\u093e\u0930",
-    "\u0936\u0928\u093f\u092c\u093e\u0930",
-  ];
-  return weekDayNepali[index];
-}
-export function getWeekDayEnglish(index: number): string {
-  const weekDayEnglish = ["Sunday", "Monday", "Tuesday", "Wenesday", "Thursday", "Friday", "Saturday"];
-  return weekDayEnglish[index];
-}
-
-export function getNepaliMonth(index: number): string {
-  const nepaliMonth = [
-    "बैशाख",
-    "जेठ",
-    "असार",
-    "साउन",
-    "भदौ",
-    "असोज",
-    "कार्तिक",
-    "मंसिर",
-    "पुष",
-    "माघ",
-    "फाल्गुन",
-    "चैत",
-  ];
-  return nepaliMonth[index];
-}
-
-export const sameOrBefore = (d1 = new Date(), d2 = new Date()) => {
-  return isSameDay(d1, d2) || isBefore(d1, d2);
+export const eventDuration = (event: CalendarEvent, isNepaliLanguage: boolean) => {
+  const startDate = new Date(event.start.dateTime || event.start.date || new Date());
+  const startNepaliDate = new NepaliDate(startDate);
+  const endDate = new Date(event.end.dateTime || event.end.date || new Date());
+  const endNepaliDate = new NepaliDate(endDate);
+  if (event.end.date) {
+    endNepaliDate.setDate(endNepaliDate.getDate() - 1);
+  }
+  if (isSameDay(startNepaliDate.toJsDate(), endNepaliDate.toJsDate())) {
+    if (event.end.date) return isNepaliLanguage ? "पुरा दिन" : "Full Day";
+    const locale = isNepaliLanguage ? "ne-NP" : "en-US";
+    const start = startDate.toLocaleString(locale, { hour: "numeric", minute: "numeric", hour12: true });
+    const end = endDate.toLocaleString(locale, { hour: "numeric", minute: "numeric", hour12: true });
+    return `${start} - ${end}`;
+  }
+  return `${startNepaliDate.getBS().date} ${mahina(
+    startNepaliDate.getMonth(),
+    isNepaliLanguage
+  )} - ${endNepaliDate.getDate()} ${mahina(endNepaliDate.getMonth(), isNepaliLanguage)}`;
 };
 
-export const sameOrAfter = (d1 = new Date(), d2 = new Date()) => {
-  return isSameDay(d1, d2) || isAfter(d1, d2);
-};
-export function daysDifferenceString(dateStr: string, isNepaliLanguage: boolean) {
-  const today = new Date().setHours(0, 0, 0, 0);
-  const date = new Date(dateStr).setHours(0, 0, 0, 0);
-  const difference = Math.floor((date - today) / (1000 * 60 * 60 * 24));
-  if (isNepaliLanguage) {
-    if (difference == 0) {
-      return "आज";
-    }
-    return difference > 0 ? difference + " दिन पछि " : Math.abs(difference) + " दिन आघि";
-  }
-  if (difference == 0) {
-    return "Today";
-  }
-  return difference > 0 ? difference + " Days after" : Math.abs(difference) + " Days before";
+/**
+ * Get language-sensitive relative time message from elapsed time.
+ * @param elapsed   - the elapsed time in milliseconds
+ */
+export function relativeTimeFromElapsed(elapsed: number, isNepaliLanguage: boolean): string {
+  const loc = isNepaliLanguage ? "ne-NP" : "en-US";
+  const rtf = new Intl.RelativeTimeFormat(loc, { numeric: "auto" });
+  return rtf.format(Math.round(elapsed / 86400000), "day");
+}
+
+/**
+ * Get language-sensitive relative time message from Dates.
+ * @param relative  - the relative dateTime, generally is in the past or future
+ * @param pivot     - the dateTime of reference, generally is the current time
+ */
+export function relativeTimeFromDates(
+  relative: Date | null,
+  isNepaliLanguage = false,
+  pivot = new Date()
+): string {
+  if (!relative) return "";
+  const elapsed = relative.getTime() - pivot.getTime();
+  return relativeTimeFromElapsed(elapsed, isNepaliLanguage);
 }
