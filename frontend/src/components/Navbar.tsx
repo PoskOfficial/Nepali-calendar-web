@@ -69,7 +69,7 @@ export default function Navbar() {
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 {/* Profile dropdown */}
                 {status === "LOGGED_IN" ? (
-                  <UserSettings status={status} photoUrl={data.photoUrl} />
+                  <UserSettings status={status} photoUrl={data.user.photos[0].value} />
                 ) : status === "NOT_LOGGED_IN" ? (
                   <UserSettings status={status} />
                 ) : (

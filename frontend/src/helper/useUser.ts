@@ -9,10 +9,11 @@ const useUser = () => {
     queryKey: ["user", network],
     queryFn: () => checkIfUserIsLoggedInOrOffline(),
     initialData: { status: "OFFLINE" },
+    _defaulted: true,
     keepPreviousData: true,
     networkMode: "offlineFirst",
   });
-
+  console.log("user", user);
   return user;
 };
 
