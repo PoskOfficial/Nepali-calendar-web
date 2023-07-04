@@ -54,6 +54,7 @@ function AddEventModal({ startDate }: { startDate: Date }) {
     onSuccess: (data) => {
       if (selectedCalendar === "") setSelectedCalendar(data[0].value);
     },
+    networkMode: "offlineFirst",
   });
 
   const handelSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

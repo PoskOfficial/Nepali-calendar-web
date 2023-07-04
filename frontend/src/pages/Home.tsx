@@ -35,6 +35,7 @@ function Home() {
   const { data: calendarData, isLoading } = useQuery<CalendarData>({
     queryKey: ["calendar", currentNepaliDate.getYear()],
     queryFn: () => fetchYearlyData(currentNepaliDate.getYear()),
+    networkMode: "offlineFirst",
   });
 
   const currentMonthInHumanForm = (currentNepaliDate.getBS().month + 1).toString().padStart(2, "0") as Months;
@@ -48,6 +49,7 @@ function Home() {
     queryKey: ["events", currentNepaliDate.getYear(), currentNepaliDate.getMonth()],
     queryFn: () => fetchUserEvents(monthData[0].AD_date.ad, monthData[monthData.length - 1].AD_date.ad),
     enabled: !!calendarData && !!monthData.length,
+    networkMode: "offlineFirst",
   });
 
   return (
