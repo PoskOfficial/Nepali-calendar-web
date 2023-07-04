@@ -62,7 +62,7 @@ function Picker({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
             afterLeave={() => setQuery("")}>
-            <Combobox.Options className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800 sm:text-sm">
+            <Combobox.Options className="scrollbar-hide absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800 sm:text-sm">
               {filtered.length === 0 && query !== "" ? (
                 <div className="relative cursor-default select-none px-4 py-2 text-gray-700 dark:text-white">
                   Nothing found.
@@ -78,8 +78,8 @@ function Picker({
                     }
                     value={
                       title == "month"
-                        ? item.value
-                        : (parseInt(item.value) - 1).toString()
+                        ? (parseInt(item.value) + 1).toString()
+                        : parseInt(item.value).toString()
                         ? item.value
                         : (parseInt(item.value) - 1).toString()
                     }>
