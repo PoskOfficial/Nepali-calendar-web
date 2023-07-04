@@ -17,7 +17,7 @@ const UserSettings = ({ photoUrl, status }: { photoUrl?: string | null; status: 
   const { toggleDarkMode, darkMode } = useContext(DarkModeContext);
   return (
     <Menu as="div" className="relative ml-3">
-      <div className="flex items-center gap-1 rounded-full border p-0.5 shadow-sm dark:border-slate-400 ">
+      <div className="flex items-center gap-1 rounded-full border p-0.5 shadow-sm dark:border-gray-400 ">
         {status != "NOT_LOGGED_IN" && (
           <div className="relative ">
             <img
@@ -30,7 +30,7 @@ const UserSettings = ({ photoUrl, status }: { photoUrl?: string | null; status: 
             />
             <span
               className={classNames(
-                "absolute bottom-0 left-0 h-2 w-2 rounded-full bg-gray-500 ring-2 ring-white dark:ring-slate-300",
+                "absolute bottom-0 left-0 h-2 w-2 rounded-full bg-gray-500 ring-2 ring-white dark:ring-gray-300",
                 status == "LOGGED_IN" && "bg-green-500",
                 status == "NOT_LOGGED_IN" && "bg-orange-500"
               )}></span>
@@ -49,7 +49,7 @@ const UserSettings = ({ photoUrl, status }: { photoUrl?: string | null; status: 
         leave="transition ease-in duration-75"
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95">
-        <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-lg bg-white p-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-slate-700">
+        <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white p-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-700">
           {status != "OFFLINE" && (
             <Menu.Item>
               {({ active }) => (
@@ -58,7 +58,7 @@ const UserSettings = ({ photoUrl, status }: { photoUrl?: string | null; status: 
                   target="_self"
                   className={classNames(
                     active ? "bg-gray-200 dark:bg-gray-800" : "",
-                    "block cursor-pointer rounded-lg text-sm text-gray-700 dark:text-white"
+                    "block cursor-pointer rounded-md text-sm text-gray-700 dark:text-white"
                   )}>
                   {status == "NOT_LOGGED_IN" ? (
                     <LoginWithGoogle darkMode={darkMode} />

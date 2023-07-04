@@ -42,7 +42,7 @@ const DateConverter = () => {
                 onChange={(e) => {
                   setDate(e.target.value ? new Date(e.target.value) : new Date());
                 }}
-                className="cursor-pointer appearance-none rounded-md border px-20 py-3 text-sm shadow-sm outline-none dark:bg-slate-600 dark:text-white  sm:px-10 "
+                className="cursor-pointer appearance-none rounded-md border px-20 py-3 text-sm shadow-sm outline-none dark:bg-gray-800 dark:text-white  sm:px-10 "
                 max={maxDate}
                 min={minDate}
               />

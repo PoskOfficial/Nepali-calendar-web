@@ -63,7 +63,7 @@ export default function MonthCalendar({
         <div>{t("homepage.F")}</div>
         <div>{t("homepage.Sa")}</div>
       </div>
-      <div className="isolate mx-1 mt-2 grid grid-cols-7 gap-px overflow-hidden rounded-lg bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200 dark:bg-slate-600 dark:text-white dark:ring-slate-400">
+      <div className="isolate mx-1 mt-2 grid grid-cols-7 gap-px overflow-hidden rounded-md bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200 dark:bg-gray-800 dark:text-white dark:ring-gray-600">
         {monthData.map((day, dayIdx) => {
           const { bs_year, bs_month, bs_day } = day.AD_date;
           const dayInNepaliDate = new NepaliDate(`${bs_year}-${bs_month}-${bs_day}`);
@@ -81,12 +81,12 @@ export default function MonthCalendar({
                 "p-1 font-mukta leading-3 hover:bg-gray-100 focus:z-10",
                 (isSelectedDay || isToday) && "font-semibold",
                 isToday && "font-semibold text-indigo-600",
-                !isSelectedDay && "bg-white dark:bg-slate-900",
+                !isSelectedDay && "bg-white dark:bg-gray-900",
                 isSelectedDay && " bg-indigo-600  text-white hover:bg-indigo-700",
                 isSelectedDay && "bg-indigo-600",
                 (day.events.find((event) => event.jds?.gh == "1") || day.week_day === 6) && "text-rose-600"
               )}>
-              {userEvents?.events?.length &&
+              {!!userEvents?.events?.length &&
                 Array.from(
                   new Set(
                     getEventsOfSelectedDay(userEvents, new Date(day.AD_date.ad)).map((event) => {
@@ -121,9 +121,9 @@ export default function MonthCalendar({
           {t("homepage.View_all_events")}
         </Link>
       </div>
-      <div className="mx-2 mt-1 flex items-start rounded-xl bg-white p-4 shadow-lg dark:bg-slate-600 dark:text-white">
+      <div className="mx-2 mt-1 flex items-start rounded-md border  bg-white p-4 shadow-lg dark:border-gray-600 dark:bg-gray-800 dark:text-white">
         <div className="flex-col">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50 font-semibold dark:text-slate-900">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50 font-semibold dark:bg-gray-600 dark:text-gray-100">
             <h1>
               {isNepaliLanguage ? nepaliNumber(`${selectedDay.getBS().date}`) : selectedDay.getBS().date}
             </h1>
@@ -155,7 +155,7 @@ export default function MonthCalendar({
         </div>
       </div>
       {selectedDayData?.ad && status === "LOGGED_IN" && <AddEventModal startDate={selectedDay.toJsDate()} />}
-      {userEvents?.events?.length &&
+      {!!userEvents?.events?.length &&
         getEventsOfSelectedDay(userEvents, new Date(selectedDayData?.ad))?.map((event) => (
           <SingleUserEvent key={event.id} event={event} />
         ))}

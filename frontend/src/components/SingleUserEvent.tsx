@@ -11,7 +11,7 @@ function SingleUserEvent({ event }: { event: CalendarEvent }) {
   return (
     <div
       onClick={() => setModalOpen(true)}
-      className="m-2 items-center rounded-sm border-b bg-white px-4 py-2 text-start shadow-sm dark:border-slate-400 dark:bg-slate-600 dark:text-white">
+      className="m-2 items-center rounded-sm border bg-white px-4 py-2 text-start shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white">
       {modalOpen && (
         <EventDetailsDialog modalOpen={modalOpen} event={event} onClose={() => setModalOpen(false)} />
       )}

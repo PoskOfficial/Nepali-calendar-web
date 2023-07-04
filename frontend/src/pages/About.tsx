@@ -4,7 +4,7 @@ const AboutPage = () => {
       <h1 className="mb-4 text-3xl font-bold dark:text-white">Welcome to Miti - Your Nepali Calendar App</h1>
       <div className="mb-8">
         <h2 className="mb-4 text-xl font-semibold dark:text-white">About Miti:</h2>
-        <p className="text-gray-600 dark:text-slate-200">
+        <p className="text-gray-600 dark:text-gray-200">
           Miti was created out of a personal need to bridge the gap between two calendars that Nepali
           individuals live by. I was looking for a minimalist Nepali calendar app that would allow me to sync
           events with google calendar. Imagine a scenario, you have an appointment for a meeting with Ram on
@@ -18,7 +18,7 @@ const AboutPage = () => {
       </div>
       <div className="mb-8">
         <h2 className="mb-4 text-xl font-semibold dark:text-white">Sync and Simplify:</h2>
-        <p className="text-gray-600 dark:text-slate-200">
+        <p className="text-gray-600 dark:text-gray-200">
           Miti isn't an attempt to simply replace all the calendars you use, but rather a tool to help you
           create and browse your events in the Nepali calendar system. Miti goes beyond the traditional
           calendar app functionalities by offering a seamless integration with Google Calendar. By syncing
@@ -31,7 +31,7 @@ const AboutPage = () => {
       </div>
       <div className="mb-8">
         <h2 className="mb-4 text-xl font-semibold dark:text-white">Nepali to Gregorian, and Vice Versa:</h2>
-        <p className="text-gray-600 dark:text-slate-200">
+        <p className="text-gray-600 dark:text-gray-200">
           With Miti, creating events using the Nepali date and viewing them in the Gregorian date format and
           vice versa becomes effortless. You can simply input the Nepali date for your event in the Miti app,
           and it will automatically be converted to the corresponding Gregorian date in Google Calendar. Miti
@@ -41,7 +41,7 @@ const AboutPage = () => {
       </div>
       <div className="mb-8">
         <h2 className="mb-4 text-xl font-semibold dark:text-white">View and Manage Your Schedule:</h2>
-        <p className="text-gray-600 dark:text-slate-200">
+        <p className="text-gray-600 dark:text-gray-200">
           Miti not only allows you to create events in the Nepali calendar, but it also provides a
           comprehensive view of your Google Calendar events within the app. You can easily browse through your
           schedule, view event details, and manage your appointments, ensuring that you stay organized and
@@ -50,7 +50,7 @@ const AboutPage = () => {
       </div>
       <div className="mb-8">
         <h2 className="mb-4 text-xl font-semibold dark:text-white">Simplicity and Efficiency:</h2>
-        <p className="text-gray-600 dark:text-slate-200">
+        <p className="text-gray-600 dark:text-gray-200">
           Unlike existing calendar apps that are often bloated and lack essential features, Miti focuses on
           being a minimalistic and efficient tool. We have intentionally limited the features to ensure that
           the app remains lightweight and minimal.
@@ -58,7 +58,7 @@ const AboutPage = () => {
       </div>
       <div className="mb-8">
         <h2 className="mb-4 text-xl font-semibold dark:text-white">Work Offline, Install as Native App:</h2>
-        <p className="text-gray-600 dark:text-slate-200">
+        <p className="text-gray-600 dark:text-gray-200">
           Miti leverages Progressive Web App (PWA) technology, enabling you to access the app even when you're
           offline. Whether you're on the go or in an area with limited connectivity, Miti ensures that you can
           still view and manage your events effortlessly. Additionally, you have the option to install Miti as
@@ -69,7 +69,7 @@ const AboutPage = () => {
       </div>
       <div className="mb-8">
         <h2 className="mb-4 text-xl font-semibold dark:text-white">Open Source and Volunteer-Driven:</h2>
-        <p className="text-gray-600 dark:text-slate-200">
+        <p className="text-gray-600 dark:text-gray-200">
           Miti is a project built by a dedicated team of volunteers who recognized the need for a reliable
           Nepali calendar app. We are committed to making Miti the best calendar app for Nepali users, and to
           achieve this, we have made the project open source. This means that anyone can contribute to the
@@ -80,7 +80,7 @@ const AboutPage = () => {
         </p>
       </div>
       <div className="mb-8">
-        <p className="text-gray-600 dark:text-slate-200">
+        <p className="text-gray-600 dark:text-gray-200">
           Join us on this journey of simplifying your calendar management and embracing the Nepali and
           Gregorian calendars seamlessly. Add Miti to your homescreen today and experience the convenience of
           a calendar app tailored for you, by the community, and for the community.
@@ -88,7 +88,7 @@ const AboutPage = () => {
       </div>
       <div className="mb-8">
         <h2 className="mb-4 text-xl font-semibold dark:text-white">Credits:</h2>
-        <p className="text-gray-600 dark:text-slate-200">
+        <p className="text-gray-600 dark:text-gray-200">
           I would like to thank all the individuals who have contributed to the development of Miti. Special
           thanks to{" "}
           <a
@@ -144,7 +144,7 @@ const AboutPage = () => {
 
       <div className="mb-8">
         <h2 className="mb-4 text-xl font-semibold dark:text-white">Contact Us:</h2>
-        <p className="text-gray-600 dark:text-slate-200">
+        <p className="text-gray-600 dark:text-gray-200">
           If you have any questions, feedback, or suggestions, please feel free to reach out to us at{" "}
           <a href="mailto:calendar@bikram.io" className="text-indigo-600">
             calendar@bikram.io

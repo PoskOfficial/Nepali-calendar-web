@@ -76,7 +76,7 @@ function AddEventModal({ startDate }: { startDate: Date }) {
     );
   return (
     <div className="fixed inset-0 flex items-end bg-gray-900/50 md:items-center md:justify-center ">
-      <div className="flex-end w-full rounded-t-lg bg-white px-4 pb-4 dark:bg-slate-800 md:w-2/3 md:rounded-b-lg lg:w-2/4">
+      <div className="flex-end w-full rounded-t-lg bg-white px-4 pb-4 dark:bg-gray-800 md:w-2/3 md:rounded-b-lg lg:w-2/4">
         <div className="border-b py-6 text-center font-bold text-gray-900 dark:text-white">
           Create an Event
         </div>
@@ -93,13 +93,13 @@ function AddEventModal({ startDate }: { startDate: Date }) {
                     setEventEndDate(new Date(eventEndDate));
                   }}
                   className={`${
-                    isAllDayEvent ? "bg-indigo-600" : "bg-gray-200 dark:bg-slate-600"
+                    isAllDayEvent ? "bg-indigo-600" : "bg-gray-200 dark:bg-gray-800"
                   }  inline-flex h-6 w-11 items-center rounded-full transition-all duration-100 ease-linear`}>
                   <span className="sr-only">toggle all day event</span>
                   <span
                     className={`${
                       isAllDayEvent ? "translate-x-6" : "translate-x-1"
-                    } inline-block h-4 w-4 transform rounded-full bg-white ring-1 ring-slate-600`}
+                    } inline-block h-4 w-4 transform rounded-full bg-white ring-1 ring-gray-600`}
                   />
                 </Switch>
               </div>
@@ -107,14 +107,14 @@ function AddEventModal({ startDate }: { startDate: Date }) {
                 <span>From: </span>
                 <NepaliDatePicker setDate={setEventStartDate} date={eventStartDate} />
                 {!isAllDayEvent && (
-                  <input type="time" name="startTime" className="rounded-lg border p-1 dark:bg-slate-600" />
+                  <input type="time" name="startTime" className="rounded-md border p-1 dark:bg-gray-800" />
                 )}
               </div>
               <div className="my-2 flex w-full items-center gap-2 dark:text-white">
                 <span>To:</span>
                 <NepaliDatePicker setDate={setEventEndDate} date={eventEndDate} />
                 {!isAllDayEvent && (
-                  <input type="time" name="endTime" className="rounded-lg border p-1 dark:bg-slate-600" />
+                  <input type="time" name="endTime" className="rounded-md border p-1 dark:bg-gray-800" />
                 )}
               </div>
               <div className="my-2 flex w-full items-center gap-2">
@@ -122,7 +122,7 @@ function AddEventModal({ startDate }: { startDate: Date }) {
                 <input
                   type="text"
                   name="summary"
-                  className="w-full flex-1 rounded-lg border border-slate-400 px-2 py-1 outline-none focus:outline-indigo-600 dark:bg-slate-600 dark:text-white dark:placeholder:text-slate-200"
+                  className="w-full flex-1 rounded-md border border-gray-400 px-2 py-1 outline-none focus:outline-indigo-600 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-200"
                   placeholder="summary"
                 />
               </div>
@@ -131,7 +131,7 @@ function AddEventModal({ startDate }: { startDate: Date }) {
                 <input
                   type="text"
                   name="location"
-                  className="w-full flex-1 rounded-lg border border-slate-400 px-2 py-1 outline-none focus:outline-indigo-600 dark:bg-slate-600 dark:text-white dark:placeholder:text-slate-200"
+                  className="w-full flex-1 rounded-md border border-gray-400 px-2 py-1 outline-none focus:outline-indigo-600 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-200"
                   placeholder="location"
                 />
               </div>
@@ -139,7 +139,7 @@ function AddEventModal({ startDate }: { startDate: Date }) {
                 <Bars3BottomLeftIcon className="h-6 w-6 dark:text-white" />
                 <textarea
                   name="description"
-                  className="w-full flex-1 resize-none rounded-lg border border-slate-400 px-2 py-1 outline-none focus:outline-indigo-600 dark:bg-slate-600 dark:text-white dark:placeholder:text-slate-200"
+                  className="w-full flex-1 resize-none rounded-md border border-gray-400 px-2 py-1 outline-none focus:outline-indigo-600 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-200"
                   placeholder="description"
                 />
               </div>
@@ -166,7 +166,7 @@ function AddEventModal({ startDate }: { startDate: Date }) {
             <div className="flex gap-4 ">
               <button
                 className="shadowfocus:outline-none mt-8
-                w-full rounded-md border border-indigo-600 border-transparent bg-gray-100 px-4 py-2 text-sm font-medium text-indigo-600 focus:ring-2  focus:ring-indigo-500 focus:ring-offset-2 dark:bg-slate-200  "
+                w-full rounded-md border border-indigo-600 border-transparent bg-gray-100 px-4 py-2 text-sm font-medium text-indigo-600 focus:ring-2  focus:ring-indigo-500 focus:ring-offset-2 dark:bg-gray-200  "
                 onClick={() => setOpenModel(false)}>
                 Close
               </button>

@@ -59,7 +59,7 @@ function Home() {
             setCurrentNepaliDate={setCurrentNepaliDate}
           />
           {isLoading ? (
-            <Spinner className="h-5 w-5" />
+            <Spinner className="h-5 w-5 " />
           ) : pageType === "upcoming" ? (
             <UpcomingEvents monthData={monthData} />
           ) : (

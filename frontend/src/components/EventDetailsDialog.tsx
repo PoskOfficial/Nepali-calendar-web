@@ -70,7 +70,7 @@ export default function EventDetailsDialog({
                 leave="ease-in duration-200"
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95">
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white pb-4 pl-6 pr-6 pt-4 text-left align-middle shadow-xl transition-all dark:bg-slate-600">
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-lg bg-white pb-4 pl-6 pr-6 pt-4 text-left align-middle shadow-xl transition-all dark:bg-gray-800">
                   <Dialog.Title
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900 dark:text-white ">
@@ -87,7 +87,7 @@ export default function EventDetailsDialog({
 
                       <XMarkIcon
                         onClick={onClose}
-                        className="h-6 w-6 cursor-pointer rounded-full hover:bg-slate-200 dark:hover:bg-slate-500"
+                        className="h-6 w-6 cursor-pointer rounded-full hover:bg-gray-200 dark:hover:bg-gray-500"
                       />
                     </div>
                   </Dialog.Title>

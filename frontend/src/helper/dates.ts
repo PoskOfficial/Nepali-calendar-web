@@ -1,7 +1,7 @@
 import NepaliDate from "nepali-date-converter";
 import { isSameDay } from "date-fns";
 import { CalendarEvent } from "../types/events";
-import mahina from "../constants/mahina";
+import { nepaliMonths } from "../constants/mahina";
 
 export function getTithiNepali(index: number): string {
   const tithiName: {
@@ -126,10 +126,11 @@ export const eventDuration = (event: CalendarEvent, isNepaliLanguage: boolean) =
     const end = endDate.toLocaleString(locale, { hour: "numeric", minute: "numeric", hour12: true });
     return `${start} - ${end}`;
   }
-  return `${startNepaliDate.getBS().date} ${mahina(
-    startNepaliDate.getMonth(),
-    isNepaliLanguage
-  )} - ${endNepaliDate.getDate()} ${mahina(endNepaliDate.getMonth(), isNepaliLanguage)}`;
+  const startMonth = nepaliMonths[startNepaliDate.getMonth()];
+  const endMonth = nepaliMonths[endNepaliDate.getMonth()];
+  return isNepaliLanguage
+    ? `${startNepaliDate.getBS().date} ${startMonth.np}- ${endNepaliDate.getBS().date} ${endMonth.np}`
+    : `${startNepaliDate.getBS().date} ${startMonth.en} - ${endNepaliDate.getBS().date} ${endMonth.en}`;
 };
 
 /**

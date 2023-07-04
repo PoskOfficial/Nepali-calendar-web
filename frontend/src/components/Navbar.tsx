@@ -21,10 +21,10 @@ export default function Navbar() {
 
   const { photoUrl, status } = useUser();
   return (
-    <Disclosure as="nav" className="border-b bg-white dark:border-slate-600">
+    <Disclosure as="nav" className="border-b bg-white dark:border-gray-700">
       {({ open }) => (
-        <div className="dark:bg-slate-800">
-          <div className="mx-auto max-w-7xl px-2 dark:bg-slate-800 sm:px-6 lg:px-8 ">
+        <div className="dark:bg-gray-800">
+          <div className="px-2 dark:bg-gray-900 sm:px-6 lg:px-8 ">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
@@ -39,16 +39,8 @@ export default function Navbar() {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="block h-8 w-auto lg:hidden"
-                    src="/icons/icon-512x512.png"
-                    alt="Your Company"
-                  />
-                  <img
-                    className="hidden h-8 w-auto lg:block"
-                    src="/icons/icon-512x512.png"
-                    alt="Your Company"
-                  />
+                  <img className="block h-8 w-auto lg:hidden" src="/icons/icon-512x512.png" alt="Miti" />
+                  <img className="hidden h-8 w-auto lg:block" src="/icons/icon-512x512.png" alt="Miti" />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex items-center space-x-4">
@@ -57,7 +49,9 @@ export default function Navbar() {
                         key={item.name}
                         to={item.href}
                         className={classNames(
-                          item.href === location.pathname ? "bg-gray-400" : "text-gray-900 dark:text-white",
+                          item.href === location.pathname
+                            ? "bg-gray-300 dark:bg-gray-600"
+                            : "text-gray-900 dark:text-white",
                           "rounded-md px-3 py-2 text-sm font-medium"
                         )}
                         aria-current={item.href === location.pathname ? "page" : undefined}>
@@ -86,7 +80,7 @@ export default function Navbar() {
           </div>
 
           <Disclosure.Panel className="sm:hidden">
-            <div className="space-y-1 px-2 pb-3 pt-2 dark:bg-slate-800 dark:text-white">
+            <div className="space-y-1 px-2 pb-3 pt-2 dark:bg-gray-800 dark:text-white">
               {navigation.map((item) => (
                 <Disclosure.Button
                   key={item.name}
@@ -94,7 +88,7 @@ export default function Navbar() {
                   href={item.href}
                   className={classNames(
                     item.href === location.pathname
-                      ? "bg-gray-300 dark:text-gray-900"
+                      ? "bg-gray-300 dark:bg-gray-600 dark:text-gray-900"
                       : "text-gray-900 dark:text-white",
                     "block rounded-md px-3 py-2 text-base font-medium"
                   )}
