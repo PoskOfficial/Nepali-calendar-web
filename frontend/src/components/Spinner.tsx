@@ -2,12 +2,12 @@ import { classNames } from "../helper/utils";
 
 function Spinner({ className }: { className?: string }) {
   return (
-    <div>
+    <div className="flex justify-center">
       <div role="status">
         <svg
           aria-hidden="true"
           className={classNames(
-            " mx-auto mr-2 animate-spin fill-white text-gray-200 dark:text-gray-600",
+            "mx-auto animate-spin fill-white text-gray-200 dark:text-gray-600",
             className
           )}
           viewBox="0 0 100 101"
