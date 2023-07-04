@@ -38,7 +38,7 @@ function Picker({
             }
             if (title === "month") {
               oldDate.setMonth(+value - 1);
-              console.log("day modified", oldDate);
+              // console.log("day modified", oldDate);
             }
             if (title === "day") {
               oldDate.setDate(+value);
@@ -109,7 +109,7 @@ function Picker({
   );
 }
 function NepaliDatePicker({ setDate, date }: { setDate: Dispatch<React.SetStateAction<Date>>; date: Date }) {
-  console.log("date", date);
+  // console.log("date", date);
   const monthData = [
     { value: "0", label: "1" },
     { value: "1", label: "2" },

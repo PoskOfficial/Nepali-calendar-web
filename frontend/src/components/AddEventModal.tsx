@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { PlusIcon } from "@heroicons/react/20/solid";
+import { CalendarIcon, PlusIcon } from "@heroicons/react/20/solid";
 import { PencilSquareIcon, MapPinIcon, Bars3BottomLeftIcon, SwatchIcon } from "@heroicons/react/24/outline";
 import colors from "../constants/colors";
 import { Switch } from "@headlessui/react";
 import NepaliDatePicker from "./NepaliDatePicker";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { CalendarEvent } from "../types/events";
 import { toast } from "react-hot-toast";
+import { getCalendarList } from "../helper/api";
+import DropDown from "./DropDown";
+import Spinner from "./Spinner";
 
 function getCombinedDateTime(date: Date, time: string) {
   const timeParts = time.split(":");
@@ -14,12 +17,15 @@ function getCombinedDateTime(date: Date, time: string) {
   date.setMinutes(parseInt(timeParts[1], 10));
   return date.toISOString();
 }
+//create a type called CalendarPayload which is Partial of CalendarEvent and also includes calendarId
+type CalendarPayload = Partial<CalendarEvent> & { calendarId: string };
 
 function AddEventModal({ startDate }: { startDate: Date }) {
   const [openModel, setOpenModel] = useState(false);
   const [isAllDayEvent, setIsAllDayEvent] = useState(false);
   const [eventStartDate, setEventStartDate] = useState(startDate);
   const [eventEndDate, setEventEndDate] = useState(new Date(startDate.getTime() + 24 * 60 * 60 * 1000));
+  const [selectedCalendar, setSelectedCalendar] = useState<string | number>("");
 
   const queryClient = useQueryClient();
 
@@ -31,7 +37,7 @@ function AddEventModal({ startDate }: { startDate: Date }) {
     onError: () => {
       toast.error("Something went wrong while creating event");
     },
-    mutationFn: async (eventData: Partial<CalendarEvent>) => {
+    mutationFn: async (eventData: CalendarPayload) => {
       const res = await fetch("/api/create", {
         method: "POST",
         headers: {
@@ -40,6 +46,13 @@ function AddEventModal({ startDate }: { startDate: Date }) {
         body: JSON.stringify(eventData),
       });
       return await res.json();
+    },
+  });
+  const { data: calendarList, isLoading: isCalendarListLoading } = useQuery({
+    queryKey: ["calendarList"],
+    queryFn: () => getCalendarList(),
+    onSuccess: (data) => {
+      if (selectedCalendar === "") setSelectedCalendar(data[0].value);
     },
   });
 
@@ -61,6 +74,7 @@ function AddEventModal({ startDate }: { startDate: Date }) {
       location: e.currentTarget.location.value,
       description: e.currentTarget.description.value,
       colorId: e.currentTarget.colorId.value || null,
+      calendarId: `${selectedCalendar}` || "personal",
     };
 
     await mutateAsync(eventData);
@@ -125,6 +139,19 @@ function AddEventModal({ startDate }: { startDate: Date }) {
                     name="endTime"
                     className="rounded-md border p-1 dark:bg-gray-800"
                   />
+                )}
+              </div>
+              <div className="my-2 flex w-full items-center gap-2 dark:text-white">
+                <CalendarIcon className="h-6 w-6 dark:text-white" />
+                {!isCalendarListLoading ? (
+                  <DropDown
+                    items={calendarList}
+                    selected={selectedCalendar}
+                    setSelected={setSelectedCalendar}
+                    className="w-full text-start"
+                  />
+                ) : (
+                  <Spinner />
                 )}
               </div>
               <div className="my-2 flex w-full items-center gap-2">

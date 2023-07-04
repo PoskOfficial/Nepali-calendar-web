@@ -4,6 +4,7 @@ import { ChevronUpDownIcon, CheckIcon } from "@heroicons/react/20/solid";
 
 interface DropDownProps {
   selected: string | number;
+  className?: string;
   setSelected: Dispatch<React.SetStateAction<string | number>>;
   items:
     | string[]
@@ -13,13 +14,13 @@ interface DropDownProps {
       }[];
 }
 
-const DropDown = ({ selected, setSelected, items }: DropDownProps) => {
+const DropDown = ({ selected, setSelected, items, className }: DropDownProps) => {
   const formattedItems = items.map((item) =>
     typeof item === "string" ? { label: item, value: item } : item
   );
   const selectedValue = formattedItems.find((item) => item.value === selected);
   return (
-    <div className="w-auto">
+    <div className={className}>
       <Listbox value={selected} onChange={(value) => setSelected(value)}>
         <div className="relative mt-1">
           <Listbox.Button className="relative w-auto cursor-default rounded-md bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 dark:bg-gray-800 dark:text-white sm:text-sm">

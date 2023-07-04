@@ -8,7 +8,7 @@ const deta = Deta();
 // This how to connect to or create a database.
 const db = deta.Base("users");
 const sessionStore = deta.Base("sessions");
-
+export const installStore = deta.Base("installs");
 interface userDetails extends Profile {
   accessToken: string;
   refreshToken: string;

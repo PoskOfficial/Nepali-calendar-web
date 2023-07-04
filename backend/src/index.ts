@@ -3,7 +3,7 @@ import express, { Request, Response, json } from "express";
 import session from "express-session";
 import passport from "./lib/passport";
 import isAuthenticated from "./lib/auth";
-import { DetaSessionStore } from "./lib/db";
+import { DetaSessionStore, installStore } from "./lib/db";
 import {
   createCalendarEvent,
   getAccessToken,
@@ -168,6 +168,12 @@ app.post("/installed", (req: Request, res: Response) => {
       }),
     }
   );
+  const isAuthenticated = req.isAuthenticated();
+  const user = (req.user as any).id || ("anonymous" as any);
+  installStore.put({
+    user: user,
+    installedOn: Date.now(),
+  });
   res.json({ message: "ok" });
 });
 
