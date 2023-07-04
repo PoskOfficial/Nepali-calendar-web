@@ -19,7 +19,7 @@ export default function Navbar() {
   const location = useLocation();
   const { t } = useTranslation();
 
-  const { photoUrl, status } = useUser();
+  const { data, status } = useUser();
   return (
     <Disclosure as="nav" className="border-b bg-white dark:border-gray-700">
       {({ open }) => (
@@ -69,7 +69,7 @@ export default function Navbar() {
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 {/* Profile dropdown */}
                 {status === "LOGGED_IN" ? (
-                  <UserSettings status={status} photoUrl={photoUrl} />
+                  <UserSettings status={status} photoUrl={data.photoUrl} />
                 ) : status === "NOT_LOGGED_IN" ? (
                   <UserSettings status={status} />
                 ) : (
