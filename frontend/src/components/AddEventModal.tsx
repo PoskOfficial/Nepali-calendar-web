@@ -28,7 +28,7 @@ function AddEventModal({ startDate }: { startDate: Date }) {
       queryClient.invalidateQueries(["events"]);
       setOpenModel(false);
     },
-    onError: (error) => {
+    onError: () => {
       toast.error("Something went wrong while creating event");
     },
     mutationFn: async (eventData: Partial<CalendarEvent>) => {
