@@ -108,7 +108,7 @@ export function getChandramaEnglish(index: number): string {
     "Ashwin Shuklapaksha",
     "Kartik Krishna Paksha",
   ];
-  return chandraNames[index];
+  return (Math.floor(index - 1) < index - 1 ? "Adhik " : "") + chandraNames[Math.floor(index - 1)];
 }
 
 export const eventDuration = (event: CalendarEvent, isNepaliLanguage: boolean) => {
