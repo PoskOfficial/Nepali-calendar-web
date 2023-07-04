@@ -44,7 +44,7 @@ const YearMonthPicker = ({
         <span className="sr-only">Previous month</span>
         <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
       </button>
-      <div className="flex w-96 flex-auto items-center justify-center gap-4 font-mukta font-semibold">
+      <div className="flex flex-auto items-center justify-center gap-4 font-mukta font-semibold">
         <DropDown
           selected={currentYear}
           setSelected={(selectedYear) =>

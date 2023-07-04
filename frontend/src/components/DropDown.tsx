@@ -19,10 +19,10 @@ const DropDown = ({ selected, setSelected, items }: DropDownProps) => {
   );
   const selectedValue = formattedItems.find((item) => item.value === selected);
   return (
-    <div className="w-32 ">
+    <div className="w-auto">
       <Listbox value={selected} onChange={(value) => setSelected(value)}>
         <div className="relative mt-1">
-          <Listbox.Button className="relative w-full cursor-default rounded-md bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 dark:bg-gray-800 dark:text-white sm:text-sm">
+          <Listbox.Button className="relative w-auto cursor-default rounded-md bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 dark:bg-gray-800 dark:text-white sm:text-sm">
             <span className="block truncate">{selectedValue?.label}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -33,7 +33,7 @@ const DropDown = ({ selected, setSelected, items }: DropDownProps) => {
             leave="transition ease-in duration-100"
             leaveFrom="opacity-100"
             leaveTo="opacity-0">
-            <Listbox.Options className="scrollbar-hide absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:border-gray-600 dark:bg-gray-800 sm:text-sm">
+            <Listbox.Options className="scrollbar-hide absolute z-50 mt-1 max-h-60 w-auto overflow-auto rounded-md border bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:border-gray-600 dark:bg-gray-800 sm:text-sm">
               {formattedItems.map((item, idx) => (
                 <Listbox.Option
                   key={idx}
