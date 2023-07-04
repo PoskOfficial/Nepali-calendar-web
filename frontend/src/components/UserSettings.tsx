@@ -3,10 +3,8 @@ import { Menu, Transition } from "@headlessui/react";
 import { Cog6ToothIcon, MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 import { useTranslation } from "react-i18next";
 import { DarkModeContext } from "./DarkModeProvider";
+import { classNames } from "../helper/utils";
 
-function classNames(...classes: Array<string | undefined | boolean>) {
-  return classes.filter(Boolean).join(" ");
-}
 function LoginWithGoogle({ darkMode }: { darkMode: boolean }) {
   return darkMode ? (
     <img src="/icons/btn_google_signin_dark_normal_web@2x.png" />
