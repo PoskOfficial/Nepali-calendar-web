@@ -18,6 +18,7 @@ const useUser = () => {
         setPhotoUrl(resp.data.user._json.picture);
       }
     },
+    networkMode: "offlineFirst",
   });
 
   useEffect(() => {
