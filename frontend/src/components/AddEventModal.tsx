@@ -23,10 +23,13 @@ function AddEventModal({ startDate }: { startDate: Date }) {
 
   const queryClient = useQueryClient();
 
-  const { mutateAsync, isLoading, data } = useMutation({
+  const { mutateAsync, isLoading } = useMutation({
     onSuccess: () => {
       queryClient.invalidateQueries(["events"]);
       setOpenModel(false);
+    },
+    onError: (error) => {
+      toast.error("Something went wrong while creating event");
     },
     mutationFn: async (eventData: Partial<CalendarEvent>) => {
       const res = await fetch("/api/create", {
@@ -52,20 +55,16 @@ function AddEventModal({ startDate }: { startDate: Date }) {
           end: { dateTime: getCombinedDateTime(eventEndDate, e.currentTarget.endTime.value) },
         };
 
-    try {
-      const eventData = {
-        ...startEndDates,
-        summary: e.currentTarget.summary.value,
-        location: e.currentTarget.location.value,
-        description: e.currentTarget.description.value,
-        colorId: e.currentTarget.colorId.value || null,
-      };
+    const eventData = {
+      ...startEndDates,
+      summary: e.currentTarget.summary.value,
+      location: e.currentTarget.location.value,
+      description: e.currentTarget.description.value,
+      colorId: e.currentTarget.colorId.value || null,
+    };
 
-      await mutateAsync(eventData);
-      // console.log({ event: data });
-    } catch (err) {
-      toast.error("Something went wrong");
-    }
+    await mutateAsync(eventData);
+    // console.log({ event: data });
   };
   if (!openModel)
     return (
@@ -108,14 +107,24 @@ function AddEventModal({ startDate }: { startDate: Date }) {
                 <span>From: </span>
                 <NepaliDatePicker setDate={setEventStartDate} date={eventStartDate} />
                 {!isAllDayEvent && (
-                  <input type="time" name="startTime" className="rounded-md border p-1 dark:bg-gray-800" />
+                  <input
+                    required
+                    type="time"
+                    name="startTime"
+                    className="rounded-md border p-1 dark:bg-gray-800"
+                  />
                 )}
               </div>
               <div className="my-2 flex w-full items-center gap-2 dark:text-white">
                 <span>To:</span>
                 <NepaliDatePicker setDate={setEventEndDate} date={eventEndDate} />
                 {!isAllDayEvent && (
-                  <input type="time" name="endTime" className="rounded-md border p-1 dark:bg-gray-800" />
+                  <input
+                    required
+                    type="time"
+                    name="endTime"
+                    className="rounded-md border p-1 dark:bg-gray-800"
+                  />
                 )}
               </div>
               <div className="my-2 flex w-full items-center gap-2">

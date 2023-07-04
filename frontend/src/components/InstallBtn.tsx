@@ -40,9 +40,7 @@ const InstallPWA = ({ children }: { children: React.ReactNode }): JSX.Element | 
     if (promptInstall == null) {
       return;
     }
-    promptInstall.prompt().catch((e) => {
-      console.log(e);
-    });
+    promptInstall.prompt();
   };
 
   if (!supportsPWA) {
