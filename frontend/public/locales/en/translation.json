@@ -12,15 +12,15 @@
   },
   "navbar": {
     "Home": "Home",
-    "Upcoming_Days": "Upcoming Days",
-    "Date_Converter": "Date Converter ",
+    "Events": "Events",
+    "Date_Converter": "Date Converter",
     "About": "About",
-    "Login": "Login ",
-    "offline": "offline ",
+    "Login": "Login",
+    "offline": "offline",
     "Sign_out": "Sign Out"
   },
   "dc": {
-    "Date_Converter": "Date Converter ",
+    "Date_Converter": "Date Converter",
     "Anno_Domini": "Anno Domini",
     "A.D": "A.D",
     "Bikram_Sambat": "Bikram Sambat",

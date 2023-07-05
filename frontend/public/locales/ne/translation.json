@@ -1,6 +1,6 @@
 {
   "homepage": {
-    "View_all_events": "आउदा दिनहरु हेर्नुहोस्",
+    "View_all_events": "सबै कार्यक्रमहरु हेर्नुहोस्",
     "S": "आ",
     "M": "सो",
     "T": "मं",
@@ -12,15 +12,15 @@
   },
   "navbar": {
     "Home": "गृहपृष्ठ",
-    "Upcoming_Days": "आउदा दिनहरु",
-    "Date_Converter": "मिती परिवर्तन ",
+    "Events": "कार्यक्रमहरु",
+    "Date_Converter": "मिती परिवर्तन",
     "About": "बारेमा",
-    "Login": "लगईन ",
-    "offline": "अफलाईन ",
+    "Login": "लगईन",
+    "offline": "अफलाईन",
     "Sign_out": "साईन आउट"
   },
   "dc": {
-    "Date_Converter": "मिती परिवर्तन ",
+    "Date_Converter": "मिती परिवर्तन",
     "A.D": "सन्",
     "B.S": "बि.सं"
   }
