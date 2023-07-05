@@ -1,7 +1,6 @@
 {
   "homepage": {
     "View_all_events": "View all events",
-    "2075": "2075",
     "S": "S",
     "M": "M",
     "T": "T",
@@ -9,30 +8,19 @@
     "Th": "T",
     "F": "F",
     "Sa": "S",
-    "Delete": "Delete",
-    "2076": "2076",
-    "2077": "2077",
-    "2078": "2078",
-    "2079": "2079",
-    "2080": "2080",
-    "2081": "2081",
-    "2082": "2082"
+    "Delete": "Delete"
   },
   "navbar": {
     "Home": "Home",
-    "Upcoming_Days": "Upcoming Days",
-    "Date_Converter": "Date Converter ",
-    "Privacy_Policy": "Privacy Policy",
-
+    "Events": "Events",
+    "Date_Converter": "Date Converter",
     "About": "About",
-
-    "Login": "Login ",
-    "offline": "offline ",
-
+    "Login": "Login",
+    "offline": "offline",
     "Sign_out": "Sign Out"
   },
   "dc": {
-    "Date_Converter": "Date Converter ",
+    "Date_Converter": "Date Converter",
     "Anno_Domini": "Anno Domini",
     "A.D": "A.D",
     "Bikram_Sambat": "Bikram Sambat",

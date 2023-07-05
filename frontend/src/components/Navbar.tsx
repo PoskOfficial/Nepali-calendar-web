@@ -11,10 +11,9 @@ export default function Navbar() {
   // find current route
   const navigation = [
     { name: "navbar.Home", href: "/" },
-    { name: "navbar.Upcoming_Days", href: "/upcoming" },
+    { name: "navbar.Events", href: "/upcoming" },
     { name: "navbar.Date_Converter", href: "/converter" },
     { name: "navbar.About", href: "/about" },
-    { name: "navbar.Privacy_Policy", href: "/privacy" },
   ];
   const location = useLocation();
   const { t } = useTranslation();
