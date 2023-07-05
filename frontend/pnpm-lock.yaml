@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -100,6 +100,24 @@ devDependencies:
   vite-plugin-pwa:
     specifier: ^0.16.4
     version: 0.16.4(vite@4.3.9)(workbox-build@7.0.0)(workbox-window@7.0.0)
+  workbox-cacheable-response:
+    specifier: ^7.0.0
+    version: 7.0.0
+  workbox-expiration:
+    specifier: ^7.0.0
+    version: 7.0.0
+  workbox-google-analytics:
+    specifier: ^7.0.0
+    version: 7.0.0
+  workbox-precaching:
+    specifier: ^7.0.0
+    version: 7.0.0
+  workbox-routing:
+    specifier: ^7.0.0
+    version: 7.0.0
+  workbox-strategies:
+    specifier: ^7.0.0
+    version: 7.0.0
 
 packages:
 
