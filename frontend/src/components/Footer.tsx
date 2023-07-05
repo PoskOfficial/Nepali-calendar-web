@@ -3,7 +3,7 @@ import Octocat from "./Octocat";
 
 const Footer = () => {
   return (
-    <footer className="mt-10 border-t px-2 py-2 text-center dark:bg-gray-900 sm:px-6 lg:px-8 ">
+    <footer className="mt-10 border-t px-2 py-2 text-center dark:border-gray-700 dark:bg-gray-900 sm:px-6 lg:px-8 ">
       <div className="container mx-auto flex items-center justify-between text-black dark:text-white">
         <div className="flex items-center gap-2">
           <a href="https://github.com/PoskOfficial/Nepali-calendar-web">
