@@ -10,15 +10,22 @@ import { registerRoute } from "workbox-routing";
 import { CacheFirst, NetworkFirst } from "workbox-strategies";
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import * as googleAnalytics from "workbox-google-analytics";
+import NepaliDate from "nepali-date-converter";
 
 googleAnalytics.initialize();
 
 const UPDATE_CHECK = "UPDATE_CHECK";
+
 const checkForUpdates = async () => {
-  console.log("Checking for updates...");
+  const { year, month } = new NepaliDate().getBS();
+  const yearData = await fetch(`/data/${year}-calendar.json`).then((res) => res.json());
+  const currentMonthInHumanForm = (month + 1).toString().padStart(2, "0");
+  const monthData = yearData[currentMonthInHumanForm];
+  const startDate = monthData[0].AD_date.ad;
+  const endDate = monthData[monthData.length - 1].AD_date.ad;
+  await fetch(`/api/events?timeMin=${startDate}&timeMax=${endDate}`);
   Promise.resolve();
 };
-
 precacheAndRoute(self.__WB_MANIFEST || []);
 
 registerRoute(
