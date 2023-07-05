@@ -1,7 +1,7 @@
-# Nepali Calendar 
+# Miti - The Nepali Calendar 
 
-This version of Nepali Calendar is an open source progressive web app that allows you to view and sync events with Google Calendar. 
-Check live version of this application at [https://calendar.bikram.io](https://calendar.bikram.io).
+This version of Miti is an open source progressive web app that allows you to view and sync events with Google Calendar. 
+Check live version of this application at [https://miti.bikram.io](https://miti.bikram.io).
 
 # Local Development
 
