@@ -8,8 +8,12 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      strategies: "generateSW",
+      // strategies: "generateSW",
+      filename: "sw.ts",
       injectRegister: "inline",
+      srcDir: "src/service-worker",
+      strategies: "injectManifest",
+      includeAssets: ["**/*.{js,css,html,ico,png,json}", "**/data/*.{js,css,html,ico,png,json}"],
       manifest: {
         name: "Miti - Nepali Calendar",
         short_name: "Miti",
@@ -137,67 +141,67 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
-      workbox: {
-        navigateFallbackDenylist: [/^\/api/],
-        offlineGoogleAnalytics: true,
-        globPatterns: ["**/*.{js,css,html,ico,png,json}", "**/data/*.{js,css,html,ico,png,json}"],
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: "CacheFirst",
-            options: {
-              cacheName: "google-fonts-cache",
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
-              },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
-          {
-            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-            handler: "CacheFirst",
-            options: {
-              cacheName: "gstatic-fonts-cache",
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
-              },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
-          {
-            // cache api call /events for 10 days with newtwork first strategy, use relative path
-            urlPattern: /\/api\/.*/i,
-            handler: "NetworkFirst",
-            options: {
-              backgroundSync: {
-                name: "events",
-                options: {
-                  maxRetentionTime: 60 * 60 * 24 * 10, // <== 10 days
-                },
-              },
+      // workbox: {
+      //   navigateFallbackDenylist: [/^\/api/],
+      //   offlineGoogleAnalytics: true,
+      //   globPatterns: ["**/*.{js,css,html,ico,png,json}", "**/data/*.{js,css,html,ico,png,json}"],
+      //   runtimeCaching: [
+      //     {
+      //       urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+      //       handler: "CacheFirst",
+      //       options: {
+      //         cacheName: "google-fonts-cache",
+      //         expiration: {
+      //           maxEntries: 10,
+      //           maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+      //         },
+      //         cacheableResponse: {
+      //           statuses: [0, 200],
+      //         },
+      //       },
+      //     },
+      //     {
+      //       urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+      //       handler: "CacheFirst",
+      //       options: {
+      //         cacheName: "gstatic-fonts-cache",
+      //         expiration: {
+      //           maxEntries: 10,
+      //           maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+      //         },
+      //         cacheableResponse: {
+      //           statuses: [0, 200],
+      //         },
+      //       },
+      //     },
+      //     {
+      //       // cache api call /events for 10 days with newtwork first strategy, use relative path
+      //       urlPattern: /\/api\/.*/i,
+      //       handler: "NetworkFirst",
+      //       options: {
+      //         backgroundSync: {
+      //           name: "events",
+      //           options: {
+      //             maxRetentionTime: 60 * 60 * 24 * 10, // <== 10 days
+      //           },
+      //         },
 
-              fetchOptions: {
-                credentials: "include",
-              },
+      //         fetchOptions: {
+      //           credentials: "include",
+      //         },
 
-              cacheName: "events-cache",
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 10, // <== 10 days
-              },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
-        ],
-      },
+      //         cacheName: "events-cache",
+      //         expiration: {
+      //           maxEntries: 10,
+      //           maxAgeSeconds: 60 * 60 * 24 * 10, // <== 10 days
+      //         },
+      //         cacheableResponse: {
+      //           statuses: [0, 200],
+      //         },
+      //       },
+      //     },
+      //   ],
+      // },
     }),
   ],
 });
