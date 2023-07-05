@@ -108,7 +108,7 @@ function AddEventModal({ startDate }: { startDate: Date }) {
                     setEventEndDate(new Date(eventEndDate));
                   }}
                   className={`${
-                    isAllDayEvent ? "bg-indigo-600" : "bg-gray-200 dark:bg-gray-800"
+                    isAllDayEvent ? "border bg-indigo-600" : "border bg-gray-200 dark:bg-gray-800"
                   }  inline-flex h-6 w-11 items-center rounded-full transition-all duration-100 ease-linear`}>
                   <span className="sr-only">toggle all day event</span>
                   <span
