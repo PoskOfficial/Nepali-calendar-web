@@ -28,7 +28,8 @@ function AddEventModal({ startDate }: { startDate: Date }) {
   const [selectedCalendar, setSelectedCalendar] = useState<string | number>("");
 
   const queryClient = useQueryClient();
-
+  console.log("eventStartDate", eventStartDate);
+  console.log("eventEndDate", eventEndDate);
   const { mutateAsync, isLoading } = useMutation({
     onSuccess: () => {
       queryClient.invalidateQueries(["events"]);
@@ -61,8 +62,10 @@ function AddEventModal({ startDate }: { startDate: Date }) {
     e.preventDefault();
     const startEndDates = isAllDayEvent
       ? {
-          start: { date: eventStartDate.toISOString().split("T")[0] },
-          end: { date: eventEndDate.toISOString().split("T")[0] },
+          start: {
+            date: new Date(eventStartDate.getTime() + 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+          },
+          end: { date: new Date(eventEndDate.getTime() + 24 * 60 * 60 * 1000).toISOString().split("T")[0] },
         }
       : {
           start: { dateTime: getCombinedDateTime(startDate, e.currentTarget.startTime.value) },
@@ -77,7 +80,7 @@ function AddEventModal({ startDate }: { startDate: Date }) {
       colorId: e.currentTarget.colorId.value || null,
       calendarId: `${selectedCalendar}` || "personal",
     };
-
+    console.log(eventData);
     await mutateAsync(eventData);
     // console.log({ event: data });
   };
