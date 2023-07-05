@@ -13,8 +13,7 @@ export default function Navbar() {
     { name: "navbar.Home", href: "/" },
     { name: "navbar.Upcoming_Days", href: "/upcoming" },
     { name: "navbar.Date_Converter", href: "/converter" },
-    { name: "navbar.About", href: "/about" },
-    { name: "navbar.Privacy_Policy", href: "/privacy" },
+    { name: "navbar.About", href: "/about" }
   ];
   const location = useLocation();
   const { t } = useTranslation();
