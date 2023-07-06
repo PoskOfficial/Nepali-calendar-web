@@ -83,8 +83,7 @@ export default function Navbar() {
               {navigation.map((item) => (
                 <Disclosure.Button
                   key={item.name}
-                  as="a"
-                  href={item.href}
+                  as="div"
                   className={classNames(
                     item.href === location.pathname
                       ? "bg-gray-300 dark:bg-gray-600 dark:text-gray-900"
@@ -92,7 +91,7 @@ export default function Navbar() {
                     "block rounded-md px-3 py-2 text-base font-medium"
                   )}
                   aria-current={item.href === location.pathname ? "page" : undefined}>
-                  {t(item.name)}
+                  <Link to={item.href}>{t(item.name)}</Link>
                 </Disclosure.Button>
               ))}
               {/* <LanguageChangeDropDown /> */}
