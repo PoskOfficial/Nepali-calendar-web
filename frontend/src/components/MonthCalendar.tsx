@@ -3,11 +3,11 @@ import nepaliNumber from "../helper/nepaliNumber";
 import AddEventModal from "./AddEventModal";
 import { Link } from "react-router-dom";
 import useLanguage from "../helper/useLanguage";
-import { DayData } from "../types/calendar";
+import { DayData } from "../types/calendar.types";
 import { useMemo, useState } from "react";
 import NepaliDate from "nepali-date-converter";
 import useUser from "../helper/useUser";
-import { CalendarEventsResult } from "../types/events";
+import { CalendarEventsResult } from "../types/events.types";
 import colors from "../constants/colors";
 import SingleUserEvent from "./SingleUserEvent";
 import { classNames } from "../helper/utils";
@@ -79,7 +79,7 @@ export default function MonthCalendar({
               className={classNames(
                 "p-1 font-mukta leading-3 hover:bg-gray-100 focus:z-10",
                 (isSelectedDay || isToday) && "font-semibold",
-                isToday && "font-semibold text-indigo-600",
+                isToday && "bg-indigo-200 font-semibold text-indigo-600",
                 !isSelectedDay && "bg-white dark:bg-gray-900",
                 isSelectedDay && " bg-indigo-600  text-white hover:bg-indigo-700",
                 isSelectedDay && "bg-indigo-600",

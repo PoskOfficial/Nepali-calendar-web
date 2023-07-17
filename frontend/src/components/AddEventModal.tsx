@@ -5,7 +5,7 @@ import colors from "../constants/colors";
 import { Switch } from "@headlessui/react";
 import NepaliDatePicker from "./NepaliDatePicker";
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
-import { CalendarEvent } from "../types/events";
+import { CalendarEvent } from "../types/events.types";
 import { toast } from "react-hot-toast";
 import { getCalendarList } from "../helper/api";
 import DropDown from "./DropDown";

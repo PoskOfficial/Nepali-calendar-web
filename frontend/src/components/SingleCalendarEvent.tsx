@@ -1,6 +1,6 @@
 import { relativeTimeFromDates } from "../helper/dates";
 import nepaliNumber from "../helper/nepaliNumber";
-import { Event } from "../types/calendar";
+import { Event } from "../types/calendar.types";
 import UseLanguage from "../helper/useLanguage";
 import NepaliDate from "nepali-date-converter";
 function SingleCalendarEvent({ date, events }: { date: NepaliDate; week_day: number; events: Event[] }) {

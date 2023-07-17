@@ -1,5 +1,5 @@
 {
-  "name": "nepali-calendar-backend",
+  "name": "miti-nepali-calendar-backend",
   "version": "1.0.0",
   "description": "Backend For Nepali Calendar App to Sync with Google Calendar",
   "main": "dist/index.js",

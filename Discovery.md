@@ -1,5 +1,5 @@
 ---
-app_name: NepCal
+app_name: Miti
 tagline: 'Nepali Calendar App '
 ---
 

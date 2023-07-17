@@ -1,6 +1,6 @@
 import NepaliDate from "nepali-date-converter";
 import SingleCalendarEvent from "../components/SingleCalendarEvent";
-import { DayData } from "../types/calendar";
+import { DayData } from "../types/calendar.types";
 function UpcomingEvents({ monthData }: { monthData: DayData[] }) {
   return (
     <div className="lg:1/2 mb-4 mt-6 max-w-lg px-4">

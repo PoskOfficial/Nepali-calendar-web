@@ -6,8 +6,8 @@ import { useParams } from "react-router-dom";
 import NepaliDate from "nepali-date-converter";
 import { useQuery } from "@tanstack/react-query";
 import Spinner from "../components/Spinner";
-import { CalendarData, Months } from "../types/calendar";
-import { CalendarEventsResult } from "../types/events";
+import { CalendarData, Months } from "../types/calendar.types";
+import { CalendarEventsResult } from "../types/events.types";
 import UpcomingEvents from "./UpcomingEvents";
 function Home() {
   const { BSYear, BSMonth, pageType = "calendar" } = useParams();

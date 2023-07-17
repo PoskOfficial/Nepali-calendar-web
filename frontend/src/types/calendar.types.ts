@@ -24,16 +24,17 @@ export interface ADDate {
   ns_year: number;
   chandrama: number;
   is_verified: number;
-  remarks: Remarks;
+  remarks: ADDateRemarks;
 }
 
-export enum Remarks {
+export enum ADDateRemarks {
   Empty = "",
-  ToRemoveFrom2079Calendar = "to remove * from 2079 calendar",
+  NPNCEdit1112 = "NP->NC edit 11 -> 12 ",
+  NPNCEdit65 = "NP->NC edit 6 -> 5 ",
 }
 
 export interface Event {
-  ad: Date;
+  ad: string;
   bs: string;
   bs_day: number;
   bs_month: number;
@@ -43,18 +44,18 @@ export interface Event {
   ns_year: number;
   chandrama: number;
   is_verified: number;
-  remarks: Remarks;
-  updated_at: Date;
+  remarks: ADDateRemarks;
+  updated_at: string;
   event_index_id: number | null;
-  event_date: Date | null;
-  ex_date: Date | null;
+  event_date: string | null;
+  ex_date: string | null;
   id: null | string;
   jpid: null;
   jtl: null | string;
   jds: JDS | null;
-  jsdt: Date | null;
-  jed: Date | null;
-  recurring_end_date: Date | null;
+  jsdt: string | null;
+  jed: string | null;
+  recurring_end_date: string | null;
   jir: number | null;
   has_reminder: number | null;
   status: number | null;
@@ -62,31 +63,24 @@ export interface Event {
   rrule: null | string;
   jci: null | string;
   jbo: Jbo | null;
-  jcb: Jcb | null;
   jlo: null | string;
   jtp: Jtp | null;
   priority: null | string;
   verification_id: number | null;
-  event_verified_date: Date | null;
+  event_verified_date: string | null;
   verification_status: number | null;
-  verification_remarks: null | string;
-  exception_date: Date | null;
-  new_date: Date | null;
+  verification_remarks: VerificationRemarksEnum | null;
+  exception_date: string | null;
+  new_date: string | null;
   exception_status: number | null;
   exception_remarks: null;
-  holiday_date: Date | null;
-  holiday_type: HolidayType | null;
+  holiday_date: string | null;
+  holiday_type: null;
   holiday_status: number | null;
   gh: number;
   jfr: Jfr;
   jeddt: any[] | JeddtClass;
   jevdt?: Jevdt;
-}
-
-export enum HolidayType {
-  DashainHoliday = "dashain holiday",
-  Empty = "",
-  GovernmentHoliday = "government holiday",
 }
 
 export enum Jbo {
@@ -95,20 +89,13 @@ export enum Jbo {
   NS = "NS",
 }
 
-export enum Jcb {
-  AdminGeniussystemsCOM = "admin@geniussystems.com",
-  AdminNepalipatroCOM = "admin@nepalipatro.com",
-  AdminNepalipatroCOMNP = "admin@nepalipatro.com.np",
-  KiranSilwal1GmailCOM = "kiran.silwal1@gmail.com",
-}
-
 export interface JDS {
   jnid: string;
   jct: Jct;
   ne: string;
   en: string;
-  jiu: string;
-  jis: string;
+  jiu?: string;
+  jis?: string;
   jbi: string;
   jie: string;
   jbd: Jbd;
@@ -139,17 +126,26 @@ export enum Jct {
 
 export interface JeddtClass {
   event_id: string;
-  ex_date: Date;
-  new_date: Date;
+  ex_date: string;
+  new_date: string;
   status: number;
   remarks: null;
 }
 
 export interface Jevdt {
   event_id: string;
-  event_date: Date;
+  event_date: string;
   status: number;
-  remarks: null | string;
+  remarks: VerificationRemarksEnum;
+}
+
+export enum VerificationRemarksEnum {
+  ManuallyVerified = "(manually verified)",
+  NPDateB000 = "NP date B000",
+  NPDateB003 = "NP date B003",
+  NPDateB004 = "NP date B004",
+  NPExcepB001 = "NP Excep. B001",
+  NPExceptionB004 = "NP Exception B004",
 }
 
 export interface Jfr {
@@ -158,6 +154,8 @@ export interface Jfr {
   jfrmd?: string;
   jfrrt?: Jfrrt;
   jfrrbdy?: string;
+  recurring_by_until?: string;
+  jfrrbu?: string;
 }
 
 export enum Jfrrt {

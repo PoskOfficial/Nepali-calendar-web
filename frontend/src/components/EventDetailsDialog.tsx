@@ -10,7 +10,7 @@ import {
 import Spinner from "./Spinner";
 import useLanguage from "../helper/useLanguage";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CalendarEvent } from "../types/events";
+import { CalendarEvent } from "../types/events.types";
 import { eventDuration } from "../helper/dates";
 
 export default function EventDetailsDialog({

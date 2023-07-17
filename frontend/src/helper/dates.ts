@@ -1,6 +1,6 @@
 import NepaliDate from "nepali-date-converter";
 import { isSameDay } from "date-fns";
-import { CalendarEvent } from "../types/events";
+import { CalendarEvent } from "../types/events.types";
 import { nepaliMonths } from "../constants/mahina";
 
 export function getTithiNepali(index: number): string {
