@@ -3,93 +3,13 @@
 This version of Miti is an open source progressive web app that allows you to view and sync events with Google Calendar. 
 Check live version of this application at [https://miti.bikram.io](https://miti.bikram.io).
 
-# Local Development
-
-## Prerequisites
-
-Install Deta Space CLI
-
-For mac os
-
-```bash
-curl -fsSL https://get.deta.dev/space-cli.sh | sh
-```
-
-For windows
-
-```bash
-iwr https://deta.space/assets/space-cli.ps1 -useb | iex
-```
-
-For linux
-
-```bash
-curl -fsSL https://deta.space/assets/space-cli.sh | sh
-```
-
-## Installation
-
-Fork the repository and clone it to your local machine
-
-```bash
-git clone https://github.com/<your username>/Nepali-calendar-web.git
-```
+![](./frontend/public/banner.png)
 
 
-Login to Deta Space
+Miti is a minimal Nepali Calendar App that can sync with your Google account and can be installed on any operating system as a progressive web app. 
 
-- Sign up for a free account at [https://deta.space](https://deta.space) (enable developer mode)
-- Skip onboarding
-- Search for settings on the search bar at the buttom 
-- Create access token
-- Paste the access token on the terminal after running the following command
+It is completely open-source and free to use without any ads. But why did we create yet another Nepali Calendar App when there are already so many of them? Two main reasons, they’re too bloated and they fail to become a good calendar, i.e. to cross-compatibility with other calendars. Miti can be operated in sync with native calendar apps in any OS because almost all of them support google calendar. 
 
-```bash
-space login
-```
+## Contributing
 
-Create a new space
-
-```bash
-space new
-```
-
-Install dependencies for both backend and frontend
-
-```bash
-pnpm install
-```
-Note: You need to use pnpm for package management. You can install pnpm by running `npm install -g pnpm`
-
-Run on dev mode
-
-```bash
-space dev
-```
-
-If you are getting issues related to nodemon not being installed, you can install it globally by running `npm install -g nodemon`
-
-## Environment Variables
-
-To run this project, you will need to add the following environment variables to your .env file
-
-`GOOGLE_CLIENT_ID`
-
-`GOOGLE_CLIENT_SECRET`
-
-To set environment variable on local you can pass it as a command line argument
-
-```bash
-GOOGLE_CLIENT_ID=your_client_id GOOGLE_CLIENT_SECRET=your_client_secret space dev
-```
-
-```powershell
-$env:GOOGLE_CLIENT_ID="your_client_id"
-$env:GOOGLE_CLIENT_SECRET="your_client_secret"
-space dev
-```
-
-
-For more information on how to get `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` check [this](https://developers.google.com/identity/protocols/oauth2) out. You need to enable calendar api and create credentials to get these values.
-
-If you are having issues with this part, you can contact the team at our [Discord Server](https://discord.gg/W5DJv9zSaW).
+We welcome contributions from everyone. Please check out our [contributing guidelines](./CONTRIBUTING.md) for more information.

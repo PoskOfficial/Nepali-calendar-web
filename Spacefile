@@ -1,5 +1,6 @@
 # Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
 v: 0
+icon: ./frontend/public/icon/icon-512x512.png
 micros:
   - name: backend
     src: backend
@@ -9,7 +10,7 @@ micros:
       # api_keys: true
       env:
         - name: GOOGLE_CLIENT_ID
-          description: Google client id
+          description: Google client idß
           default: "Your Google client id"
         - name: GOOGLE_CLIENT_SECRET
           description: Google client secreta
