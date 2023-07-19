@@ -25,5 +25,8 @@
   "homepage": "https://github.com/poskOfficial/Nepali-calendar-web#readme",
   "devDependencies": {
     "concurrently": "^8.2.0"
+  },
+  "dependencies": {
+    "pnpm": "^8.6.9"
   }
 }
