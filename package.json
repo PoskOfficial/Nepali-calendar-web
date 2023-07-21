@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/poskOfficial/Nepali-calendar-web#readme",
   "devDependencies": {
-    "concurrently": "^8.2.0"
+    "concurrently": "^8.2.0", 
+    "jest": "^27.0.6"
   }
 }
