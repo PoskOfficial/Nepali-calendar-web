@@ -38,7 +38,9 @@ const DateConverter = () => {
               </div>
               <input
                 type="date"
-                value={date.toISOString().split("T")[0]}
+                value={
+                  new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().split("T")[0]
+                }
                 onChange={(e) => {
                   setDate(e.target.value ? new Date(e.target.value) : new Date());
                 }}
