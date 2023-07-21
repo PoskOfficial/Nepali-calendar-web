@@ -1,4 +1,10 @@
-import { getTithiNepali, getChandramaNepali, getTithiEnglish, getChandramaEnglish } from "../helper/dates";
+import {
+  getTithiNepali,
+  getChandramaNepali,
+  getTithiEnglish,
+  getChandramaEnglish,
+  relativeTimeFromDates,
+} from "../helper/dates";
 import nepaliNumber from "../helper/nepaliNumber";
 import AddEventModal from "./AddEventModal";
 import { Link } from "react-router-dom";
@@ -151,6 +157,11 @@ export default function MonthCalendar({
               ${getChandramaEnglish(selectedDayData?.AD_date?.chandrama)} •
               ${selectedDayData?.events.map((event) => event?.jds?.en).join(" | ")}`}
           </p>
+        </div>
+        <div className="ml-10 flex-col">
+          <h1 className="mt-2 text-sm text-gray-500 dark:text-white">
+            {relativeTimeFromDates(selectedDay.toJsDate(), isNepaliLanguage)}
+          </h1>
         </div>
       </div>
       {selectedDayData?.ad && status === "LOGGED_IN" && <AddEventModal startDate={selectedDay.toJsDate()} />}

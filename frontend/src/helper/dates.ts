@@ -133,19 +133,11 @@ export const eventDuration = (event: CalendarEvent, isNepaliLanguage: boolean) =
     : `${startNepaliDate.getBS().date} ${startMonth.en} - ${endNepaliDate.getBS().date} ${endMonth.en}`;
 };
 
-/**
- * Get language-sensitive relative time message from elapsed time.
- * @param elapsed   - the elapsed time in milliseconds
- */
-export function relativeTimeFromElapsed(elapsed: number, isNepaliLanguage: boolean): string {
-  const loc = isNepaliLanguage ? "ne-NP" : "en-US";
-  const rtf = new Intl.RelativeTimeFormat(loc, { numeric: "auto" });
-  return rtf.format(Math.round(elapsed / 86400000), "day");
-}
 
 /**
  * Get language-sensitive relative time message from Dates.
  * @param relative  - the relative dateTime, generally is in the past or future
+ * @param isNepaliLanguage - a flag indicating whether to use Nepali language for output
  * @param pivot     - the dateTime of reference, generally is the current time
  */
 export function relativeTimeFromDates(
@@ -154,6 +146,49 @@ export function relativeTimeFromDates(
   pivot = new Date()
 ): string {
   if (!relative) return "";
-  const elapsed = relative.getTime() - pivot.getTime();
-  return relativeTimeFromElapsed(elapsed, isNepaliLanguage);
+
+  const dayInMillis = 24 * 60 * 60 * 1000; // Milliseconds in a day
+
+  // Calculate the start of today and yesterday in the same timezone as the pivot date
+  const pivotOffset = pivot.getTimezoneOffset() * 60 * 1000;
+  const todayStart = new Date(pivot.getTime() - (pivot.getTime() % dayInMillis) - pivotOffset);
+  const yesterdayStart = new Date(todayStart.getTime() - dayInMillis);
+
+  // Adjust the relative date for the timezone offset
+  const relativeTimeAdjusted = relative.getTime() - relative.getTimezoneOffset() * 60 * 1000;
+
+  const relativeDay = Math.floor((relativeTimeAdjusted - pivot.getTime()) / dayInMillis)+1;
+
+  if (relativeDay === 0) {
+    if (isNepaliLanguage) {
+      return "आज";
+    } else {
+      return "Today";
+    }
+  } else if (relativeDay === -1) {
+    if (isNepaliLanguage) {
+      return "हिजो";
+    } else {
+      return "Yesterday";
+    }
+  } else if (relativeDay === 1) {
+    if (isNepaliLanguage) {
+      return "भोलि";
+    } else {
+      return "Tomorrow";
+    }
+  } else if (relativeDay > 1) {
+    if (isNepaliLanguage) {
+      return `${relativeDay} दिन पछि`;
+    } else {
+      return `after ${relativeDay} days`;
+    }
+  } else {
+    if (isNepaliLanguage) {
+      return `${Math.abs(relativeDay)} दिन अघि`;
+    } else {
+      return `${Math.abs(relativeDay)} days ago`;
+    }
+  }
 }
+

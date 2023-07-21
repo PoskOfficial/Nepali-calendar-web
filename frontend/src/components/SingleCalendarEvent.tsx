@@ -8,7 +8,20 @@ function SingleCalendarEvent({ date, events }: { date: NepaliDate; week_day: num
   const nepaliEvents = isNepaliLanguage
     ? events.map((event) => event?.jds?.ne)
     : events.map((event) => event?.jds?.en);
-  const eventsString = nepaliEvents.join(" / ");
+
+  let eventsString = nepaliEvents.join(" / ");
+
+  // Add today's date to the array even if there are no events for today
+  const today = new Date();
+  const isToday = today.toDateString() === date.toJsDate().toDateString();
+  if (isToday && nepaliEvents.length === 1) {
+    // If today and there are no events, show "No Event" instead of an empty string
+    if (isNepaliLanguage) {
+      eventsString = "कुनै घटना छैन";
+    } else {
+      eventsString = "No Event";
+    }
+  }
   return (
     <div className="relative">
       {eventsString.length > 0 && (
