@@ -8,7 +8,11 @@ function SingleCalendarEvent({ date, events }: { date: NepaliDate; week_day: num
   const nepaliEvents = isNepaliLanguage
     ? events.map((event) => event?.jds?.ne)
     : events.map((event) => event?.jds?.en);
-  const eventsString = nepaliEvents.join(" / ");
+
+  const today = new Date();
+  const isToday = today.toDateString() === date.toJsDate().toDateString();
+  const noEventString = isNepaliLanguage ? "कुनै घटना छैन" : "No Event";
+  const eventsString = isToday && nepaliEvents.length === 0 ? noEventString : nepaliEvents.join(" / ");
   return (
     <div className="relative">
       {eventsString.length > 0 && (
@@ -32,7 +36,7 @@ function SingleCalendarEvent({ date, events }: { date: NepaliDate; week_day: num
               </h3>
               <h1 className="py-1 text-start tracking-wider">{eventsString}</h1>
             </div>
-            <h1 className="absolute right-2 text-sm">
+            <h1 className="absolute right-2 text-end text-sm">
               {relativeTimeFromDates(date.toJsDate(), isNepaliLanguage)}
             </h1>
           </div>

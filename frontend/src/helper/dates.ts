@@ -135,17 +135,18 @@ export const eventDuration = (event: CalendarEvent, isNepaliLanguage: boolean) =
 
 /**
  * Get language-sensitive relative time message from elapsed time.
- * @param elapsed   - the elapsed time in milliseconds
+ * @param elapsed   - the elapsed time in days
  */
 export function relativeTimeFromElapsed(elapsed: number, isNepaliLanguage: boolean): string {
   const loc = isNepaliLanguage ? "ne-NP" : "en-US";
   const rtf = new Intl.RelativeTimeFormat(loc, { numeric: "auto" });
-  return rtf.format(Math.round(elapsed / 86400000), "day");
+  return rtf.format(elapsed, "day");
 }
 
 /**
  * Get language-sensitive relative time message from Dates.
  * @param relative  - the relative dateTime, generally is in the past or future
+ * @param isNepaliLanguage - a flag indicating whether to use Nepali language for output
  * @param pivot     - the dateTime of reference, generally is the current time
  */
 export function relativeTimeFromDates(
@@ -154,6 +155,13 @@ export function relativeTimeFromDates(
   pivot = new Date()
 ): string {
   if (!relative) return "";
-  const elapsed = relative.getTime() - pivot.getTime();
-  return relativeTimeFromElapsed(elapsed, isNepaliLanguage);
+
+  // Calculate the difference in days between the relative date and the current date
+  const dayInMillis = 24 * 60 * 60 * 1000; // Milliseconds in a day
+  const now = pivot.getTime();
+  const todayStart = new Date(now - (now % dayInMillis)).getTime();
+  const relativeDay = Math.round((relative.getTime() - todayStart) / dayInMillis);
+
+  // Use the relativeTimeFromElapsed function to get the language-sensitive relative time message
+  return relativeTimeFromElapsed(relativeDay, isNepaliLanguage);
 }
