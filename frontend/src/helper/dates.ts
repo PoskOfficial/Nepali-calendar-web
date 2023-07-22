@@ -133,6 +133,15 @@ export const eventDuration = (event: CalendarEvent, isNepaliLanguage: boolean) =
     : `${startNepaliDate.getBS().date} ${startMonth.en} - ${endNepaliDate.getBS().date} ${endMonth.en}`;
 };
 
+/**
+ * Get language-sensitive relative time message from elapsed time.
+ * @param elapsed   - the elapsed time in days
+ */
+export function relativeTimeFromElapsed(elapsed: number, isNepaliLanguage: boolean): string {
+  const loc = isNepaliLanguage ? "ne-NP" : "en-US";
+  const rtf = new Intl.RelativeTimeFormat(loc, { numeric: "auto" });
+  return rtf.format(elapsed, "day");
+}
 
 /**
  * Get language-sensitive relative time message from Dates.
@@ -142,55 +151,17 @@ export const eventDuration = (event: CalendarEvent, isNepaliLanguage: boolean) =
  */
 export function relativeTimeFromDates(
   relative: Date | null,
-  isNepaliLanguage = false
+  isNepaliLanguage = false,
+  pivot = new Date()
 ): string {
   if (!relative) return "";
 
+  // Calculate the difference in days between the relative date and the current date
   const dayInMillis = 24 * 60 * 60 * 1000; // Milliseconds in a day
+  const now = pivot.getTime();
+  const todayStart = new Date(now - (now % dayInMillis)).getTime();
+  const relativeDay = Math.round((relative.getTime() - todayStart) / dayInMillis);
 
-  // Get the current date and time
-  const now = new Date();
-
- // Calculate the difference in days between the relative date and the current date
- const nowStartOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
- const relativeStartOfDay = new Date(relative.getFullYear(), relative.getMonth(), relative.getDate());
- const relativeDay = Math.floor((relativeStartOfDay.getTime() - nowStartOfDay.getTime()) / dayInMillis);
-
-  if (relativeDay === 0) {
-    if (isNepaliLanguage) {
-      return "आज";
-    } else {
-      return "Today";
-    }
-  } else if (relativeDay === -1) {
-    if (isNepaliLanguage) {
-      return "हिजो";
-    } else {
-      return "Yesterday";
-    }
-  } else if (relativeDay === 1) {
-    if (isNepaliLanguage) {
-      return "भोलि";
-    } else {
-      return "Tomorrow";
-    }
-  } else if (relativeDay > 1) {
-    if (isNepaliLanguage) {
-      return `${relativeDay} दिन पछि`;
-    } else {
-      return `after ${relativeDay} days`;
-    }
-  } else {
-    if (isNepaliLanguage) {
-      return `${Math.abs(relativeDay)} दिन अघि`;
-    } else {
-      return `${Math.abs(relativeDay)} days ago`;
-    }
-  }
+  // Use the relativeTimeFromElapsed function to get the language-sensitive relative time message
+  return relativeTimeFromElapsed(relativeDay, isNepaliLanguage);
 }
-// const now = new Date();
-// console.log("now:", now);
-
-// const testDate = new Date("2023-07-22T13:00:00.000Z");
-// console.log("time : "+relativeTimeFromDates(testDate, false));
-
