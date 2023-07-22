@@ -16,11 +16,7 @@ function SingleCalendarEvent({ date, events }: { date: NepaliDate; week_day: num
   const isToday = today.toDateString() === date.toJsDate().toDateString();
   if (isToday && nepaliEvents.length === 0) {
     // If today and there are no events, show "No Event" instead of an empty string
-    if (isNepaliLanguage) {
-      eventsString = "कुनै घटना छैन";
-    } else {
-      eventsString = "No Event";
-    }
+    eventsString = isNepaliLanguage ? "कुनै घटना छैन" : "No Event";
   }
   return (
     <div className="relative">
