@@ -45,7 +45,6 @@ passport.use(
       done: DoneCallback
     ) => {
       try {
-        console.log({ refreshToken });
         const user = await db.get(profile.id);
         if (!user) {
           const newUser = await addUser({
@@ -58,6 +57,13 @@ passport.use(
           });
           return done(null, newUser);
         }
+        await db.update(
+          {
+            ...user,
+            refreshToken: refreshToken || user.refreshToken,
+          },
+          profile.id
+        );
         return done(null, user);
       } catch (err) {
         console.log({ err });
