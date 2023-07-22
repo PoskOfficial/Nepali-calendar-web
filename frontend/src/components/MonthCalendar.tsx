@@ -126,7 +126,7 @@ export default function MonthCalendar({
           {t("homepage.View_all_events")}
         </Link>
       </div>
-      <div className="mx-2 mt-1 flex items-start rounded-md border  bg-white p-4 shadow-lg dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+      <div className="mx-2 mt-1 flex rounded-md border  bg-white p-4 shadow-lg dark:border-gray-600 dark:bg-gray-800 dark:text-white">
         <div className="flex-col">
           <div className="flex h-12 w-12 items-center justify-center rounded-full border border-blue-100 bg-blue-50 font-semibold dark:bg-gray-600 dark:text-gray-100">
             <h1>
@@ -140,7 +140,7 @@ export default function MonthCalendar({
           </p>
         </div>
 
-        <div className="ml-4 text-left">
+        <div className="ml-4 grow text-left">
           <h2 className="font-semibold">
             {new Intl.DateTimeFormat(isNepaliLanguage ? "ne-NP" : "en-US", {
               month: "long",
@@ -158,7 +158,7 @@ export default function MonthCalendar({
               ${selectedDayData?.events.map((event) => event?.jds?.en).join(" | ")}`}
           </p>
         </div>
-        <div className="ml-10 flex-col">
+        <div className="ml-10 flex-col text-end">
           <h1 className="mt-2 text-sm text-gray-500 dark:text-white">
             {relativeTimeFromDates(selectedDay.toJsDate(), isNepaliLanguage)}
           </h1>
