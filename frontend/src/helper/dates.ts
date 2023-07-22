@@ -142,22 +142,19 @@ export const eventDuration = (event: CalendarEvent, isNepaliLanguage: boolean) =
  */
 export function relativeTimeFromDates(
   relative: Date | null,
-  isNepaliLanguage = false,
-  pivot = new Date()
+  isNepaliLanguage = false
 ): string {
   if (!relative) return "";
 
   const dayInMillis = 24 * 60 * 60 * 1000; // Milliseconds in a day
 
-  // Calculate the start of today and yesterday in the same timezone as the pivot date
-  const pivotOffset = pivot.getTimezoneOffset() * 60 * 1000;
-  const todayStart = new Date(pivot.getTime() - (pivot.getTime() % dayInMillis) - pivotOffset);
-  const yesterdayStart = new Date(todayStart.getTime() - dayInMillis);
+  // Get the current date and time
+  const now = new Date();
 
-  // Adjust the relative date for the timezone offset
-  const relativeTimeAdjusted = relative.getTime() - relative.getTimezoneOffset() * 60 * 1000;
-
-  const relativeDay = Math.floor((relativeTimeAdjusted - pivot.getTime()) / dayInMillis)+1;
+ // Calculate the difference in days between the relative date and the current date
+ const nowStartOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+ const relativeStartOfDay = new Date(relative.getFullYear(), relative.getMonth(), relative.getDate());
+ const relativeDay = Math.floor((relativeStartOfDay.getTime() - nowStartOfDay.getTime()) / dayInMillis);
 
   if (relativeDay === 0) {
     if (isNepaliLanguage) {
@@ -191,4 +188,9 @@ export function relativeTimeFromDates(
     }
   }
 }
+// const now = new Date();
+// console.log("now:", now);
+
+// const testDate = new Date("2023-07-22T13:00:00.000Z");
+// console.log("time : "+relativeTimeFromDates(testDate, false));
 

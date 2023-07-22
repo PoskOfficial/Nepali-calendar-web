@@ -13,7 +13,7 @@ const useUser = () => {
     keepPreviousData: true,
     networkMode: "offlineFirst",
   });
-  console.log("user", user);
+  //console.log("user", user);
   return user;
 };
 
