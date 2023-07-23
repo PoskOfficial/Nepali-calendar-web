@@ -57,10 +57,14 @@ passport.use(
           });
           return done(null, newUser);
         }
+        console.log({ user });
         await db.update(
           {
-            ...user,
-            refreshToken: refreshToken || user.refreshToken,
+            user: {
+              ...profile,
+              accessToken,
+              refreshToken: refreshToken || (user?.refreshToken as string),
+            },
           },
           profile.id
         );
