@@ -9,10 +9,9 @@ function SingleCalendarEvent({ date, events }: { date: NepaliDate; week_day: num
     ? events.map((event) => event?.jds?.ne)
     : events.map((event) => event?.jds?.en);
 
-  const today = new Date();
-  const isToday = today.toDateString() === date.toJsDate().toDateString();
-  const noEventString = isNepaliLanguage ? "कुनै घटना छैन" : "No Event";
-  const eventsString = isToday && nepaliEvents.length === 0 ? noEventString : nepaliEvents.join(" / ");
+  let eventsString = nepaliEvents.join(" / ");
+  const isToday = new Date().toDateString() === date.toJsDate().toDateString();
+  eventsString = isToday && eventsString.length === 0 ? (isNepaliLanguage ? "कुनै घटना छैन" : "No Event") : eventsString;
   return (
     <div className="relative">
       {eventsString.length > 0 && (
