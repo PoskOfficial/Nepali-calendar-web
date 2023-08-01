@@ -4,14 +4,32 @@ import { ArrowsRightLeftIcon } from "@heroicons/react/20/solid";
 import nepaliNumber from "../helper/nepaliNumber";
 import { np_nepaliMonths as nepaliMonths } from "../constants/mahina";
 
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import useLanguage from "../helper/useLanguage";
+import { format } from "date-fns";
 const DateConverter = () => {
   const [date, setDate] = useState(new Date());
-  const nepaliDate = new NepaliDate(date);
+  const [dateString, setDateString] = useState<string>(format(new Date(), "yyyy-MM-dd"));
+  const [nepaliDate, setNepaliDate] = useState<NepaliDate>(new NepaliDate(new Date()));
+
   const minDate = "1943-04-14";
-  const maxDate = "2034-03-26";
+  const maxDate = "2034-04-13";
   const { t } = useLanguage();
+
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    let inputValue = e.target.value;
+
+    let inputDate = new Date(inputValue);
+
+    // check if the current date exceeds the maxDate or falls before the minDate.
+    if (inputDate > new Date(minDate) && inputDate < new Date(maxDate)) {
+      const selectedMepaliDate = new NepaliDate(new Date());
+      setNepaliDate(selectedMepaliDate);
+      setDate(inputDate);
+    }
+    setDateString(e.target.value);
+  }
+
   return (
     <>
       <div className="mx-auto mt-10 flex max-w-3xl flex-col items-center pb-20 text-center font-mukta lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9">
@@ -38,12 +56,8 @@ const DateConverter = () => {
               </div>
               <input
                 type="date"
-                value={
-                  new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().split("T")[0]
-                }
-                onChange={(e) => {
-                  setDate(e.target.value ? new Date(e.target.value) : new Date());
-                }}
+                value={dateString}
+                onChange={handleChange}
                 className="cursor-pointer appearance-none rounded-md border px-20 py-3 text-sm shadow-sm outline-none dark:bg-gray-800 dark:text-white  sm:px-10 "
                 max={maxDate}
                 min={minDate}
