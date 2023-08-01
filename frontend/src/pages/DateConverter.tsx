@@ -6,14 +6,15 @@ import { np_nepaliMonths as nepaliMonths } from "../constants/mahina";
 
 import { ChangeEvent, useState } from "react";
 import useLanguage from "../helper/useLanguage";
+
 import { format } from "date-fns";
 const DateConverter = () => {
   const [date, setDate] = useState(new Date());
-  const [dateString, setDateString] = useState<string>(format(new Date(), "yyyy-MM-dd"));
-  const [nepaliDate, setNepaliDate] = useState<NepaliDate>(new NepaliDate(new Date()));
-
+  // const [nepaliDate, setNepaliDate] = useState<NepaliDate>(new NepaliDate(new Date()));
+const nepaliDate=new NepaliDate(date);
   const minDate = "1943-04-14";
   const maxDate = "2034-04-13";
+
   const { t } = useLanguage();
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -21,13 +22,10 @@ const DateConverter = () => {
 
     let inputDate = new Date(inputValue);
 
-    // check if the current date exceeds the maxDate or falls before the minDate.
+    // change state if the current date exceeds the maxDate or falls before the minDate.
     if (inputDate > new Date(minDate) && inputDate < new Date(maxDate)) {
-      const selectedNepaliDate = new NepaliDate(new Date());
-      setNepaliDate(selectedNepaliDate);
       setDate(inputDate);
     }
-    setDateString(e.target.value);
   }
 
   return (
@@ -56,7 +54,7 @@ const DateConverter = () => {
               </div>
               <input
                 type="date"
-                value={dateString}
+                value={format(date,"yyyy-MM-dd")}
                 onChange={handleChange}
                 className="cursor-pointer appearance-none rounded-md border px-20 py-3 text-sm shadow-sm outline-none dark:bg-gray-800 dark:text-white  sm:px-10 "
                 max={maxDate}
