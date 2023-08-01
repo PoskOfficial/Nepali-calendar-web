@@ -23,8 +23,8 @@ const DateConverter = () => {
 
     // check if the current date exceeds the maxDate or falls before the minDate.
     if (inputDate > new Date(minDate) && inputDate < new Date(maxDate)) {
-      const selectedMepaliDate = new NepaliDate(new Date());
-      setNepaliDate(selectedMepaliDate);
+      const selectedNepaliDate = new NepaliDate(new Date());
+      setNepaliDate(selectedNepaliDate);
       setDate(inputDate);
     }
     setDateString(e.target.value);
