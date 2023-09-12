@@ -10,7 +10,7 @@ import AddEventModal from "./AddEventModal";
 import { Link } from "react-router-dom";
 import useLanguage from "../helper/useLanguage";
 import { DayData } from "../types/calendar.types";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import NepaliDate from "nepali-date-converter";
 import useUser from "../helper/useUser";
 import { CalendarEventsResult } from "../types/events.types";
@@ -50,12 +50,16 @@ export default function MonthCalendar({
     const { bs_year, bs_month, bs_day } = monthData[0].AD_date;
     return new NepaliDate(`${bs_year}-${bs_month}-${bs_day}`);
   }, [monthData]);
-
+  
   const [selectedDay, setSelectedDay] = useState<NepaliDate>(isSameMonth(today, firstDay) ? today : firstDay);
   const selectedDayData = useMemo(() => {
     const selectedDayIndex = selectedDay.getBS().date - 1;
     return monthData[selectedDayIndex];
-  }, [selectedDay, monthData]);
+  }, [selectedDay]);
+
+  useEffect(() => {
+    setSelectedDay(isSameMonth(today, firstDay) ? today : firstDay);
+  }, [monthData]);
 
   return (
     <>
