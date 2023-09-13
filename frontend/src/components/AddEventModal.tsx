@@ -28,8 +28,6 @@ function AddEventModal({ startDate }: { startDate: Date }) {
   const [selectedCalendar, setSelectedCalendar] = useState<string | number>("");
 
   const queryClient = useQueryClient();
-  console.log("eventStartDate", eventStartDate);
-  console.log("eventEndDate", eventEndDate);
   const { mutateAsync, isLoading } = useMutation({
     onSuccess: () => {
       queryClient.invalidateQueries(["events"]);
@@ -80,7 +78,6 @@ function AddEventModal({ startDate }: { startDate: Date }) {
       colorId: e.currentTarget.colorId.value || null,
       calendarId: `${selectedCalendar}` || "personal",
     };
-    console.log(eventData);
     await mutateAsync(eventData);
     // console.log({ event: data });
   };
