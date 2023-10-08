@@ -116,11 +116,11 @@ const AboutPage = () => {
           </a>{" "}
           for his contributions on the date converter,{" "}
           <a
-            href="https://github.com/nabin-kandel"
+            href="https://github.com/nabinkdl"
             target="_blank"
             rel="noopener noreferrer"
             className="text-indigo-600">
-            @nabin-kandel
+            @nabinkdl
           </a>{" "}
           for his efforts on the logo design,{" "}
           <a
