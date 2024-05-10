@@ -72,7 +72,7 @@ export default function MonthCalendar({
         <div>{t("homepage.F")}</div>
         <div>{t("homepage.Sa")}</div>
       </div>
-      <div className="isolate mx-1 mt-2 grid grid-cols-7 gap-px overflow-hidden rounded-md bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200 dark:bg-gray-800 dark:text-white dark:ring-gray-600">
+      <div className="isolate mx-1 mt-2 grid grid-cols-7 gap-px overflow-hidden rounded-md bg-gray-200 font-sans text-sm shadow ring-1 ring-gray-200 dark:bg-gray-800 dark:text-white dark:ring-gray-600 auto-rows-cell">
         {monthData.map((day, dayIdx) => {
           const { bs_year, bs_month, bs_day } = day.AD_date;
           const dayInNepaliDate = new NepaliDate(`${bs_year}-${bs_month}-${bs_day}`);
